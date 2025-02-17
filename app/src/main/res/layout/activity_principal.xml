@@ -12,7 +12,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -20,8 +19,57 @@
             android:layout_height="60dp"
             android:background="@color/azul_main"
             android:elevation="6dp"
-            app:title="Movicard"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MoviCard"
+                android:textSize="24sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/rowdies"
+                android:layout_gravity="center"/>
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btn_saldo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/azul_main"
+                android:text="saldo" />
+
+            <Button
+                android:id="@+id/btn_ruta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/azul_main"
+                android:text="ruta" />
+
+            <Button
+                android:id="@+id/btn_graficas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/azul_main"
+                android:text="gráficas" />
+
+            <Button
+                android:id="@+id/btn_facturas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/azul_main"
+                android:text="facturas" />
+
+        </LinearLayout>
 
         <!-- Bottom Navigation View -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,7 +84,6 @@
             app:menu="@menu/bottom_navegation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <!-- Menú lateral (Navigation Drawer) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -45,6 +92,5 @@
         android:layout_gravity="start"
         android:background="@color/background_menu_drawer"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu_drawer_nav"/>
-
+        app:menu="@menu/menu_drawer_nav" />
 </androidx.drawerlayout.widget.DrawerLayout>

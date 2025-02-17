@@ -5,5 +5,6 @@
     <color name="azul_main">#002147</color>
     <color name="background_app">#F8F8FA</color>
     <color name="background_menu_drawer">#CFCFCF</color>
+    <color name="btn_gris">#D0C3B2</color>
 
 </resources>

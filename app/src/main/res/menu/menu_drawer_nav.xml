@@ -9,20 +9,17 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/perfil"
-            android:title="Perfil de usuario"
-            />
+            android:title="@string/perfil_de_usuario"/>
 
         <item
             android:id="@+id/nav_suscription"
             android:icon="@drawable/suscripciones"
-            android:title="Suscripciones"
-            />
+            android:title="@string/suscripciones"/>
 
         <item
             android:id="@+id/nav_config"
             android:icon="@drawable/ajustes"
-            android:title="Configuración"
-            />
+            android:title="@string/configuraci_n"/>
     </group>
 
     <item
@@ -31,7 +28,7 @@
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/logout"
-                android:title="logout"/>
+                android:title="@string/logout"/>
         </menu>
     </item>
 </menu>
