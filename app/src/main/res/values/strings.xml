@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">MoviCard</string>
+    <string name="bienvenido">Bienvenido!</string>
+    <string name="registrate_inicia_sesi_n">Registrate / inicia sesión</string>
+    <string name="jmiguel94_gmail_com">jmiguel94@gmail.com</string>
+    <string name="registrate">Registrate</string>
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="contraseña">*************</string>
+    <string name="bienvenido_de_nuevo">Bienvenido de nuevo!</string>
+    <string name="inicia_sesi_n_o">Inicia sesión o</string>
+    <string name="registrate_para_crea_una_cuenta">Registrate para crea una cuenta</string>
+    <string name="introduzca_la_uuid_de_la_tarjeta">Introduzca la <u>UUID</u> de la tarjeta:</string>
+    <string name="entrar">Entrar</string>
+    <string name="uuid">UUID:</string>
+    <string name="_00000000f">00000000F</string>
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
+    <string name="n_mero_de_tarjeta">Número de tarjeta</string>
+    <string name="xxx">XXX</string>
+    <string name="vencimiento">Vencimiento</string>
+    <string name="nombre_del_titular">Nombre del titular</string>
+    <string name="titular">Titular</string>
+    <string name="xxxx_xxxx_xxxx_xxxx">XXXX XXXX XXXX XXXX</string>
+    <string name="mm_aa">MM/AA</string>
+    <string name="cvv">CVV</string>
+    <string name="pagar">Pagar</string>
+    <string name="notificaciones">Notificaciones</string>
+    <string name="idioma">Idioma</string>
+    <string name="tama_o_de_letra">Tamaño de letra</string>
+    <string name="modo_nocturno">Modo nocturno</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="guardar_preferencias">Guardar preferencias</string>
+    <string name="consulta_saldo">Consulta saldo</string>
+    <string name="picadas_restantes">Picadas restantes:</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="azul_main">#002147</color>
+    <color name="background_app">#F8F8FA</color>
+    <color name="background_menu_drawer">#CFCFCF</color>
+
+</resources>
