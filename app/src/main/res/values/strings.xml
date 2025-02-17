@@ -45,4 +45,7 @@
     <string name="suscripciones">Suscripciones</string>
     <string name="configuraci_n">Configuración</string>
     <string name="logout">logout</string>
+    <string name="christopher_flores">Christopher Flores</string>
+    <string name="movicard">MoviCard</string>
+    <string name="texto_bienvenida">Tu solución para la gestión rápida y eficiente de tus tarjetas de transporte.</string>
 </resources>

@@ -1,79 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/drawer_layout_UUID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_app"
     tools:context=".TarjetaUUID">
 
-    <TextView
-        android:id="@+id/textInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/introduzca_la_uuid_de_la_tarjeta"
-        android:textSize="18sp"
-        android:fontFamily="@font/rowdies"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/linearUUID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <LinearLayout
-        android:id="@+id/linearUUID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInfo"
-        app:layout_constraintBottom_toTopOf="@id/btn_entrar">
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/azul_main"
+            android:elevation="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/rowdies"
+                android:text="@string/movicard"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
-            android:id="@+id/textUUID"
+            android:id="@+id/textInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/uuid"
             android:fontFamily="@font/rowdies"
+            android:text="@string/introduzca_la_uuid_de_la_tarjeta"
+            android:textColor="@color/black"
             android:textSize="18sp"
-            android:textColor="@color/black"/>
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.1" />
 
-        <EditText
-            android:id="@+id/uuid"
+        <LinearLayout
+            android:id="@+id/linearUUID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:hint="@string/_00000000f"
-            android:textSize="18sp"/>
-    </LinearLayout>
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/btn_entrar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textInfo">
+
+            <TextView
+                android:id="@+id/textUUID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rowdies"
+                android:text="@string/uuid"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/uuid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:hint="@string/_00000000f"
+                android:textSize="18sp" />
+        </LinearLayout>
 
 
-    <Button
-        android:id="@+id/btn_entrar"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="100dp"
-        android:backgroundTint="@color/azul_main"
-        android:text="@string/entrar"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
+        <Button
+            android:id="@+id/btn_entrar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="100dp"
+            android:backgroundTint="@color/azul_main"
+            android:text="@string/entrar"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.7" />
 
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/azul_main"
-        app:itemIconSize="40dp"
-        app:itemIconTint="@color/white"
-        app:labelVisibilityMode="unlabeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navegation" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/azul_main"
+            app:itemIconSize="40dp"
+            app:itemIconTint="@color/white"
+            app:labelVisibilityMode="unlabeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_navegation" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Menú lateral (Navigation Drawer) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="@dimen/nav_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/background_menu_drawer"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_drawer_nav" />
+</androidx.drawerlayout.widget.DrawerLayout>

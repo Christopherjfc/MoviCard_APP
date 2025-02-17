@@ -34,10 +34,16 @@ class Principal : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // Configuración de DrawerLayout después de la Toolbar
-        drawerLayout = binding.drawerLayout
+        drawerLayout = binding.drawerLayoutMain
         toggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.open_nav, R.string.close_nav)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        val iconColor = resources.getColor(R.color.white, theme)
+        toggle.drawerArrowDrawable.color = iconColor
+
+        // Manejar la navegación en el menú lateral
+        binding.navView.setNavigationItemSelectedListener(navMenuListener)
 
         // Manejar el clic en los botones de la parte inferior
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
@@ -45,9 +51,6 @@ class Principal : AppCompatActivity() {
         binding.btnSaldo.setOnClickListener {
             startActivity(Intent(this, ConsultaSaldo::class.java))
         }
-
-        // Manejar la navegación en el menú lateral
-        binding.navView.setNavigationItemSelectedListener(navMenuListener)
     }
 
     // Listener para los elementos del menú lateral
@@ -77,6 +80,16 @@ class Principal : AppCompatActivity() {
         finish()
     }
 
+
+    override fun onBackPressed() {
+        // Si el drawer está abierto, cerrarlo al presionar la tecla de retroceso
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressedDispatcher
+        }
+    }
+
     private val bottomNavListener = fun(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.tarjeta -> {
@@ -86,14 +99,5 @@ class Principal : AppCompatActivity() {
             }
         }
         return false
-    }
-
-    override fun onBackPressed() {
-        // Si el drawer está abierto, cerrarlo al presionar la tecla de retroceso
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
     }
 }

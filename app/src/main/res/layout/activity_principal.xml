@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/drawer_layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_app"
@@ -11,7 +11,8 @@
     <!-- Contenedor principal con ConstraintLayout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -25,14 +26,31 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MoviCard"
-                android:textSize="24sp"
-                android:textColor="@color/white"
+                android:layout_gravity="center"
                 android:fontFamily="@font/rowdies"
-                android:layout_gravity="center"/>
+                android:text="@string/movicard"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
         </androidx.appcompat.widget.Toolbar>
 
+        <TextView
+            android:id="@+id/textInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:fontFamily="@font/rowdies"
+            android:text="@string/texto_bienvenida"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@id/linear_botones"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.2" />
+
         <LinearLayout
+            android:id="@+id/linear_botones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -84,6 +102,7 @@
             app:menu="@menu/bottom_navegation" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!-- Menú lateral (Navigation Drawer) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
