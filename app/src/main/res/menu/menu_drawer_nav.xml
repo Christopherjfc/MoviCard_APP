@@ -21,14 +21,4 @@
             android:icon="@drawable/ajustes"
             android:title="@string/configuraci_n"/>
     </group>
-
-    <item
-        android:title="">
-        <menu>
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/logout"
-                android:title="@string/logout"/>
-        </menu>
-    </item>
 </menu>

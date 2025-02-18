@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MoviCard</string>
     <string name="bienvenido">Bienvenido!</string>
@@ -31,7 +32,7 @@
     <string name="ajustes">Ajustes</string>
     <string name="guardar_preferencias">Guardar preferencias</string>
     <string name="consulta_saldo">Consulta saldo</string>
-    <string name="picadas_restantes">Picadas restantes:</string>
+    <string name="picadas_restantes">viajes restantes:</string>
     <string name="contra_actual">123456789</string>
     <string name="nueva_contrase_a">Nueva contraseña</string>
     <string name="contrase_a_actual">Contraseña actual</string>
@@ -44,8 +45,13 @@
     <string name="perfil_de_usuario">Perfil de usuario</string>
     <string name="suscripciones">Suscripciones</string>
     <string name="configuraci_n">Configuración</string>
-    <string name="logout">logout</string>
+    <string name="logout">Cerrar sesión</string>
     <string name="christopher_flores">Christopher Flores</string>
-    <string name="movicard">MoviCard</string>
     <string name="texto_bienvenida">Tu solución para la gestión rápida y eficiente de tus tarjetas de transporte.</string>
+    <string name="suscripci_n">Suscripción:</string>
+    <string name="gratuita">GRATUITA</string>
+    <string name="tarjeta">Tarjeta:</string>
+    <string name="movicard_2025">MoviCard © 2025</string>
+    <string name="tama_o">Tamaño</string>
+    <string name="rellena_los_campos_si_deseas_cambiar_de_contrase_a">Rellena los campos si deseas cambiar de contraseña:</string>
 </resources>

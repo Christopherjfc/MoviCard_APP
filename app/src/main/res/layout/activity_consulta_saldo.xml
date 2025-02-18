@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/rowdies"
-                android:text="@string/movicard"
+                android:text="@string/app_name"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
         </androidx.appcompat.widget.Toolbar>
@@ -122,6 +122,12 @@
             app:menu="@menu/bottom_navegation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- Contenido principal de la pantalla -->
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <!-- Menú lateral (Navigation Drawer) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -130,5 +136,45 @@
         android:layout_gravity="start"
         android:background="@color/background_menu_drawer"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu_drawer_nav" />
+        app:menu="@menu/menu_drawer_nav">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Espacio para los ítems del menú -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Botón de cerrar sesión -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/azul_main"
+                android:text="@string/logout"
+                android:textColor="@color/white"
+                app:icon="@drawable/logout"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"/>
+
+            <!-- Copyright -->
+            <TextView
+                android:id="@+id/text_copyright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:padding="16dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="60dp"
+                android:text="@string/movicard_2025"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

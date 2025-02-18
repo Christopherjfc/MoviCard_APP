@@ -46,10 +46,15 @@ class Principal : AppCompatActivity() {
         binding.navView.setNavigationItemSelectedListener(navMenuListener)
 
         // Manejar el clic en los botones de la parte inferior
+        binding.bottomNavigationView.selectedItemId = R.id.home
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
 
         binding.btnSaldo.setOnClickListener {
             startActivity(Intent(this, ConsultaSaldo::class.java))
+        }
+
+        binding.btnLogout.setOnClickListener {
+            logout()
         }
     }
 
@@ -63,10 +68,6 @@ class Principal : AppCompatActivity() {
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
-            }
-            R.id.nav_logout -> {
-                // Realizar logout (deberías agregar la lógica correspondiente)
-                logout()
             }
         }
         // Cerrar el menú una vez que se haya seleccionado un item

@@ -2,11 +2,15 @@ package com.example.movicard
 
 import android.content.Intent
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -60,6 +64,31 @@ class PerfilUsuario : AppCompatActivity() {
 
         // Manejar el menú de navegación inferior
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
+
+        //Desplegar la función para cambiar de contraseña
+        binding.desplegarContra.setOnClickListener{
+            toggleVisibility()
+        }
+
+        binding.btnLogout.setOnClickListener {
+            logout()
+        }
+    }
+
+    private fun toggleVisibility() {
+        if (binding.cardCambiarContra.visibility == View.GONE) {
+            TransitionManager.beginDelayedTransition(binding.cardCambiarContra, AutoTransition())
+            binding.cardCambiarContra.visibility = View.VISIBLE
+            binding.cardSuscripcion.visibility = View.GONE
+            binding.cardUUIDTarjeta.visibility = View.GONE
+            binding.desplegarContra.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_abajo, 0)
+        } else {
+            TransitionManager.beginDelayedTransition(binding.cardCambiarContra, AutoTransition())
+            binding.cardCambiarContra.visibility = View.GONE
+            binding.cardSuscripcion.visibility = View.VISIBLE
+            binding.cardUUIDTarjeta.visibility = View.VISIBLE
+            binding.desplegarContra.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_derecha, 0)
+        }
     }
 
     // Listener para los elementos del menú lateral
@@ -68,11 +97,6 @@ class PerfilUsuario : AppCompatActivity() {
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
-            }
-
-            R.id.nav_logout -> {
-                // Realizar logout (deberías agregar la lógica correspondiente)
-                logout()
             }
         }
         // Cerrar el menú una vez que se haya seleccionado un item

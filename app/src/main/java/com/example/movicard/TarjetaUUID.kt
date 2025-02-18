@@ -49,9 +49,13 @@ class TarjetaUUID : AppCompatActivity() {
         // Manejar la navegación en el menú lateral
         binding.navView.setNavigationItemSelectedListener(navMenuListener)
 
-
+        // Manejar el clic en los botones de la parte inferior
         binding.bottomNavigationView.selectedItemId = R.id.tarjeta
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
+
+        binding.btnLogout.setOnClickListener {
+            logout()
+        }
     }
 
     // Listener para los elementos del menú lateral
@@ -65,11 +69,6 @@ class TarjetaUUID : AppCompatActivity() {
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
-            }
-
-            R.id.nav_logout -> {
-                // Realizar logout (deberías agregar la lógica correspondiente)
-                logout()
             }
         }
         // Cerrar el menú una vez que se haya seleccionado un item
