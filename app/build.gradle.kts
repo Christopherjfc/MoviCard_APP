@@ -32,6 +32,10 @@ android {
     }
     buildFeatures{
         viewBinding = true;
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -39,12 +43,23 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // Jetpack Compose
+    implementation(libs.activity.compose)
+    implementation(libs.ui)
+    implementation(libs.material3)
+    implementation(libs.ui.tooling.preview)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Dependencies to choose profile picture
+    implementation(libs.activity.ktx)
+    implementation(libs.fragment.ktx)
 }

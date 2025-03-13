@@ -54,4 +54,27 @@
     <string name="movicard_2025">MoviCard © 2025</string>
     <string name="tama_o">Mida</string>
     <string name="rellena_los_campos_si_deseas_cambiar_de_contrase_a">Omple els camps si vols canviar la contrasenya:</string>
+    <string name="estad_sticas_de_la_tarjeta">Estadístiques de la targeta</string>
+    <string name="atenci_n_al_cliente">Atenció al client</string>
+    <string name="correo_electr_nico">Correu electrònic:</string>
+    <string name="nombre_completo">Nom complet:</string>
+    <string name="ejemplo_nombre_gmail_com">Exemple: nom@gmail.com</string>
+    <string name="escribe_tu_nombre">Escriu el teu nom</string>
+    <string name="tipo_de_consulta">Tipus de consulta:</string>
+    <string name="escribe_tu_mensaje_aqu">Escriu el teu missatge aquí...</string>
+    <string name="mensaje">Missatge:</string>
+    <string name="enviar_mensaje">Enviar missatge</string>
+    <string name="en_qu_podemos_ayudarte">En què podem ajudar-te?</string>
+    <string name="consulta_general">Consulta general</string>
+    <string name="problemas_con_la_tarjeta">Problemes amb la targeta</string>
+    <string name="errores_en_el_saldo_o_recargas">Errors en el sald o recàrregues</string>
+    <string name="otra_consulta">Una altra consulta</string>
+    <string name="sugerencias_y_mejoras">Suggeriments i millores</string>
+    <string name="registrar_tarjeta">Registrar targeta</string>
+    <string name="bloqueo_desbloqueo_de_tarjeta">Bloqueig/desbloqueig de targeta</string>
+    <string name="estado">Estat:</string>
+    <string name="bloquear">Bloquejar</string>
+    <string name="desbloquear">Desbloquejar</string>
+    <string name="recargar_saldo">Recarregar saldo</string>
+    <string name="bloquea_desbloquea_tarjeta">Bloqueja/desbloqueja targeta</string>
 </resources>

@@ -6,5 +6,6 @@
     <color name="background_app">#F8F8FA</color>
     <color name="background_menu_drawer">#CFCFCF</color>
     <color name="btn_gris">#D0C3B2</color>
+    <color name="azul_seleccionado">#013E83</color>
 
 </resources>

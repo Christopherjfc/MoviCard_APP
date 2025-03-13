@@ -54,5 +54,27 @@
     <string name="movicard_2025">MoviCard © 2025</string>
     <string name="tama_o">Size</string>
     <string name="rellena_los_campos_si_deseas_cambiar_de_contrase_a">Fill in the fields if you want to change your password:</string>
-
+    <string name="estad_sticas_de_la_tarjeta">Card statistics</string>
+    <string name="atenci_n_al_cliente">Customer support</string>
+    <string name="correo_electr_nico">Email:</string>
+    <string name="nombre_completo">Full name:</string>
+    <string name="ejemplo_nombre_gmail_com">Example: name@gmail.com</string>
+    <string name="escribe_tu_nombre">Enter your name</string>
+    <string name="tipo_de_consulta">Type of inquiry:</string>
+    <string name="escribe_tu_mensaje_aqu">Enter your message here...</string>
+    <string name="mensaje">Message:</string>
+    <string name="enviar_mensaje">Send message</string>
+    <string name="en_qu_podemos_ayudarte">How can we assist you?</string>
+    <string name="consulta_general">General inquiry</string>
+    <string name="problemas_con_la_tarjeta">Card issues</string>
+    <string name="errores_en_el_saldo_o_recargas">Balance or recharge errors</string>
+    <string name="otra_consulta">Other inquiry</string>
+    <string name="sugerencias_y_mejoras">Suggestions and improvements</string>
+    <string name="registrar_tarjeta">Register card</string>
+    <string name="bloqueo_desbloqueo_de_tarjeta">Block/unblock card</string>
+    <string name="estado">Status:</string>
+    <string name="bloquear">Block</string>
+    <string name="desbloquear">Unblock</string>
+    <string name="recargar_saldo">Reload balance</string>
+    <string name="bloquea_desbloquea_tarjeta">Lock/unlock card</string>
 </resources>

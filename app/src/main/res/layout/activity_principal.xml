@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
+
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -37,55 +38,145 @@
             android:id="@+id/textInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
+            android:layout_marginHorizontal="35dp"
             android:fontFamily="@font/rowdies"
             android:text="@string/texto_bienvenida"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@id/linear_botones"
+            app:layout_constraintBottom_toTopOf="@id/linear_opciones"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="0.1" />
 
-        <LinearLayout
-            android:id="@+id/linear_botones"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSaldo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="25dp"
+            android:backgroundTint="@color/white"
+            app:cardCornerRadius="0dp"
+            app:layout_constraintBottom_toTopOf="@id/cardRuta"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/textInfo">
 
-            <Button
-                android:id="@+id/btn_saldo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/azul_main"
-                android:text="saldo" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-            <Button
-                android:id="@+id/btn_ruta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/azul_main"
-                android:text="ruta" />
+                <Button
+                    android:id="@+id/btn_saldo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/azul_main"
+                    android:text="saldo"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_graficas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/azul_main"
-                android:text="gráficas" />
+        </com.google.android.material.card.MaterialCardView>
 
-            <Button
-                android:id="@+id/btn_facturas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/azul_main"
-                android:text="facturas" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardRuta"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="25dp"
+            android:backgroundTint="@color/white"
+            app:cardCornerRadius="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/linear_opciones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardSaldo">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/btn_ruta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_rutas"
+                    android:scaleType="centerInside"
+                    android:backgroundTint="@color/white"
+                    android:text="ruta"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/linear_opciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardRuta">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardGraficas"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardSaldo">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_graficas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/azul_main"
+                        android:text="gráficas"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="0dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFacturas"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:cardCornerRadius="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardSaldo">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_facturas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/azul_main"
+                        android:text="facturas"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
 
         </LinearLayout>
 
@@ -112,7 +203,7 @@
     <!-- Menú lateral (Navigation Drawer) -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="@dimen/nav_drawer_width"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/background_menu_drawer"
@@ -126,6 +217,7 @@
 
             <!-- Espacio para los ítems del menú -->
             <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
@@ -141,7 +233,7 @@
                 android:textColor="@color/white"
                 app:icon="@drawable/logout"
                 app:iconGravity="textStart"
-                app:iconPadding="8dp"/>
+                app:iconPadding="8dp" />
 
             <!-- Copyright -->
             <TextView
@@ -149,10 +241,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:padding="16dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginBottom="60dp"
+                android:gravity="center"
+                android:padding="16dp"
                 android:text="@string/movicard_2025"
                 android:textColor="@color/black"
                 android:textSize="12sp" />

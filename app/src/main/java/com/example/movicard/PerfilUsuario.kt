@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -19,7 +20,7 @@ import com.example.movicard.databinding.ActivityPerfilUsuarioBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.google.android.material.navigation.NavigationView
 
-class PerfilUsuario : AppCompatActivity() {
+class PerfilUsuario : BaseActivity() {
     private lateinit var binding: ActivityPerfilUsuarioBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
@@ -73,6 +74,9 @@ class PerfilUsuario : AppCompatActivity() {
         binding.btnLogout.setOnClickListener {
             logout()
         }
+
+        // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
+        setDrawerWidth(binding.navView, 0.55)
     }
 
     private fun toggleVisibility() {
@@ -91,9 +95,30 @@ class PerfilUsuario : AppCompatActivity() {
         }
     }
 
+
+    // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
+    private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+
+        // Calcular el ancho del Drawer con el porcentaje especificado
+        val drawerWidth = (screenWidth * percentage).toInt()
+
+        // Aplicar el nuevo ancho al NavigationView
+        val layoutParams = navView.layoutParams
+        layoutParams.width = drawerWidth
+        navView.layoutParams = layoutParams
+    }
+
+
     // Listener para los elementos del menú lateral
     private val navMenuListener = NavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
+            R.id.nav_suscription -> {
+                // Abrir suscripciones (Princin cards)
+                startActivity(Intent(this, PricingCards::class.java))
+            }
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
@@ -122,12 +147,16 @@ class PerfilUsuario : AppCompatActivity() {
 
     private val bottomNavListener = fun(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.help -> {
+                // Cambia a ayuda
+                startActivity(Intent(this, Help::class.java))
+                return true
+            }
             R.id.home -> {
                 // Cambia a pantalla principal
                 startActivity(Intent(this, Principal::class.java))
                 return true
             }
-
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
                 startActivity(Intent(this, TarjetaUUID::class.java))

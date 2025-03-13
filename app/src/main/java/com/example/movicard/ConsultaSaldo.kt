@@ -2,6 +2,7 @@ package com.example.movicard
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -14,7 +15,7 @@ import com.example.movicard.databinding.ActivityConsultaSaldoBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.google.android.material.navigation.NavigationView
 
-class ConsultaSaldo : AppCompatActivity() {
+class ConsultaSaldo : BaseActivity() {
     private lateinit var binding: ActivityConsultaSaldoBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
@@ -50,10 +51,31 @@ class ConsultaSaldo : AppCompatActivity() {
             startActivity(Intent(this, RegistraTarjeta::class.java))
         }
 
+
+        // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
+        setDrawerWidth(binding.navView, 0.55)
+
+
         binding.btnLogout.setOnClickListener {
             logout()
         }
     }
+
+    // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
+    private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+
+        // Calcular el ancho del Drawer con el porcentaje especificado
+        val drawerWidth = (screenWidth * percentage).toInt()
+
+        // Aplicar el nuevo ancho al NavigationView
+        val layoutParams = navView.layoutParams
+        layoutParams.width = drawerWidth
+        navView.layoutParams = layoutParams
+    }
+
 
     // Listener para los elementos del menú lateral
     private val navMenuListener = NavigationView.OnNavigationItemSelectedListener { item ->
@@ -61,6 +83,10 @@ class ConsultaSaldo : AppCompatActivity() {
             R.id.nav_profile -> {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
+            }
+            R.id.nav_suscription -> {
+                // Abrir suscripciones (Princin cards)
+                startActivity(Intent(this, PricingCards::class.java))
             }
             R.id.nav_config -> {
                 // Abrir configuración
@@ -90,6 +116,11 @@ class ConsultaSaldo : AppCompatActivity() {
 
     private val bottomNavListener = fun(item: MenuItem): Boolean{
         when (item.itemId) {
+            R.id.help -> {
+                // Cambia a ayuda
+                startActivity(Intent(this, Help::class.java))
+                return true
+            }
             R.id.home -> {
                 // Cambia a pantalla principal
                 startActivity(Intent(this, Principal::class.java))

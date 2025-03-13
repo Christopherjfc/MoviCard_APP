@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.movicard.databinding.ActivityLoginBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
 
-class Login : AppCompatActivity() {
+class Login : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

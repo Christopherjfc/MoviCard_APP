@@ -4,71 +4,106 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.movicard.databinding.ActivityPrincipalBinding
+import com.example.movicard.databinding.ActivityHelpBinding
 import com.google.android.material.navigation.NavigationView
 
-class Principal : BaseActivity() {
-    private lateinit var binding: ActivityPrincipalBinding
+class Help : BaseActivity() {
+
+    private lateinit var binding: ActivityHelpBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        // Configuración de la vista
-        binding = ActivityPrincipalBinding.inflate(layoutInflater)
+        binding = ActivityHelpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-        // Configurar la Toolbar primero
+        // Configurar la Toolbar
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) // Muestra el ícono de la hamburguesa
-        // Quitar el título por defecto de la ActionBar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-
-        // Configuración de DrawerLayout después de la Toolbar
-        drawerLayout = binding.drawerLayoutMain
-        toggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.open_nav, R.string.close_nav)
+        // Configurar el menú lateral
+        drawerLayout = binding.drawerLayoutHelp
+        toggle = ActionBarDrawerToggle(
+            this, drawerLayout, binding.toolbar,
+            R.string.open_nav, R.string.close_nav
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-
-        // Aplica el color blanco a la hamburguesa del toolbar
         val iconColor = resources.getColor(R.color.white, theme)
         toggle.drawerArrowDrawable.color = iconColor
 
-
-
-        // Manejar la navegación en el menú lateral
+        // Configurar la navegación LATERAL
         binding.navView.setNavigationItemSelectedListener(navMenuListener)
 
 
         // Manejar el clic en los botones de la parte inferior
-        binding.bottomNavigationView.selectedItemId = R.id.home
+        binding.bottomNavigationView.selectedItemId = R.id.help
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
+
+        binding.btnLogout.setOnClickListener { logout() }
+
+        // selecciona el tipo de consulta
+        val consultas = listOf(getString(R.string.consulta_general),
+            getString(R.string.problemas_con_la_tarjeta),
+            getString(R.string.errores_en_el_saldo_o_recargas),
+            getString(R.string.sugerencias_y_mejoras), getString(R.string.otra_consulta))
+        configurarSpinner(binding.tipoConsulta, consultas)
+
+        // botón que comprueba y envía el mensaje
+        binding.btnEnviarMensaje.setOnClickListener {
+            if (mensajeValido()) {
+                Toast.makeText(this, "Mensaje enviado.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
 
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
+    }
 
-        binding.btnSaldo.setOnClickListener {
-            startActivity(Intent(this, ConsultaSaldo::class.java))
-        }
+    // valida que no haya ningún campo vacío para que sea válido el mensaje
+    private fun mensajeValido(): Boolean {
+        val nombre = binding.nombreUsuario.text.toString().trim()
+        val correo = binding.correoUsuario.text.toString().trim()
+        val mensaje = binding.mensajeUsuario.text.toString().trim()
 
-        binding.btnGraficas.setOnClickListener{
-            startActivity(Intent(this, Graficas::class.java))
-        }
+        return (nombre.isNotEmpty() && correo.isNotEmpty() && mensaje.isNotEmpty())
+    }
 
-        binding.btnLogout.setOnClickListener {
-            logout()
+    private fun configurarSpinner(spinner: Spinner, opciones: List<String>) {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opciones)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (position > 0) {
+                    val seleccionado = parent.getItemAtPosition(position).toString()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
+
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -85,8 +120,8 @@ class Principal : BaseActivity() {
         navView.layoutParams = layoutParams
     }
 
-
-    // Listener para los elementos del menú lateral
+    
+    // Listener para los elementos del MENÚ LATERAL
     private val navMenuListener = NavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_profile -> {
@@ -109,29 +144,26 @@ class Principal : BaseActivity() {
 
     // Lógica de logout
     private fun logout() {
-        startActivity(Intent(this, Login ::class.java))
+        startActivity(Intent(this, Login::class.java))
         finish()
     }
 
-
     override fun onBackPressed() {
-        // Si el drawer está abierto, cerrarlo al presionar la tecla de retroceso
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressedDispatcher
+            super.onBackPressedDispatcher.onBackPressed()
         }
     }
 
+    // Listener para los elementos del MENÚ INFERIOR
     private val bottomNavListener = fun(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.help -> {
-                // Cambia a ayuda
-                startActivity(Intent(this, Help::class.java))
+            R.id.home -> {
+                startActivity(Intent(this, Principal::class.java))
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
                 startActivity(Intent(this, TarjetaUUID::class.java))
                 return true
             }
