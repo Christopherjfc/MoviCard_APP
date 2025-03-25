@@ -33,9 +33,6 @@
             android:name=".CardSettings"
             android:exported="false" />
         <activity
-            android:name=".BaseActivity"
-            android:exported="false" />
-        <activity
             android:name=".BlockCard"
             android:exported="false" />
         <activity
