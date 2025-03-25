@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fondo normal del botón -->
+    <item android:id="@+id/background_layer">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/azul_main" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- Capa de progreso que se llenará desde la izquierda -->
+    <item android:id="@+id/progress_layer">
+        <clip android:gravity="start">
+            <shape android:shape="rectangle">
+                <solid android:color="@color/azul_claro" />
+                <corners android:radius="8dp" />
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>

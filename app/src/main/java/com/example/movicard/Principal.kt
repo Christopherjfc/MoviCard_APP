@@ -68,6 +68,7 @@ class Principal : BaseActivity() {
         binding.btnLogout.setOnClickListener {
             logout()
         }
+
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

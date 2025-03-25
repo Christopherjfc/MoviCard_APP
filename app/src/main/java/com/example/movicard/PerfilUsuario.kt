@@ -1,17 +1,24 @@
 package com.example.movicard
 
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -19,17 +26,22 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.movicard.databinding.ActivityPerfilUsuarioBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.google.android.material.navigation.NavigationView
+import java.io.File
+import java.io.FileOutputStream
 
 class PerfilUsuario : BaseActivity() {
     private lateinit var binding: ActivityPerfilUsuarioBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
         binding = ActivityPerfilUsuarioBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // Configurar la Toolbar primero
         setSupportActionBar(binding.toolbar)
@@ -78,6 +90,7 @@ class PerfilUsuario : BaseActivity() {
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
     }
+
 
     private fun toggleVisibility() {
         if (binding.cardCambiarContra.visibility == View.GONE) {

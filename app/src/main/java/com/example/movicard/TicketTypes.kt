@@ -4,27 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.movicard.databinding.ActivityGraficasBinding
-import com.example.movicard.databinding.ActivityPricingCardsBinding
+import com.example.movicard.databinding.ActivityTicketTypesBinding
 import com.google.android.material.navigation.NavigationView
 
-class PricingCards : BaseActivity() {
-    private lateinit var binding: ActivityPricingCardsBinding
+class TicketTypes : BaseActivity() {
+    private lateinit var binding: ActivityTicketTypesBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPricingCardsBinding.inflate(layoutInflater)
+        binding = ActivityTicketTypesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Configurar la Toolbar
@@ -34,7 +27,7 @@ class PricingCards : BaseActivity() {
 
 
         // Configurar el menú lateral
-        drawerLayout = binding.drawerLayoutPricingCards
+        drawerLayout = binding.drawerLayoutTicketTypes
         toggle = ActionBarDrawerToggle(
             this, drawerLayout, binding.toolbar,
             R.string.open_nav, R.string.close_nav
@@ -67,23 +60,38 @@ class PricingCards : BaseActivity() {
         binding.btnLogout.setOnClickListener { logout() }
 
 
+        val intent = Intent(this, SelectedTitleInfo::class.java)
 
-        // Animación de entrada para las tarjetas
-        binding.precioFremium.alpha = 0f
-        binding.precioPremium.alpha = 0f
-
-        binding.precioFremium.animate().alpha(1f).setDuration(1200)
-            .setInterpolator(AccelerateDecelerateInterpolator()).start()
-        binding.precioPremium.animate().alpha(1f).setDuration(1200)
-            .setInterpolator(AccelerateDecelerateInterpolator()).start()
-
-        // Click en botón de suscripción
-        binding.btnSuscripcion.setOnClickListener {
-            startActivity(Intent(this, PaymentDetails::class.java))
+        binding.linearM10.setOnClickListener {
+            intent.putExtra("titulo", getString(R.string.movi_10))
+            intent.putExtra("viajes", getString(R.string.viajes_disponibles_10))
+            intent.putExtra("duracion", getString(R.string.duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles))
+            startActivity(intent)
         }
+
+        binding.linearMoviMes.setOnClickListener {
+            intent.putExtra("titulo", getString(R.string.movi_mes))
+            intent.putExtra("viajes", getString(R.string.viajes_disponibles_30_dias))
+            intent.putExtra("duracion", getString(R.string.duraci_n_hasta_que_concluyan_los_30_d_as_despu_s_del_primer_registro))
+            startActivity(intent)
+        }
+
+        binding.linearMoviTrimestral.setOnClickListener {
+            intent.putExtra("titulo", getString(R.string.movi_trimestral))
+            intent.putExtra("viajes", getString(R.string.viajes_disponibles_90_dias))
+            intent.putExtra("duracion", getString(R.string.duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro))
+            startActivity(intent)
+        }
+
+        /*
+         * La tarjeta:
+         *  10 viajes = 10€
+         *  mensual = 20€
+         *  Trimestral = 50€
+         */
     }
 
-    // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
+    // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -105,6 +113,10 @@ class PricingCards : BaseActivity() {
             R.id.nav_profile -> {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
+            }
+            R.id.nav_suscription -> {
+                // Abrir suscripciones (Princin cards)
+                startActivity(Intent(this, PricingCards::class.java))
             }
             R.id.nav_config -> {
                 // Abrir configuración

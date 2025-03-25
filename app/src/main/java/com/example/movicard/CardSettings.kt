@@ -67,6 +67,10 @@ class CardSettings : AppCompatActivity() {
         binding.bloqueartarjeta.setOnClickListener {
             startActivity(Intent(this, BlockCard::class.java))
         }
+
+        binding.recargaSaldo.setOnClickListener {
+            startActivity(Intent(this, ConsultaSaldo::class.java))
+        }
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

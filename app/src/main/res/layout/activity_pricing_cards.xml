@@ -5,7 +5,6 @@
     android:id="@+id/drawer_layout_PricingCards"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_app"
     tools:context=".PricingCards">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -113,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="65dp"
                             android:fontFamily="@font/spectral_regular"
-                            android:text="- Consultar saldo\n- Recargar saldo\n- Bloqueo de tarjeta\n- Seguro de tarjeta"
+                            android:text="@string/consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
 
@@ -192,7 +191,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="65dp"
                             android:fontFamily="@font/spectral_regular"
-                            android:text="- Consultar saldo\n- Recargar saldo\n- Bloqueo de tarjeta\n- Seguro de tarjeta\n- Estadisticas\n- Facturas\n- Planificar rutas\n- Notificaciones personalizadas"
+                            android:text="@string/consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta_n_estadisticas_n_facturas_n_planificar_rutas_n_notificaciones_personalizadas"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
 

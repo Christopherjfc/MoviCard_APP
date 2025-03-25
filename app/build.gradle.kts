@@ -48,6 +48,9 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
+    // Dependency for images
+    implementation (libs.circleimageview)
+
     // Jetpack Compose
     implementation(libs.activity.compose)
     implementation(libs.ui)

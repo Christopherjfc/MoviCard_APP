@@ -77,13 +77,10 @@
             app:layout_constraintTop_toBottomOf="@id/cardImg">
 
             <TextView
-                android:id="@+id/desplegar_contra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
-                android:clickable="true"
-                android:focusable="true"
                 android:fontFamily="@font/roboto"
                 android:text="@string/recargar_saldo"
                 android:textSize="16sp"

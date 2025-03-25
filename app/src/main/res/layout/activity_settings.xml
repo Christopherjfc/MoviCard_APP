@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/rowdies"
             android:text="@string/ajustes"
-            android:textColor="@color/black"
+            android:textColor="@color/text_info"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"

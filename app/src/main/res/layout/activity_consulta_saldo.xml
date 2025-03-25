@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/rowdies"
             android:text="@string/consulta_saldo"
-            android:textColor="@color/black"
+            android:textColor="@color/text_info"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/cardSaldo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +100,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/btn_entrar"
+            android:id="@+id/btn_tipo_tarjeta"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="100dp"

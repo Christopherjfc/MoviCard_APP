@@ -1,30 +1,36 @@
 package com.example.movicard
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.drawable.ClipDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.MenuItem
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Toast
+import android.view.MotionEvent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.movicard.databinding.ActivityGraficasBinding
-import com.example.movicard.databinding.ActivityPricingCardsBinding
+import com.example.movicard.databinding.ActivitySelectedTitleInfoBinding
+import com.example.movicard.databinding.ActivityTicketTypesBinding
 import com.google.android.material.navigation.NavigationView
 
-class PricingCards : BaseActivity() {
-    private lateinit var binding: ActivityPricingCardsBinding
+class SelectedTitleInfo : AppCompatActivity() {
+    private lateinit var binding: ActivitySelectedTitleInfoBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPricingCardsBinding.inflate(layoutInflater)
+        binding = ActivitySelectedTitleInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Configurar la Toolbar
@@ -34,7 +40,7 @@ class PricingCards : BaseActivity() {
 
 
         // Configurar el menú lateral
-        drawerLayout = binding.drawerLayoutPricingCards
+        drawerLayout = binding.drawerLayoutSelectedTitleInfo
         toggle = ActionBarDrawerToggle(
             this, drawerLayout, binding.toolbar,
             R.string.open_nav, R.string.close_nav
@@ -66,24 +72,48 @@ class PricingCards : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
+        val titulo2 = intent.getStringExtra("titulo")
+        val viajes2 = intent.getStringExtra("viajes")
+        val duracion2 = intent.getStringExtra("duracion")
 
+        binding.titulo.text = titulo2;
+        binding.viajes.text = viajes2;
+        binding.duracion.text = duracion2;
 
-        // Animación de entrada para las tarjetas
-        binding.precioFremium.alpha = 0f
-        binding.precioPremium.alpha = 0f
+        // Obtener el fondo del botón como LayerDrawable
+        val layerDrawable = binding.btnConfirmar.background as LayerDrawable
+        val progressDrawable = layerDrawable.findDrawableByLayerId(R.id.progress_layer) as ClipDrawable
 
-        binding.precioFremium.animate().alpha(1f).setDuration(1200)
-            .setInterpolator(AccelerateDecelerateInterpolator()).start()
-        binding.precioPremium.animate().alpha(1f).setDuration(1200)
-            .setInterpolator(AccelerateDecelerateInterpolator()).start()
+        // Crear animación para llenar el botón
+        val animacion = ValueAnimator.ofInt(0, 10000).apply { // ClipDrawable usa un rango de 0 a 10,000
+            duration = 2000 // 2 segundos para llenarse
+            addUpdateListener { animator ->
+                progressDrawable.level = animator.animatedValue as Int
+            }
+        }
 
-        // Click en botón de suscripción
-        binding.btnSuscripcion.setOnClickListener {
-            startActivity(Intent(this, PaymentDetails::class.java))
+        binding.btnConfirmar.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    animacion.start()
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    if (progressDrawable.level == 10000) {
+                        // Si el progreso está completo, cambia a la actividad RegistraTarjeta
+                        startActivity(Intent(this, RegistraTarjeta::class.java))
+                    } else {
+                        // Si no se completó, reinicia la animación
+                        animacion.reverse()
+                    }
+                    true
+                }
+                else -> false
+            }
         }
     }
 
-    // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
+    // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -105,6 +135,10 @@ class PricingCards : BaseActivity() {
             R.id.nav_profile -> {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
+            }
+            R.id.nav_suscription -> {
+                // Abrir suscripciones (Princin cards)
+                startActivity(Intent(this, PricingCards::class.java))
             }
             R.id.nav_config -> {
                 // Abrir configuración

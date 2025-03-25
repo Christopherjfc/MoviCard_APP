@@ -47,8 +47,11 @@ class ConsultaSaldo : BaseActivity() {
 
         // Manejar el clic en los botones de la parte inferior
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
-        binding.btnEntrar.setOnClickListener{
-            startActivity(Intent(this, RegistraTarjeta::class.java))
+
+        // Cambia a la actividad donde se encuentran los tipos de tickets
+        binding.btnTipoTarjeta.setOnClickListener{
+            val intent = Intent(this, TicketTypes::class.java)
+            startActivity(intent)
         }
 
 

@@ -7,5 +7,14 @@
     <color name="background_menu_drawer">#CFCFCF</color>
     <color name="btn_gris">#D0C3B2</color>
     <color name="azul_seleccionado">#013E83</color>
+    <color name="azul_claro">#375A9E</color>
 
+
+
+    <color name="toolbar_menus">@color/azul_main</color>
+    <color name="text_info">@color/black</color> <!-- Texto claro en fondo oscuro -->
+    <color name="text_secondary">#86A7CC</color> <!-- Texto menos importante -->
+    <color name="button_primary">#0051A2</color> <!-- Azul llamativo para botones -->
+    <color name="button_secondary">#8A817C</color> <!-- Gris neutro para botones secundarios -->
+    <color name="button_text">@color/white</color> <!-- Gris neutro para botones secundarios -->
 </resources>

@@ -78,6 +78,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/azul_main"
+            android:textColor="@color/button_text"
             android:text="@string/iniciar_sesi_n"
             android:textStyle="bold" />
     </LinearLayout>

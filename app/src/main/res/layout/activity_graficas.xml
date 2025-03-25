@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/rowdies"
             android:text="@string/estad_sticas_de_la_tarjeta"
-            android:textColor="@color/black"
+            android:textColor="@color/text_info"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +83,7 @@
 
             <!-- Espacio para los ítems del menú -->
             <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />

@@ -1,7 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.MoviCard" parent="Theme.Material3.DayNight">
+    <style name="Base.Theme.MoviCard" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
+       <item name="colorPrimary">@color/azul_main</item>
+        <item name="colorPrimaryVariant">@color/btn_gris</item>
+        <item name="colorSecondary">@color/design_default_color_primary_variant</item>
+
+        <!-- Establecer el color de fondo del tema oscuro -->
+        <item name="android:windowBackground">#353434</item>
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+        <!-- Color de texto general -->
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

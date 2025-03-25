@@ -20,13 +20,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 class AnimationRegisterCard : AppCompatActivity() {
+    private var origen: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        origen = intent.getStringExtra("origen")
         setContent {
             ModernSuccessAnimation(
                 onAnimationEnd = {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        startActivity(Intent(this, BlockCard::class.java))
+                        when (origen) {
+                            "ConsultaSaldo" -> {
+                                val intent = Intent(this, BlockCard::class.java)
+                                val bundle = intent.extras
+                                if (bundle != null) {
+                                    intent.putExtras(bundle)
+                                }
+
+                                startActivity(intent)
+                            }
+                            "PrincingCards" -> {
+                                val bundle = intent.extras
+                                val intent = Intent(this, PurchaseSummary::class.java)
+                                if (bundle != null) {
+                                    intent.putExtras(bundle)
+                                }
+
+                                startActivity(intent)
+                            }
+                            else -> {
+                                // Si no hay origen, por defecto va al Home
+                                val intent = Intent(this, Principal::class.java)
+                                startActivity(intent)
+                            }
+                        }
                         finish()
                     }, 500)
                 }
@@ -65,7 +91,10 @@ fun ModernSuccessAnimation(onAnimationEnd: () -> Unit) {
     ) {
         AnimatedVisibility(
             visible = animationStarted,
-            enter = fadeIn(animationSpec = tween(500)) + scaleIn(initialScale = 0.5f, animationSpec = tween(500))
+            enter = fadeIn(animationSpec = tween(500)) + scaleIn(
+                initialScale = 0.5f,
+                animationSpec = tween(500)
+            )
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),

@@ -2,11 +2,11 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_UUID"
+    android:id="@+id/drawer_layout_selected_title_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_app"
-    tools:context=".TarjetaUUID">
+    tools:context=".SelectedTitleInfo">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,63 +34,107 @@
         </androidx.appcompat.widget.Toolbar>
 
         <TextView
-            android:id="@+id/textInfo"
+            android:id="@+id/textInfo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/rowdies"
-            android:text="@string/introduzca_la_uuid_de_la_tarjeta"
+            android:layout_marginStart="25dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/t_tulo_seleccionado"
+            android:textSize="20sp"
             android:textColor="@color/text_info"
-            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintVertical_bias="0.1" />
 
-        <LinearLayout
-            android:id="@+id/linearUUID"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSelected"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/white"
+            app:cardCornerRadius="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textInfo2"
+            app:layout_constraintVertical_bias="0.1"
+            app:strokeColor="@color/azul_main">
+
+            <LinearLayout
+                android:id="@+id/linear_cardSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/movicard_foto_comprimida" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/titulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/movi_10"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/viajes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/viajes_disponibles_10" />
+
+                    <TextView
+                        android:id="@+id/duracion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/btn_entrar"
+            android:fontFamily="@font/roboto"
+            android:text="@string/hold_continue"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_confirmar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInfo">
+            app:layout_constraintTop_toBottomOf="@+id/cardSelected"
+            app:layout_constraintVertical_bias="0.8" />
 
-            <TextView
-                android:id="@+id/textUUID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/rowdies"
-                android:text="@string/uuid"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/uuid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:hint="@string/_00000000f"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/btn_entrar"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="100dp"
-            android:backgroundTint="@color/azul_main"
-            android:text="@string/entrar"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        <!-- Botón para confirmar el título seleccionado-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_confirmar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="@string/boton_continuar"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.7" />
+            app:layout_constraintTop_toBottomOf="@+id/cardSelected"
+            app:layout_constraintVertical_bias="0.35" />
 
 
+        <!-- Menu bottom navagation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
@@ -102,6 +146,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_navegation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!-- Contenido principal de la pantalla -->
     <FrameLayout
@@ -126,6 +171,7 @@
 
             <!-- Espacio para los ítems del menú -->
             <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
@@ -141,7 +187,7 @@
                 android:textColor="@color/white"
                 app:icon="@drawable/logout"
                 app:iconGravity="textStart"
-                app:iconPadding="8dp"/>
+                app:iconPadding="8dp" />
 
             <!-- Copyright -->
             <TextView
@@ -149,10 +195,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:padding="16dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginBottom="60dp"
+                android:gravity="center"
+                android:padding="16dp"
                 android:text="@string/movicard_2025"
                 android:textColor="@color/black"
                 android:textSize="12sp" />

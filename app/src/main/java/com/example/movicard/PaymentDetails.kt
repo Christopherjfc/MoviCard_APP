@@ -15,7 +15,7 @@ import com.example.movicard.databinding.ActivityGraficasBinding
 import com.example.movicard.databinding.ActivityPaymentDetailsBinding
 import com.google.android.material.navigation.NavigationView
 
-class PaymentDetails : AppCompatActivity() {
+class PaymentDetails : BaseActivity() {
     private lateinit var binding: ActivityPaymentDetailsBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
@@ -66,8 +66,19 @@ class PaymentDetails : AppCompatActivity() {
 
         // Click en botón de suscripción
         binding.continuar.setOnClickListener {
-            startActivity(Intent(this, RegistraTarjeta::class.java))
+            val intent = Intent(this, RegistraTarjeta::class.java)
+            intent.putExtra("origen", "PrincingCards")
+            val bundle = Bundle().apply {
+                putString("nombre", binding.nombreEnvio.text.toString())
+                putString("apellido", binding.apellidoEnvio.text.toString())
+                putString("correo", binding.correoEnvio.text.toString())
+                putString("telefono", binding.telefonoEnvio.text.toString())
+                putString("direccion", binding.direccionEnvio.text.toString())
+                putString("localidad", binding.localidadEnvio.text.toString())
+            }
+            intent.putExtras(bundle)
 
+            startActivity(intent)
         }
     }
 

@@ -47,13 +47,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/foto"
                     android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:src="@drawable/foto_perfil" />
-
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/foto_perfil"
+                    android:layout_height="150dp"/>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -78,6 +79,23 @@
 
             </LinearLayout>
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/insertaImagen"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:background="?selectableItemBackgroundBorderless"
+            android:elevation="5dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintVertical_bias="0.232"
+            app:srcCompat="@drawable/create"
+            tools:ignore="ImageContrastCheck" />
 
         <!-- Cambiar contraseña -->
         <androidx.cardview.widget.CardView
@@ -117,9 +135,9 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             app:cardElevation="1dp"
-            app:layout_constraintTop_toBottomOf="@id/card_cambiar_contra"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/card_cambiar_contra">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -157,9 +175,9 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             app:cardElevation="1dp"
-            app:layout_constraintTop_toBottomOf="@id/card_suscripcion"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/card_suscripcion">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,7 +214,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="#EDEDF1"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@id/btn_cambiar_contra">
 
@@ -323,6 +341,7 @@
                         android:id="@+id/btn_guardar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:backgroundTint="@color/azul_main"
                         android:text="@string/guardar" />
                 </LinearLayout>
