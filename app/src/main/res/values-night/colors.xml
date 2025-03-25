@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_app">#1E1E2E</color> <!-- Fondo oscuro general -->
+    <color name="background_app">#313643</color> <!-- Fondo oscuro general -->
+    <color name="background_menu_drawer">#313643</color>
+    <color name="background_card_view">#292A2E</color>
     <color name="toolbar_menus">#013366</color> <!-- Azul más oscuro para barras -->
-    <color name="text_info">#E0E0E0</color> <!-- Texto claro en fondo oscuro -->
-    <color name="text_primary">#DE000000</color>
-    <color name="text_secondary">#86A7CC</color> <!-- Texto menos importante -->
-    <color name="button_primary">#0051A2</color> <!-- Azul llamativo para botones -->
+
+    <color name="text_info">#FFFFFF</color> <!-- Texto claro en fondo oscuro -->
+
+
+    <color name="text_primary">@color/white</color> <!-- Texto blanco -->
+    <color name="text_cambiar_contra">#DE000000</color> <!-- Texto cambiar contraseña-->
+    <color name="text_cambiar_contra_editText">#99000000</color> <!-- Texto editText contraseña-->
+
+    <color name="button_primary_text">@color/white</color>
     <color name="button_secondary">#8A817C</color> <!-- Gris neutro para botones secundarios -->
     <color name="button_text">@color/white</color> <!-- Gris neutro para botones secundarios -->
 </resources>

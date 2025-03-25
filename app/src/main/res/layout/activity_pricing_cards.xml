@@ -53,7 +53,7 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/rowdies"
                     android:text="@string/suscripciones"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_primary"
                     android:textSize="20sp" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -120,13 +120,14 @@
                             android:id="@+id/btn_gratis"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:backgroundTint="#da4357"
+                            android:enabled="true"
                             android:fontFamily="@font/spectral_regular"
                             android:text="@string/plan_actual"
-                            android:enabled="true"
+                            android:textColor="@color/button_primary_text"
                             android:textStyle="bold"
                             app:cornerRadius="0dp" />
 
@@ -152,10 +153,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginTop="20dp"
                             android:fontFamily="@font/spectral_regular"
                             android:text="@string/premium"
-                            android:layout_gravity="center"
                             android:textColor="@color/white"
                             android:textSize="25sp"
                             android:textStyle="bold" />
@@ -199,12 +200,13 @@
                             android:id="@+id/btn_suscripcion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:backgroundTint="#da4357"
                             android:fontFamily="@font/spectral_regular"
                             android:text="@string/obtener"
+                            android:textColor="@color/button_primary_text"
                             android:textStyle="bold"
                             app:cornerRadius="0dp" />
 

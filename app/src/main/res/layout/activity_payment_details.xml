@@ -60,7 +60,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/noms"
-                android:textSize="13sp" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -82,7 +84,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/cognoms"
-                android:textSize="13sp" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -104,7 +108,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/correu"
-                android:textSize="13sp" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -126,7 +132,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/tel_fon"
-                android:textSize="13sp" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -148,7 +156,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/direcci"
-                android:textSize="13sp" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -170,7 +180,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/localitat"
-                android:textSize="13sp" />
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -195,6 +207,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
             android:text="@string/detalle_pedido"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -226,13 +239,14 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:text="@string/suscripci_n_premium"
+                android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/product_price"
@@ -240,6 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/_10"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -247,6 +262,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginHorizontal="25dp"
             android:layout_marginTop="5dp"
             android:background="#D3D3D3"
             app:layout_constraintTop_toBottomOf="@id/detalle_pedido" />
@@ -255,8 +271,8 @@
             android:id="@+id/resumenPago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/detalle_pedido">
 
@@ -271,6 +287,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:text="@string/subtotal"
+                    android:textColor="#A9A9A9"
                     android:textSize="14sp" />
 
                 <TextView
@@ -278,6 +295,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/_10"
+                    android:textColor="#A9A9A9"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -298,6 +316,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/total"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -305,6 +324,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_10"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -341,7 +361,7 @@
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/azul_main"
             android:text="@string/boton_continuar"
-            android:textColor="@color/button_text"
+            android:textColor="@color/button_primary_text"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

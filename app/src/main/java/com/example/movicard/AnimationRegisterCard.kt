@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
@@ -86,7 +87,7 @@ fun ModernSuccessAnimation(onAnimationEnd: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F8FA)), // Cambia el color aquí
+            .background(colorResource(id = R.color.background_app)), // ✅ Usa colorResource aquí
         contentAlignment = androidx.compose.ui.Alignment.Center
     ) {
         AnimatedVisibility(

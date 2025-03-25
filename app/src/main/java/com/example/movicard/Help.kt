@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -89,12 +91,26 @@ class Help : BaseActivity() {
     }
 
     private fun configurarSpinner(spinner: Spinner, opciones: List<String>) {
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opciones)
+        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                (view as TextView).setTextColor(resources.getColor(R.color.text_cambiar_contra, theme)) // Establecer color aquí
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                (view as TextView).setTextColor(resources.getColor(R.color.text_cambiar_contra, theme)) // Establecer color aquí también
+                return view
+            }
+        }
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // Aquí puedes obtener el texto seleccionado si lo necesitas
                 if (position > 0) {
                     val seleccionado = parent.getItemAtPosition(position).toString()
                 }
@@ -103,6 +119,7 @@ class Help : BaseActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
+
 
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

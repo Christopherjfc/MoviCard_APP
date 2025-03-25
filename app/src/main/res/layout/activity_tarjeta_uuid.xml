@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rowdies"
                 android:text="@string/uuid"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:textSize="18sp" />
 
             <EditText
@@ -72,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:hint="@string/_00000000f"
+                android:textColorHint="@color/text_cambiar_contra_editText"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -82,8 +83,10 @@
             android:layout_height="50dp"
             android:layout_marginHorizontal="100dp"
             android:backgroundTint="@color/azul_main"
+            android:textColor="@color/button_primary_text"
             android:text="@string/entrar"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

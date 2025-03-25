@@ -40,8 +40,8 @@
             android:layout_marginStart="25dp"
             android:fontFamily="@font/roboto"
             android:text="@string/t_tulo_seleccionado"
-            android:textSize="20sp"
             android:textColor="@color/text_info"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,19 +90,22 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/roboto"
                         android:text="@string/movi_10"
+                        android:textColor="@color/text_cambiar_contra"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/viajes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/viajes_disponibles_10" />
+                        android:text="@string/viajes_disponibles_10"
+                        android:textColor="@color/text_cambiar_contra" />
 
                     <TextView
                         android:id="@+id/duracion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles" />
+                        android:text="@string/duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles"
+                        android:textColor="@color/text_cambiar_contra" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -113,6 +116,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="@string/hold_continue"
+            android:textColor="@color/text_primary"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@+id/btn_confirmar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -127,6 +131,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="@string/boton_continuar"
+            android:textColor="@color/button_primary_text"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

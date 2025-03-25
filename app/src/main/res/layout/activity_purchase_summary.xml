@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/rowdies"
             android:text="@string/resumen_de_la_compra"
-            android:textColor="@color/black"
+            android:textColor="@color/text_primary"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +53,9 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="@string/fecha"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textInfo" />
 
@@ -61,8 +63,9 @@
             android:id="@+id/fechayhora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/text_primary"
             app:layout_constraintStart_toEndOf="@id/fechaCompra"
             app:layout_constraintTop_toBottomOf="@id/textInfo" />
 
@@ -80,6 +83,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
+            android:textColor="@color/text_primary"
             app:layout_constraintTop_toBottomOf="@id/fechaCompra">
 
             <ImageView
@@ -99,6 +103,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:text="@string/suscripci_n_premium"
+                android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -113,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/_10"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -130,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:orientation="vertical"
+            android:textColor="@color/text_primary"
             app:layout_constraintTop_toBottomOf="@id/detalle_pedido">
 
             <View
@@ -150,6 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/total"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -170,6 +178,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/informaci_n_del_usuario"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -191,6 +200,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nombres"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -199,6 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
 
@@ -209,6 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/apellidos"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -218,6 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
 
@@ -228,6 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/correo"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -237,6 +251,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
 
@@ -247,6 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/tel_fono"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -256,6 +272,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
 
@@ -268,6 +285,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
             android:text="@string/informaci_n_del_env_o"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -291,6 +309,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/direcci_n"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -299,6 +318,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
 
@@ -309,6 +329,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/localidad"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -318,6 +339,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
 

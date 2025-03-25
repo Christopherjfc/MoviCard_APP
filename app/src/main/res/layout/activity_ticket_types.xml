@@ -56,6 +56,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="@font/roboto"
             android:text="@string/selecione_el_t_tulo_que_desee_adquirir"
+            android:textColor="@color/text_primary"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textInfo" />
@@ -100,19 +101,22 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/roboto"
                         android:text="@string/movi_10"
+                        android:textColor="@color/text_cambiar_contra"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/viajes10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/viajes_disponibles_10" />
+                        android:text="@string/viajes_disponibles_10"
+                        android:textColor="@color/text_cambiar_contra" />
 
                     <TextView
                         android:id="@+id/duracion10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles" />
+                        android:text="@string/duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles"
+                        android:textColor="@color/text_cambiar_contra" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -158,19 +162,22 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/roboto"
                         android:text="@string/movi_mes"
+                        android:textColor="@color/text_cambiar_contra"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/viajesMes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/viajes_disponibles_30_dias" />
+                        android:text="@string/viajes_disponibles_30_dias"
+                        android:textColor="@color/text_cambiar_contra" />
 
                     <TextView
                         android:id="@+id/duracionMes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/duraci_n_hasta_que_concluyan_los_30_d_as_despu_s_del_primer_registro" />
+                        android:text="@string/duraci_n_hasta_que_concluyan_los_30_d_as_despu_s_del_primer_registro"
+                        android:textColor="@color/text_cambiar_contra" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -215,19 +222,22 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/roboto"
                         android:text="@string/movi_trimestral"
+                        android:textColor="@color/text_cambiar_contra"
                         android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/viajesTrimestral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/viajes_disponibles_90_dias" />
+                        android:text="@string/viajes_disponibles_90_dias"
+                        android:textColor="@color/text_cambiar_contra" />
 
                     <TextView
                         android:id="@+id/duracionTrimestral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro" />
+                        android:text="@string/duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro"
+                        android:textColor="@color/text_cambiar_contra" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

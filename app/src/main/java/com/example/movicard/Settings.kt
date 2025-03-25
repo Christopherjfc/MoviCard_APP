@@ -80,7 +80,20 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
     }
 
     private fun configureLanguageSpinner(spinner: Spinner, options: List<String>) {
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                (view as TextView).setTextColor(resources.getColor(R.color.white, theme)) // Establecer color aquí
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                (view as TextView).setTextColor(resources.getColor(R.color.text_cambiar_contra, theme)) // Establecer color aquí también
+                return view
+            }
+        }
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
@@ -97,7 +110,20 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
     }
 
     private fun configureSizeSpinner(spinner: Spinner, options: List<String>) {
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
+        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                (view as TextView).setTextColor(resources.getColor(R.color.white, theme)) // Establecer color aquí
+                return view
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                (view as TextView).setTextColor(resources.getColor(R.color.text_cambiar_contra, theme)) // Establecer color aquí también
+                return view
+            }
+        }
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 

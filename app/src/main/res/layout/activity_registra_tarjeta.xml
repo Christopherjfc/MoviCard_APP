@@ -193,7 +193,7 @@
             android:backgroundTint="@color/azul_main"
             android:enabled="false"
             android:text="@string/registrar_tarjeta"
-            android:textColor="@color/white"
+            android:textColor="@color/button_primary_text"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

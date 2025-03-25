@@ -104,7 +104,7 @@
     <string name="boton_continuar">CONTINUE</string>
     <string name="resumen_de_la_compra">Purchase summary</string>
     <string name="fecha">Date:</string>
-    <string name="pagado">PAID</string>
+    <string name="pagado"><u>PAID</u></string>
     <string name="informaci_n_del_usuario">User information:</string>
     <string name="informaci_n_del_env_o">Shipping information:</string>
     <string name="descargar_pdf">Download PDF</string>

@@ -80,36 +80,8 @@ class SelectedTitleInfo : AppCompatActivity() {
         binding.viajes.text = viajes2;
         binding.duracion.text = duracion2;
 
-        // Obtener el fondo del botón como LayerDrawable
-        val layerDrawable = binding.btnConfirmar.background as LayerDrawable
-        val progressDrawable = layerDrawable.findDrawableByLayerId(R.id.progress_layer) as ClipDrawable
-
-        // Crear animación para llenar el botón
-        val animacion = ValueAnimator.ofInt(0, 10000).apply { // ClipDrawable usa un rango de 0 a 10,000
-            duration = 2000 // 2 segundos para llenarse
-            addUpdateListener { animator ->
-                progressDrawable.level = animator.animatedValue as Int
-            }
-        }
-
-        binding.btnConfirmar.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    animacion.start()
-                    true
-                }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (progressDrawable.level == 10000) {
-                        // Si el progreso está completo, cambia a la actividad RegistraTarjeta
-                        startActivity(Intent(this, RegistraTarjeta::class.java))
-                    } else {
-                        // Si no se completó, reinicia la animación
-                        animacion.reverse()
-                    }
-                    true
-                }
-                else -> false
-            }
+        binding.btnConfirmar.setOnClickListener {
+            startActivity(Intent(this, RegistraTarjeta::class.java))
         }
     }
 

@@ -46,12 +46,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
+            android:backgroundTint="#454444"
             android:id="@+id/cardSaldo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
             app:cardCornerRadius="12dp"
+            app:strokeColor="@color/white"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,8 +74,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/picadas_restantes"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -83,7 +85,7 @@
                     android:layout_marginBottom="25dp"
                     android:fontFamily="@font/roboto"
                     android:text="8"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_primary"
                     android:textSize="64sp" />
 
                 <ProgressBar
@@ -97,7 +99,7 @@
                     android:progress="80"
                     android:progressDrawable="@drawable/custom_progressbar" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <Button
             android:id="@+id/btn_tipo_tarjeta"
@@ -107,6 +109,8 @@
             android:backgroundTint="@color/azul_main"
             android:text="@string/recargar_saldo"
             android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/button_primary_text"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

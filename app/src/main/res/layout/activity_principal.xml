@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="@string/consultar_saldo_min"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/cardSaldo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -87,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
+            android:textColor="@color/text_primary"
             android:text="@string/planificar_rutas"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/cardRuta"
@@ -125,6 +127,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:fontFamily="@font/roboto"
             android:text="@string/gr_ficas"
             android:textSize="16sp"
@@ -137,6 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
+            android:textColor="@color/text_primary"
             android:text="@string/facturas"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/linear_opciones"
@@ -281,7 +285,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/movicard_2025"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
