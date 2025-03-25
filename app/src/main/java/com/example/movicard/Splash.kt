@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -24,6 +25,12 @@ class Splash : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val sharedPreferences = getSharedPreferences("config", MODE_PRIVATE)
+        val nightMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
+
+        // Aplicar el tema antes de inflar los layouts
+        AppCompatDelegate.setDefaultNightMode(nightMode)
 
         val logo = findViewById<ImageView>(R.id.logo_splash)
 

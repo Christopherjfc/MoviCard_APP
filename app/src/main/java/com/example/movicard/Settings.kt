@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.movicard.databinding.ActivitySettingsBinding
@@ -77,7 +78,53 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
 
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
+
+
+        binding.switchTemas.isChecked
+
+
+
+        /*
+        *
+        * MODO CLARO / OSCURO de MoviCard
+        *
+        */
+
+        // Leer el estado guardado del tema (por defecto será "modo claro")
+        val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+        binding.switchTemas.isChecked = isDarkMode
+
+        // Aplicar el tema según la preferencia guardada
+            applyTheme(isDarkMode)
+
+        // Listener para cambiar el tema cuando el usuario active/desactive el Switch
+        binding.switchTemas.setOnCheckedChangeListener { _, isChecked ->
+            val nightMode = if (isChecked) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+
+            // Guardar preferencia del tema
+            val editor = sharedPreferences.edit()
+            editor.putInt("theme_mode", nightMode)
+            editor.apply()
+
+            // Aplicar el cambio en toda la app
+            AppCompatDelegate.setDefaultNightMode(nightMode)
+        }
+
     }
+
+    // Aplica el tema correspondiente a la app
+    private fun applyTheme(isDark: Boolean) {
+        if (isDark) {
+            delegate.localNightMode = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            delegate.localNightMode = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+        }
+    }
+
 
     private fun configureLanguageSpinner(spinner: Spinner, options: List<String>) {
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options) {

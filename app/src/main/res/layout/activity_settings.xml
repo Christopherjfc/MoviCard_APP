@@ -81,6 +81,7 @@
                     android:layout_weight="1" />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchNotificaciones"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:ignore="DuplicateSpeakableTextCheck" />
@@ -162,25 +163,12 @@
                     android:layout_weight="1" />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switchTemas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_guaradar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/azul_main"
-            android:text="@string/guardar_preferencias"
-            android:textColor="@color/button_primary_text"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linear_opciones"
-            tools:ignore="TextContrastCheck" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"

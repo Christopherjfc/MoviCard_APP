@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -22,6 +23,11 @@ open class BaseActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("config", MODE_PRIVATE)
         textSize = sharedPreferences.getFloat("textSize", 16f)  // Valor por defecto 16f
+
+        val nightMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
+
+        // Aplicar el tema antes de cargar la UI
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 
     override fun onResume() {
