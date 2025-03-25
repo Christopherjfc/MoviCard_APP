@@ -83,48 +83,37 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
         binding.switchTemas.isChecked
 
 
-
         /*
         *
         * MODO CLARO / OSCURO de MoviCard
         *
         */
 
-        // Leer el estado guardado del tema (por defecto será "modo claro")
-        val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
+        // Cargar SharedPreferences
+        sharedPreferences = getSharedPreferences("config", MODE_PRIVATE)
+
+        // Leer estado del tema guardado
+        val isDarkMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO) == AppCompatDelegate.MODE_NIGHT_YES
+
+// Deshabilitar temporalmente el listener para evitar activación no deseada
+        binding.switchTemas.setOnCheckedChangeListener(null)
         binding.switchTemas.isChecked = isDarkMode
-
-        // Aplicar el tema según la preferencia guardada
-            applyTheme(isDarkMode)
-
-        // Listener para cambiar el tema cuando el usuario active/desactive el Switch
         binding.switchTemas.setOnCheckedChangeListener { _, isChecked ->
-            val nightMode = if (isChecked) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
+            val newMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+
+            with(sharedPreferences.edit()) {
+                putInt("theme_mode", newMode)
+                apply()
             }
 
-            // Guardar preferencia del tema
-            val editor = sharedPreferences.edit()
-            editor.putInt("theme_mode", nightMode)
-            editor.apply()
-
-            // Aplicar el cambio en toda la app
-            AppCompatDelegate.setDefaultNightMode(nightMode)
+            if (AppCompatDelegate.getDefaultNightMode() != newMode) {
+                AppCompatDelegate.setDefaultNightMode(newMode)
+                finish()
+                startActivity(intent)
+            }
         }
 
     }
-
-    // Aplica el tema correspondiente a la app
-    private fun applyTheme(isDark: Boolean) {
-        if (isDark) {
-            delegate.localNightMode = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            delegate.localNightMode = androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-        }
-    }
-
 
     private fun configureLanguageSpinner(spinner: Spinner, options: List<String>) {
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options) {

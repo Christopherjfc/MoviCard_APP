@@ -26,12 +26,6 @@ class Splash : AppCompatActivity() {
             insets
         }
 
-        val sharedPreferences = getSharedPreferences("config", MODE_PRIVATE)
-        val nightMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
-
-        // Aplicar el tema antes de inflar los layouts
-        AppCompatDelegate.setDefaultNightMode(nightMode)
-
         val logo = findViewById<ImageView>(R.id.logo_splash)
 
         val animation = AnimationUtils.loadAnimation(this, R.anim.fade_in_scale)

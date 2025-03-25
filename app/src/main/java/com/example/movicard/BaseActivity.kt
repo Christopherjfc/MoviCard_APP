@@ -19,15 +19,16 @@ open class BaseActivity : AppCompatActivity() {
     var textSize: Float = 16f  // Valor por defecto
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
         sharedPreferences = getSharedPreferences("config", MODE_PRIVATE)
         textSize = sharedPreferences.getFloat("textSize", 16f)  // Valor por defecto 16f
 
         val nightMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
 
-        // Aplicar el tema antes de cargar la UI
+        // Aplicar el modo oscuro antes de inflar la UI
         AppCompatDelegate.setDefaultNightMode(nightMode)
+
+        super.onCreate(savedInstanceState)
     }
 
     override fun onResume() {
