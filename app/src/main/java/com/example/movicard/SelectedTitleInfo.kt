@@ -80,8 +80,11 @@ class SelectedTitleInfo : AppCompatActivity() {
         binding.viajes.text = viajes2;
         binding.duracion.text = duracion2;
 
+        val intent = Intent(this, PaymentByCard::class.java)
+
         binding.btnConfirmar.setOnClickListener {
-            startActivity(Intent(this, RegistraTarjeta::class.java))
+            intent.putExtra("titulo", binding.titulo.text.toString())
+            startActivity(intent)
         }
     }
 

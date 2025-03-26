@@ -47,13 +47,13 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <com.google.android.material.card.MaterialCardView
-            android:backgroundTint="#454444"
+            android:backgroundTint="@color/background_card_view"
             android:id="@+id/cardSaldo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
             app:cardCornerRadius="12dp"
-            app:strokeColor="@color/white"
+            app:strokeColor="@color/text_primary"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,12 +81,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:fontFamily="@font/roboto"
                     android:text="8"
                     android:textColor="@color/text_primary"
-                    android:textSize="64sp" />
+                    android:textSize="80sp" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"

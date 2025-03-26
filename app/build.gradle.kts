@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -47,6 +48,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // Para las solicitudes HTTP
+    implementation(libs.okhttp)
+
+    // Payment simulation with STRIPE
+    implementation(libs.stripe.android)
 
     // Dependency for images
     implementation (libs.circleimageview)
