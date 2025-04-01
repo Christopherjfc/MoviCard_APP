@@ -72,7 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:hint="@string/_00000000f"
-                android:textColorHint="@color/text_cambiar_contra_editText"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/editText_UUID"
                 android:textSize="18sp" />
         </LinearLayout>
 

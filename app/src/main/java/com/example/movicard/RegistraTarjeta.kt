@@ -64,6 +64,7 @@ class RegistraTarjeta : BaseActivity() {
         }
 
         setDrawerWidth(binding.navView, 0.55)
+
         setupCardInputs() // 📌 Aplicar validaciones
     }
 

@@ -1,6 +1,7 @@
 package com.example.movicard
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Button
@@ -20,7 +21,6 @@ import java.io.IOException
 class PaymentByCard : AppCompatActivity() {
 
     private lateinit var paymentSheet: PaymentSheet
-    private lateinit var clientSecret: String
     private var amount: Int = 0 // Monto en centavos
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,16 +28,12 @@ class PaymentByCard : AppCompatActivity() {
         setContentView(R.layout.activity_payment_by_card)
 
         val titulo = intent.getStringExtra("titulo") ?: ""
-        val textViewTitle: TextView = findViewById(R.id.textViewTitle)
-        val buttonPay: Button = findViewById(R.id.buttonPay)
-
-        textViewTitle.text = titulo
 
         // Definir el monto según el título
         amount = when (titulo) {
-            "MOVI_10" -> 1000 // 10€ en centavos
-            "MOVI_MES" -> 2000 // 20€ en centavos
-            "MOVI_TRIMESTRAL" -> 5000 // 50€ en centavos
+            "MOVI_10" -> 1385 // 12.55€ en centavos
+            "MOVI_MES" -> 2420 // 22€ en centavos
+            "MOVI_TRIMESTRAL" -> 4840 // 44€ en centavos
             else -> 0
         }
 
@@ -50,13 +46,10 @@ class PaymentByCard : AppCompatActivity() {
         PaymentConfiguration.init(this, "pk_test_51R532HEdEU4VdYmpfHoGpEgOUZmmJgOs0UuWdWhVq3MQmjvRdH39fuxQK5lgU6gSXSwLqlDOx1MhRdcz0FIQcdOH00ywdNCzhM")
 
         paymentSheet = PaymentSheet(this, ::onPaymentResult)
-
-        buttonPay.setOnClickListener {
-            if (isNetworkAvailable()) {
-                createPaymentIntent()
-            } else {
-                Toast.makeText(this, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
-            }
+        if (isNetworkAvailable()) {
+            createPaymentIntent()
+        } else {
+            Toast.makeText(this, "No hay conexión a Internet", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -118,11 +111,26 @@ class PaymentByCard : AppCompatActivity() {
         when (paymentResult) {
             is PaymentSheetResult.Completed -> {
                 Toast.makeText(this, "Pago exitoso", Toast.LENGTH_SHORT).show()
-                finish()
+
+                val titulo = intent.getStringExtra("titulo") ?: ""
+                val precio = intent.getStringExtra("precio") ?: ""
+                val bundle = intent.extras  // Recuperamos el bundle con los datos
+
+                val intent = Intent(this, AnimationRegisterCard::class.java)
+                intent.putExtra("titulo", titulo)
+                intent.putExtra("precio", precio)
+                intent.putExtra("origen", "PrincingCards")
+
+                // Si hay datos en el bundle, los pasamos
+                if (bundle != null) {
+                    intent.putExtras(bundle)
+                }
+                startActivity(intent)
             }
 
             is PaymentSheetResult.Canceled -> {
                 Toast.makeText(this, "Pago cancelado", Toast.LENGTH_SHORT).show()
+                finish()
             }
 
             is PaymentSheetResult.Failed -> {
@@ -130,4 +138,5 @@ class PaymentByCard : AppCompatActivity() {
             }
         }
     }
+
 }

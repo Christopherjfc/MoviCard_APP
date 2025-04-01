@@ -22,38 +22,36 @@ import androidx.compose.ui.unit.dp
 
 class AnimationRegisterCard : AppCompatActivity() {
     private var origen: String? = null
+    private var titulo: String? = null
+    private var precio: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        origen = intent.getStringExtra("origen")
+
+        // Recuperamos los datos del Intent
+        origen = intent.getStringExtra("origen") ?: ""
+        titulo = intent.getStringExtra("titulo") ?: ""
+        precio = intent.getStringExtra("precio") ?: ""
+
+        val bundle = intent.extras ?: Bundle()  // Aseguramos que no sea nulo
+
+        // 🔹 Aseguramos que "titulo" se mantenga en el bundle
+        bundle.putString("titulo", titulo)
+        bundle.putString("precio", precio)
+
         setContent {
             ModernSuccessAnimation(
                 onAnimationEnd = {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        when (origen) {
-                            "ConsultaSaldo" -> {
-                                val intent = Intent(this, BlockCard::class.java)
-                                val bundle = intent.extras
-                                if (bundle != null) {
-                                    intent.putExtras(bundle)
-                                }
-
-                                startActivity(intent)
-                            }
-                            "PrincingCards" -> {
-                                val bundle = intent.extras
-                                val intent = Intent(this, PurchaseSummary::class.java)
-                                if (bundle != null) {
-                                    intent.putExtras(bundle)
-                                }
-
-                                startActivity(intent)
-                            }
-                            else -> {
-                                // Si no hay origen, por defecto va al Home
-                                val intent = Intent(this, Principal::class.java)
-                                startActivity(intent)
-                            }
+                        val intent = when (origen) {
+                            "PrincingCards" -> Intent(this, PurchaseSummary::class.java)
+                            else -> Intent(this, Principal::class.java)
                         }
+
+                        // Pasamos el bundle con todos los datos
+                        intent.putExtras(bundle)
+
+                        startActivity(intent)
                         finish()
                     }, 500)
                 }
@@ -61,6 +59,7 @@ class AnimationRegisterCard : AppCompatActivity() {
         }
     }
 }
+
 
 @Composable
 fun ModernSuccessAnimation(onAnimationEnd: () -> Unit) {

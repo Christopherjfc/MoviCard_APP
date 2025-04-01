@@ -82,6 +82,24 @@ class PurchaseSummary : BaseActivity() {
         // Aplica fecha y hora actual al resumen de la compra
         aplicaHoraActual()
 
+
+        // Obtener el título (nombre del título de tarjeta)  desde el Intent
+        val titulo = intent.getStringExtra("titulo")
+
+        // Si el título != null, actualizo el TextView
+        if (!titulo.isNullOrEmpty()) {
+            binding.productTitle.text = titulo
+        }
+
+        // Obtengo el precio final de la tarjeta comprada desde el Intent
+        val precio = intent.getStringExtra("precio") ?: ""
+
+        // Si el precio != null, actualizo el TextView
+        if (!titulo.isNullOrEmpty()) {
+            binding.productPrice.text = precio
+        }
+
+
         // Obtengo los valores de PaymentDetails y los agrego en esta clase
         intent.extras?.apply {
             binding.nombre.setText(getString("nombre"))

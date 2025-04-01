@@ -254,8 +254,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/_10"
+                android:layout_marginTop="2dp"
                 android:textColor="@color/text_primary"
-                android:textSize="20sp"
+                android:textSize="27sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -291,12 +292,13 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/subtotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/_10"
                     android:textColor="#A9A9A9"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <View
@@ -317,16 +319,42 @@
                     android:layout_weight="1"
                     android:text="@string/total"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/product_price2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_10"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearGestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/gesti_n"
+                    android:textColor="#A9A9A9"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/gastosGestion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_2_1"
+                    android:textColor="#A9A9A9"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout

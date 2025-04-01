@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.movicard.databinding.ActivityPrincipalBinding
@@ -19,6 +20,12 @@ class Principal : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Pone la bottom navegation real del celular del color que se le ponga,
+        // en mi caso, el mismo color del bottom navegation de mi app
+
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.azul_main)
+
 
         // Configuración de la vista
         binding = ActivityPrincipalBinding.inflate(layoutInflater)

@@ -139,4 +139,5 @@
     <string name="selecione_el_t_tulo_que_desee_adquirir">Selecione el título que desee adquirir:</string>
     <string name="t_tulo_seleccionado">Título seleccionado:</string>
     <string name="hold_continue">Mantén pulsado el botón \"CONTINUAR\" para proceder con el trámite</string>
+    <string name="gesti_n">Gestión %</string>
 </resources>

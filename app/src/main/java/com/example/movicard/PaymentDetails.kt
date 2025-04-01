@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -64,10 +65,51 @@ class PaymentDetails : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
+        // Obtener el título desde el Intent con el que se abrió PaymentDetails
+        val titulo = intent.getStringExtra("titulo")
+
+        // Validar y modificar el TextView si es necesario
+        val nuevoTitulo = when (titulo) {
+            "MOVI_10" -> "MOVI_10"
+            "MOVI_MES" -> "MOVI_MES"
+            "MOVI_TRIMESTRAL" -> "MOVI_TRIMESTRAL"
+            else -> "Suscripción premium" // Si no coincide, usa el original
+        }
+
+        // Actualizar el TextView solo si el nuevo título no es nulo o vacío
+        binding.productTitle.text = nuevoTitulo ?: ""
+
+        // cambios de precio según el título de la tarjeta o suscripción
+        when (titulo) {
+            "MOVI_10" -> {
+                binding.productPrice.text = "12.55 €"
+                binding.subtotal.text =  "12.55 €"
+                binding.productPrice2.text = "13.80 €"
+                binding.gastosGestion.text = "1.25 €"
+            }
+            "MOVI_MES" -> {
+                binding.productPrice.text = "22 €"
+                binding.subtotal.text =  "22 €"
+                binding.productPrice2.text = "24.20 €"
+                binding.gastosGestion.text = "2.2 €"
+            }
+            "MOVI_TRIMESTRAL" -> {
+                binding.productPrice.text = "44 €"
+                binding.subtotal.text =  "44 €"
+                binding.productPrice2.text = "48.40 €"
+                binding.gastosGestion.text = "4.4 €"
+            } else -> {
+                binding.linearGestion.visibility = View.GONE
+            }
+        }
+
         // Click en botón de suscripción
         binding.continuar.setOnClickListener {
-            val intent = Intent(this, RegistraTarjeta::class.java)
+            val intent = Intent(this, PaymentByCard::class.java)
+            intent.putExtra("titulo", titulo)  // Volver a enviarlo con la misma clave
+            intent.putExtra("precio", binding.productPrice2.text.toString())
             intent.putExtra("origen", "PrincingCards")
+
             val bundle = Bundle().apply {
                 putString("nombre", binding.nombreEnvio.text.toString())
                 putString("apellido", binding.apellidoEnvio.text.toString())
@@ -77,7 +119,6 @@ class PaymentDetails : BaseActivity() {
                 putString("localidad", binding.localidadEnvio.text.toString())
             }
             intent.putExtras(bundle)
-
             startActivity(intent)
         }
     }

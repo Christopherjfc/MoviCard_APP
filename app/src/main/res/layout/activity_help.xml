@@ -52,8 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/roboto"
-            android:textColor="@color/text_primary"
             android:text="@string/en_qu_podemos_ayudarte"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@id/card_help"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:backgroundTint="#EDEDF1"
+            android:backgroundTint="@color/background_card_view_cambiar_contra"
             android:visibility="visible"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
@@ -86,7 +86,7 @@
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/roboto"
                     android:text="@string/nombre_completo"
-                    android:textColor="@color/text_cambiar_contra"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -116,7 +116,7 @@
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/roboto"
                     android:text="@string/correo_electr_nico"
-                    android:textColor="@color/text_cambiar_contra"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -145,7 +145,7 @@
                     android:layout_marginTop="25dp"
                     android:fontFamily="@font/roboto"
                     android:text="@string/tipo_de_consulta"
-                    android:textColor="@color/text_cambiar_contra"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
                 <com.google.android.material.card.MaterialCardView
@@ -170,7 +170,7 @@
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/roboto"
                     android:text="@string/mensaje"
-                    android:textColor="@color/text_cambiar_contra"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
 
@@ -199,7 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:backgroundTint="@color/azul_main"
+                    android:backgroundTint="@color/button_guardar"
                     android:text="@string/enviar_mensaje"
                     android:textColor="@color/button_primary_text"
                     android:textSize="14sp"

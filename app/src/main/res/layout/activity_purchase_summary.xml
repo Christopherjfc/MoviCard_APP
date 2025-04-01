@@ -342,8 +342,8 @@
                     android:textColor="@color/text_primary"
                     android:textSize="12sp" />
             </TableRow>
-
         </TableLayout>
+
 
 
         <LinearLayout
@@ -360,6 +360,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#EDE1AB"
+                app:strokeColor="@color/black"
+                app:strokeWidth="1dp"
                 android:drawableEnd="@drawable/ic_download"
                 android:text="@string/descargar_pdf"
                 android:textColor="@color/black"
