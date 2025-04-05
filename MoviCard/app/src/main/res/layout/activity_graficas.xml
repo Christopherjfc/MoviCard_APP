@@ -47,6 +47,30 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintVertical_bias="0.05" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInfo">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/graficaBarra"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="25dp"
+                android:layout_weight="1" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/graficaPie"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="25dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
         <!-- Menu bottom navagation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"

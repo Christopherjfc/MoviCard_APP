@@ -38,7 +38,7 @@ class InvoiceAdapter(private val invoiceList: List<Invoice>, private val listene
         fun bind(invoice: Invoice, listener: InvoiceClickListener) {
             textName.text = invoice.name
             textDate.text = invoice.date
-            textAmount.text = "$${invoice.amount}"
+            textAmount.text = "€${invoice.amount}"
 
             btnView.setOnClickListener { listener.onViewInvoice(invoice) }
             btnDownload.setOnClickListener { listener.onDownloadInvoice(invoice) }

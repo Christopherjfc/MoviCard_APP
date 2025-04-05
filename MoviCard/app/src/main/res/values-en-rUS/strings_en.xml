@@ -138,4 +138,5 @@
     <string name="selecione_el_t_tulo_que_desee_adquirir">Select the title you wish to acquire:</string>
     <string name="t_tulo_seleccionado">Selected Title:</string>
     <string name="hold_continue">Hold the "CONTINUE" button to proceed with the process</string>
+    <string name="gesti_n">Management %</string>
 </resources>

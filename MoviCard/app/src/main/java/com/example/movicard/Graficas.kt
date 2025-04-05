@@ -1,6 +1,7 @@
 package com.example.movicard
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
@@ -9,6 +10,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.movicard.databinding.ActivityGraficasBinding
+import com.example.movicard.firebase.FirebaseHelper
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.navigation.NavigationView
 
 class Graficas : BaseActivity() {
@@ -59,7 +69,47 @@ class Graficas : BaseActivity() {
         setDrawerWidth(binding.navView, 0.55)
 
         binding.btnLogout.setOnClickListener { logout() }
+
+
+        // llenarGraficaBarra(binding.graficaBarra)
+        llenarGraficaPie(binding.graficaPie)
     }
+
+
+    fun llenarGraficaPie(graficaPie: PieChart) {
+        val firebaseHelper = FirebaseHelper()
+
+        // Escucha los cambios en Firebase
+        firebaseHelper.obtenerDatosTarjetas { datos ->
+            val valores = ArrayList<PieEntry>()
+            valores.add(PieEntry(datos["MOVI_10"]?.toFloat() ?: 0f, "MOVI_10"))
+            valores.add(PieEntry(datos["MOVI_MES"]?.toFloat() ?: 0f, "MOVI_MES"))
+            valores.add(PieEntry(datos["MOVI_TRIMESTRAL"]?.toFloat() ?: 0f, "MOVI_TRIMESTRAL"))
+
+            val conjuntoDeDatos = PieDataSet(valores, "Tarjetas Vendidas")
+
+            // Establecer colores para las porciones del pie
+            conjuntoDeDatos.colors = listOf(Color.RED, Color.GREEN, Color.BLUE)
+
+            // Colores de los textos
+            conjuntoDeDatos.valueTextColor = Color.BLACK
+            conjuntoDeDatos.valueTextSize = 16f // Mida del text
+
+//            // Configurar leyenda (textos fuera del gráfico, como MOVI_10, etc.)
+//            val legend = graficaPie.legend
+//            legend.textColor = R.color.text_primary
+
+            // Crear los datos para la gráfica
+            val data = PieData(conjuntoDeDatos)
+
+            // Asignar los datos a la gráfica
+            graficaPie.data = data
+            graficaPie.animateY(1000)
+            graficaPie.description.isEnabled = false
+            graficaPie.invalidate() // Refresca la gráfica
+        }
+    }
+
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -133,3 +183,28 @@ class Graficas : BaseActivity() {
         return false
     }
 }
+
+//    fun llenarGraficaBarra(graficaBarra: BarChart) {
+//        // Datos de ejemplo para la gráfica de barras
+//        val valores = ArrayList<BarEntry>()
+//        valores.add(BarEntry(0f, 15f)) // Barra 1
+//        valores.add(BarEntry(1f, 30f)) // Barra 2
+//        valores.add(BarEntry(2f, 50f)) // Barra 3
+//        valores.add(BarEntry(3f, 25f)) // Barra 4
+//        valores.add(BarEntry(4f, 40f)) // Barra 5
+//
+//        // Crear un conjunto de datos de barras
+//        val conjuntoDeDatos = BarDataSet(valores, "Valores de Ejemplo")
+//
+//        // Establecer colores para las barras
+//        conjuntoDeDatos.colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN)
+//
+//        // Crear los datos para la gráfica
+//        val data = BarData(conjuntoDeDatos)
+//
+//        // Asignar los datos a la gráfica
+//        graficaBarra.data = data
+//        graficaBarra.animateY(1000)
+//        graficaBarra.description.isEnabled = false
+//        graficaBarra.invalidate() // Refresca la gráfica
+//    }

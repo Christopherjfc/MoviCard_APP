@@ -72,6 +72,10 @@ class Principal : BaseActivity() {
             startActivity(Intent(this, Graficas::class.java))
         }
 
+        binding.btnFacturas.setOnClickListener {
+            startActivity(Intent(this, Invoices::class.java))
+        }
+
         binding.btnLogout.setOnClickListener {
             logout()
         }

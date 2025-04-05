@@ -139,4 +139,5 @@
     <string name="selecione_el_t_tulo_que_desee_adquirir">Seleccioni el títol que desitgi adquirir:</string>
     <string name="t_tulo_seleccionado">Títol seleccionat:</string>
     <string name="hold_continue">Mantingui premut el botó "CONTINUAR" per continuar amb el tràmit</string>
+    <string name="gesti_n">Gestió %</string>
 </resources>

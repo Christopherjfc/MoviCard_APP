@@ -108,7 +108,7 @@ class PaymentDetails : BaseActivity() {
             val intent = Intent(this, PaymentByCard::class.java)
             intent.putExtra("titulo", titulo)  // Volver a enviarlo con la misma clave
             intent.putExtra("precio", binding.productPrice2.text.toString())
-            intent.putExtra("origen", "PrincingCards")
+            intent.putExtra("premium", "SUSCRIPCIÓN PREMIUM")
 
             val bundle = Bundle().apply {
                 putString("nombre", binding.nombreEnvio.text.toString())

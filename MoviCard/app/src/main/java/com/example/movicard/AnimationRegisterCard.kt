@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 class AnimationRegisterCard : AppCompatActivity() {
     private var origen: String? = null
     private var titulo: String? = null
+    private var premium: String? = null
     private var precio: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +32,7 @@ class AnimationRegisterCard : AppCompatActivity() {
         // Recuperamos los datos del Intent
         origen = intent.getStringExtra("origen") ?: ""
         titulo = intent.getStringExtra("titulo") ?: ""
+        premium = intent.getStringExtra("premium") ?: ""
         precio = intent.getStringExtra("precio") ?: ""
 
         val bundle = intent.extras ?: Bundle()  // Aseguramos que no sea nulo
@@ -38,15 +40,14 @@ class AnimationRegisterCard : AppCompatActivity() {
         // 🔹 Aseguramos que "titulo" se mantenga en el bundle
         bundle.putString("titulo", titulo)
         bundle.putString("precio", precio)
+        bundle.putString("premium", premium)
 
         setContent {
             ModernSuccessAnimation(
                 onAnimationEnd = {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        val intent = when (origen) {
-                            "PrincingCards" -> Intent(this, PurchaseSummary::class.java)
-                            else -> Intent(this, Principal::class.java)
-                        }
+                        // Creo el Intent
+                        val intent = Intent(this, PurchaseSummary::class.java)
 
                         // Pasamos el bundle con todos los datos
                         intent.putExtras(bundle)

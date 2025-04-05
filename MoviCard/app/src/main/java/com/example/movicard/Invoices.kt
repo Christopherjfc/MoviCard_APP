@@ -1,36 +1,41 @@
 package com.example.movicard
 
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.movicard.DbHelper.InvoiceDatabaseHelper
 import com.example.movicard.data.Invoice
 import com.example.movicard.data.InvoiceAdapter
-import com.example.movicard.databinding.ActivityGraficasBinding
 import com.example.movicard.databinding.ActivityInvoicesBinding
 import com.google.android.material.navigation.NavigationView
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import android.net.Uri
+import com.example.movicard.data.ReceiptResponse
+import retrofit2.Call
+import retrofit2.Response
+
+// Descargar pdf con WebView a partir de una URL
+import android.print.PrintManager
+import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
+import android.webkit.WebView
+import android.webkit.WebViewClient
+
+
 
 class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
     private lateinit var binding: ActivityInvoicesBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var invoiceAdapter: InvoiceAdapter
     private lateinit var databaseHelper: InvoiceDatabaseHelper
 
@@ -38,6 +43,8 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityInvoicesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // RecyclerView
+        binding.recyclerViewInvoices.layoutManager = LinearLayoutManager(this)
 
         // Configurar la Toolbar
         setSupportActionBar(binding.toolbar)
@@ -78,40 +85,91 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
 
         binding.btnLogout.setOnClickListener { logout() }
 
-        // RecyclerView
-
-        binding.recyclerViewInvoices.layoutManager = LinearLayoutManager(this)
 
         databaseHelper = InvoiceDatabaseHelper(this)
         loadInvoices();
+
+        // Méthod test para borrar todas las facturas
+        // databaseHelper.deleteAllInvoices()
     }
 
     private fun loadInvoices() {
         val invoices = databaseHelper.getAllInvoices()
         invoiceAdapter = InvoiceAdapter(invoices, this)
-        recyclerView.adapter = invoiceAdapter
+        binding.recyclerViewInvoices.adapter = invoiceAdapter
     }
 
     override fun onViewInvoice(invoice: Invoice) {
-        Toast.makeText(this, "Abriendo factura: ${invoice.name}", Toast.LENGTH_SHORT).show()
-        // Aquí puedes abrir el PDF o la URL de la factura
+        val paymentIntentId = invoice.paymentIntentId // Debes almacenar el PaymentIntent ID en tu BD local
+        println(paymentIntentId)
+        val call = RetrofitClient.instance.getReceiptUrl(paymentIntentId)
+
+        call.enqueue(object : retrofit2.Callback<ReceiptResponse> {
+            override fun onResponse(call: Call<ReceiptResponse>, response: Response<ReceiptResponse>) {
+                if (response.isSuccessful) {
+                    val receiptUrl = response.body()?.receiptUrl
+                    if (!receiptUrl.isNullOrEmpty()) {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(receiptUrl))
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this@Invoices, "No se encontró la factura", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@Invoices, "Error al obtener la factura", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ReceiptResponse>, t: Throwable) {
+                Toast.makeText(this@Invoices, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
 
     override fun onDownloadInvoice(invoice: Invoice) {
-        val fileName = "Factura_${invoice.name}.txt"
-        val downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(downloadsDir, fileName)
-
-        try {
-            FileOutputStream(file).use { fos ->
-                fos.write("Factura: ${invoice.name}\nFecha: ${invoice.date}\nMonto: ${invoice.amount}".toByteArray())
-            }
-            Toast.makeText(this, "Factura guardada en: ${file.absolutePath}", Toast.LENGTH_LONG).show()
-        } catch (e: IOException) {
-            Toast.makeText(this, "Error al guardar la factura", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
+        val invoiceUrl = invoice.url  // Asegúrate de que este es el enlace de la factura
+        System.out.println(invoiceUrl)
+        saveWebPageAsPdf(invoiceUrl)
     }
+
+    private fun saveWebPageAsPdf(invoiceUrl: String) {
+        val webView = WebView(this)
+        webView.settings.javaScriptEnabled = true
+
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                val printManager = getSystemService(Context.PRINT_SERVICE) as PrintManager
+                val printAdapter = webView.createPrintDocumentAdapter("Factura")
+                val jobName = "Factura_${System.currentTimeMillis()}"
+
+                val printJob = printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
+
+                if (printJob.isCompleted) {
+                    Toast.makeText(this@Invoices, "Factura guardada como PDF", Toast.LENGTH_SHORT).show()
+                } else if (printJob.isFailed) {
+                    Toast.makeText(this@Invoices, "Error al guardar la factura", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        webView.loadUrl(invoiceUrl)
+    }
+
+
+
+    private fun downloadPdfFromUrl(url: String, fileName: String) {
+        val request = DownloadManager.Request(Uri.parse(url))
+            .setTitle("Descargando factura")
+            .setDescription("Guardando $fileName")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+
+        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+
+        Toast.makeText(this, "Descarga iniciada: $fileName", Toast.LENGTH_SHORT).show()
+    }
+
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {

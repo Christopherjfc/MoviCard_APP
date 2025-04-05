@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.movicard.DbHelper.InvoiceDatabaseHelper
+import com.example.movicard.firebase.FirebaseHelper
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
@@ -28,12 +28,14 @@ class PaymentByCard : AppCompatActivity() {
         setContentView(R.layout.activity_payment_by_card)
 
         val titulo = intent.getStringExtra("titulo") ?: ""
+        val premium = intent.getStringExtra("premium") ?: ""
 
         // Definir el monto según el título
-        amount = when (titulo) {
-            "MOVI_10" -> 1385 // 12.55€ en centavos
-            "MOVI_MES" -> 2420 // 22€ en centavos
-            "MOVI_TRIMESTRAL" -> 4840 // 44€ en centavos
+        amount = when {
+            titulo == "MOVI_10" -> 1385 // 12.55€ en centavos
+            titulo == "MOVI_MES" -> 2420 // 22€ en centavos
+            titulo == "MOVI_TRIMESTRAL" -> 4840 // 44€ en centavos
+            premium == "SUSCRIPCIÓN PREMIUM" -> 1000 // 10€ en centavos
             else -> 0
         }
 
@@ -43,7 +45,7 @@ class PaymentByCard : AppCompatActivity() {
         }
 
         // Agregar la clave pública de Stripe
-        PaymentConfiguration.init(this, "pk_test_51R532HEdEU4VdYmpfHoGpEgOUZmmJgOs0UuWdWhVq3MQmjvRdH39fuxQK5lgU6gSXSwLqlDOx1MhRdcz0FIQcdOH00ywdNCzhM")
+        PaymentConfiguration.init(this, "pk_test_51R9oJRD304ojpXkK2ZVUTGZhusb7Yj3BFLFCalKDMQV8vG644nX8i7P6gIefcWQj54lxFkdSEXDl1bR8bUckgJ1h00t2kXkjIk")
 
         paymentSheet = PaymentSheet(this, ::onPaymentResult)
         if (isNetworkAvailable()) {
@@ -68,7 +70,7 @@ class PaymentByCard : AppCompatActivity() {
         }.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
-            .url("http://192.168.154.3:3000/create-payment-intent") // Backend local para pruebas
+            .url("http://192.168.128.3:3000/create-payment-intent") // Backend local para pruebas
             .post(requestBody)
             .build()
 
@@ -81,21 +83,22 @@ class PaymentByCard : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string() // Obtén el cuerpo de la respuesta como String
-                println("Respuesta del backend: $responseBody") // Muestra la respuesta completa en el log
-                println("Código de respuesta: ${response.code}") // Muestra el código de respuesta
-
+                val responseBody = response.body?.string()
                 if (response.isSuccessful) {
-                    // Si la respuesta es válida, intenta obtener el clientSecret
                     try {
                         val json = JSONObject(responseBody)
                         if (json.has("clientSecret")) {
                             val clientSecret = json.getString("clientSecret")
+                            println(clientSecret)
+                            val paymentIntentId = clientSecret.substringBefore("_secret") // Extraer ID
+
+                            // Guardar la ID para usarla después en onPaymentResult
                             runOnUiThread {
                                 paymentSheet.presentWithPaymentIntent(clientSecret)
                             }
-                        } else {
-                            println("No se encontró el campo clientSecret en la respuesta")
+
+                            // Pasar la ID a la siguiente actividad
+                            intent.putExtra("paymentIntentId", paymentIntentId)
                         }
                     } catch (e: JSONException) {
                         println("Error al procesar la respuesta JSON: ${e.message}")
@@ -113,19 +116,40 @@ class PaymentByCard : AppCompatActivity() {
                 Toast.makeText(this, "Pago exitoso", Toast.LENGTH_SHORT).show()
 
                 val titulo = intent.getStringExtra("titulo") ?: ""
-                val precio = intent.getStringExtra("precio") ?: ""
-                val bundle = intent.extras  // Recuperamos el bundle con los datos
+                val premium = intent.getStringExtra("premium") ?: ""
+                val precio = intent.getStringExtra("precio") ?: "0"
+                val paymentIntentId = intent.getStringExtra("paymentIntentId") ?: ""
 
-                val intent = Intent(this, AnimationRegisterCard::class.java)
-                intent.putExtra("titulo", titulo)
-                intent.putExtra("precio", precio)
-                intent.putExtra("origen", "PrincingCards")
-
-                // Si hay datos en el bundle, los pasamos
-                if (bundle != null) {
-                    intent.putExtras(bundle)
+                if (paymentIntentId.isEmpty()) {
+                    Toast.makeText(this, "Error: No se encontró paymentIntentId", Toast.LENGTH_SHORT).show()
+                    return
                 }
-                startActivity(intent)
+
+                // 🔹 Llamar a la función para obtener la URL de la factura
+                obtenerUrlFactura(paymentIntentId) { urlFactura ->
+                    runOnUiThread {
+                        val dbHelper = InvoiceDatabaseHelper(this)
+                        val success = when {
+                            titulo.isNotEmpty() -> dbHelper.insertInvoice(titulo, precio, paymentIntentId, urlFactura)
+                            premium.isNotEmpty() -> dbHelper.insertInvoice(premium, precio, paymentIntentId, urlFactura)
+                            else -> false
+                        }
+
+                        if (success) {
+                            Toast.makeText(this, "Factura guardada correctamente", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Error al guardar la factura", Toast.LENGTH_SHORT).show()
+                        }
+
+                        val intent = Intent(this, AnimationRegisterCard::class.java).apply {
+                            putExtra("titulo", titulo)
+                            putExtra("premium", premium)
+                            putExtra("precio", precio)
+                            putExtra("paymentIntentId", paymentIntentId)
+                        }
+                        startActivity(intent)
+                    }
+                }
             }
 
             is PaymentSheetResult.Canceled -> {
@@ -139,4 +163,35 @@ class PaymentByCard : AppCompatActivity() {
         }
     }
 
+
+    private fun obtenerUrlFactura(paymentIntentId: String, callback: (String) -> Unit) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://192.168.128.3:3000/get-receipt-url/$paymentIntentId") // 🔹 Reemplaza con la IP de tu backend si pruebas en un móvil
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback("Sin URL") // 🔹 En caso de error, devuelve un valor por defecto
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                if (response.isSuccessful && responseBody != null) {
+                    try {
+                        val json = JSONObject(responseBody)
+                        val receiptUrl = json.optString("receiptUrl", "Sin URL") // 🔹 Obtiene la URL del JSON
+                        callback(receiptUrl)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        callback("Sin URL")
+                    }
+                } else {
+                    callback("Sin URL")
+                }
+            }
+        })
+    }
 }

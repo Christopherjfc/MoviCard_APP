@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "59751623094",
+    "project_id": "movicard-f6990",
+    "storage_bucket": "movicard-f6990.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59751623094:android:0900d64a0878fdbbcf3917",
+        "android_client_info": {
+          "package_name": "com.example.movicard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuZmuc4R0p-0efu_umYGfOSuNGddPbXxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

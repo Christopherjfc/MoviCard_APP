@@ -6,5 +6,6 @@ data class Invoice(
     val date: String,
     val amount: Double,
     val url: String,
-    val filePath: String?
+    val filePath: String?,
+    val paymentIntentId: String
 )
