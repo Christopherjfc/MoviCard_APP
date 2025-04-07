@@ -1,5 +1,6 @@
 package com.example.movicard
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -71,44 +72,46 @@ class Graficas : BaseActivity() {
         binding.btnLogout.setOnClickListener { logout() }
 
 
-        // llenarGraficaBarra(binding.graficaBarra)
+        // Le paso la ID de la grafica Pie al method
+        // que la llenará
         llenarGraficaPie(binding.graficaPie)
+
+        val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
+        val gastoTotalCentavos = prefs.getInt("gasto_total", 0)
+        val gastoTotalEuros = gastoTotalCentavos / 100.0
+
+        // Asigno los gastos totales a la UI
+        binding.gastosTotales.text = " %.2f €".format(gastoTotalEuros)
     }
 
 
     fun llenarGraficaPie(graficaPie: PieChart) {
-        val firebaseHelper = FirebaseHelper()
+        val tarjetas = TarjetaStorage.cargarTarjetas(this)
 
-        // Escucha los cambios en Firebase
-        firebaseHelper.obtenerDatosTarjetas { datos ->
-            val valores = ArrayList<PieEntry>()
-            valores.add(PieEntry(datos["MOVI_10"]?.toFloat() ?: 0f, "MOVI_10"))
-            valores.add(PieEntry(datos["MOVI_MES"]?.toFloat() ?: 0f, "MOVI_MES"))
-            valores.add(PieEntry(datos["MOVI_TRIMESTRAL"]?.toFloat() ?: 0f, "MOVI_TRIMESTRAL"))
+        val conteo = mapOf(
+            "MOVI_10" to tarjetas.count { it.nombre == "MOVI_10" }.toFloat(),
+            "MOVI_MES" to tarjetas.count { it.nombre == "MOVI_MES" }.toFloat(),
+            "MOVI_TRIMESTRAL" to tarjetas.count { it.nombre == "MOVI_TRIMESTRAL" }.toFloat()
+        )
 
-            val conjuntoDeDatos = PieDataSet(valores, "Tarjetas Vendidas")
+        val valores = ArrayList<PieEntry>()
+        valores.add(PieEntry(conteo["MOVI_10"] ?: 0f, "MOVI_10"))
+        valores.add(PieEntry(conteo["MOVI_MES"] ?: 0f, "MOVI_MES"))
+        valores.add(PieEntry(conteo["MOVI_TRIMESTRAL"] ?: 0f, "MOVI_TRIMESTRAL"))
 
-            // Establecer colores para las porciones del pie
-            conjuntoDeDatos.colors = listOf(Color.RED, Color.GREEN, Color.BLUE)
+        val conjuntoDeDatos = PieDataSet(valores, "Tarjetas Vendidas")
+        conjuntoDeDatos.colors = listOf(Color.RED, Color.GREEN, Color.BLUE)
+        conjuntoDeDatos.valueTextColor = Color.BLACK
+        conjuntoDeDatos.valueTextSize = 16f
 
-            // Colores de los textos
-            conjuntoDeDatos.valueTextColor = Color.BLACK
-            conjuntoDeDatos.valueTextSize = 16f // Mida del text
-
-//            // Configurar leyenda (textos fuera del gráfico, como MOVI_10, etc.)
-//            val legend = graficaPie.legend
-//            legend.textColor = R.color.text_primary
-
-            // Crear los datos para la gráfica
-            val data = PieData(conjuntoDeDatos)
-
-            // Asignar los datos a la gráfica
-            graficaPie.data = data
-            graficaPie.animateY(1000)
-            graficaPie.description.isEnabled = false
-            graficaPie.invalidate() // Refresca la gráfica
-        }
+        val data = PieData(conjuntoDeDatos)
+        graficaPie.data = data
+        graficaPie.animateY(1000)
+        graficaPie.description.isEnabled = false
+        graficaPie.invalidate()
     }
+
+
 
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

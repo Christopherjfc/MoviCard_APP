@@ -140,4 +140,5 @@
     <string name="t_tulo_seleccionado">Título seleccionado:</string>
     <string name="hold_continue">Mantén pulsado el botón \"CONTINUAR\" para proceder con el trámite</string>
     <string name="gesti_n">Gestión %</string>
+    <string name="gastos_totales">GASTOS TOTALES:</string>
 </resources>

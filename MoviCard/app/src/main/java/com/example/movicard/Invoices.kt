@@ -90,7 +90,7 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
         loadInvoices();
 
         // Méthod test para borrar todas las facturas
-        // databaseHelper.deleteAllInvoices()
+//         databaseHelper.deleteAllInvoices()
     }
 
     private fun loadInvoices() {

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movicard.DbHelper.InvoiceDatabaseHelper
-import com.example.movicard.firebase.FirebaseHelper
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
@@ -33,9 +32,9 @@ class PaymentByCard : AppCompatActivity() {
         // Definir el monto según el título
         amount = when {
             titulo == "MOVI_10" -> 1385 // 12.55€ en centavos
-            titulo == "MOVI_MES" -> 2420 // 22€ en centavos
-            titulo == "MOVI_TRIMESTRAL" -> 4840 // 44€ en centavos
-            premium == "SUSCRIPCIÓN PREMIUM" -> 1000 // 10€ en centavos
+            titulo == "MOVI_MES" -> 2420 // 22.00€ en centavos
+            titulo == "MOVI_TRIMESTRAL" -> 4840 // 48.40€ en centavos
+            premium == "SUSCRIPCIÓN PREMIUM" -> 1000 // 10.00 € en centavos
             else -> 0
         }
 
@@ -70,7 +69,7 @@ class PaymentByCard : AppCompatActivity() {
         }.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
-            .url("http://192.168.128.3:3000/create-payment-intent") // Backend local para pruebas
+            .url("http://192.168.128.244:3000/create-payment-intent") // Backend local para pruebas
             .post(requestBody)
             .build()
 
@@ -137,6 +136,18 @@ class PaymentByCard : AppCompatActivity() {
 
                         if (success) {
                             Toast.makeText(this, "Factura guardada correctamente", Toast.LENGTH_SHORT).show()
+
+                            // Guardo las tarjetas para luego contarlas y llenar el gráfico Pie.
+                            // Así podré saber cuantas tarjetas se han ido comprando al paso del tiempo
+                            val tarjetas = TarjetaStorage.cargarTarjetas(this)
+                            tarjetas.add(Tarjeta(titulo))
+                            TarjetaStorage.guardarTarjetas(this, tarjetas)
+
+                            // Por cada tarjeta que se vaya comprando voy sumando monto al total de gastos
+                            val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
+                            val totalAnterior = prefs.getInt("gasto_total", 0)
+                            prefs.edit().putInt("gasto_total", totalAnterior + amount).apply()
+
                         } else {
                             Toast.makeText(this, "Error al guardar la factura", Toast.LENGTH_SHORT).show()
                         }
