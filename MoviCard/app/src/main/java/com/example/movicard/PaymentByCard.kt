@@ -31,9 +31,9 @@ class PaymentByCard : AppCompatActivity() {
 
         // Definir el monto según el título
         amount = when {
-            titulo == "MOVI_10" -> 1385 // 12.55€ en centavos
-            titulo == "MOVI_MES" -> 2420 // 22.00€ en centavos
-            titulo == "MOVI_TRIMESTRAL" -> 4840 // 48.40€ en centavos
+            titulo == "TENMOVI" -> 1385 // 12.55€ en centavos
+            titulo == "MOVIMES" -> 2420 // 22.00€ en centavos
+            titulo == "TRIMOVI" -> 4840 // 48.40€ en centavos
             premium == "SUSCRIPCIÓN PREMIUM" -> 1000 // 10.00 € en centavos
             else -> 0
         }
@@ -69,7 +69,7 @@ class PaymentByCard : AppCompatActivity() {
         }.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
-            .url("http://192.168.128.244:3000/create-payment-intent") // Backend local para pruebas
+            .url("http://192.168.128.3:3000/create-payment-intent") // Backend local para pruebas
             .post(requestBody)
             .build()
 
@@ -119,6 +119,8 @@ class PaymentByCard : AppCompatActivity() {
                 val precio = intent.getStringExtra("precio") ?: "0"
                 val paymentIntentId = intent.getStringExtra("paymentIntentId") ?: ""
 
+                println(premium)
+
                 if (paymentIntentId.isEmpty()) {
                     Toast.makeText(this, "Error: No se encontró paymentIntentId", Toast.LENGTH_SHORT).show()
                     return
@@ -140,7 +142,9 @@ class PaymentByCard : AppCompatActivity() {
                             // Guardo las tarjetas para luego contarlas y llenar el gráfico Pie.
                             // Así podré saber cuantas tarjetas se han ido comprando al paso del tiempo
                             val tarjetas = TarjetaStorage.cargarTarjetas(this)
-                            tarjetas.add(Tarjeta(titulo))
+
+                            tarjetas.add(Tarjeta(if (titulo.isNotEmpty()) titulo else premium))
+
                             TarjetaStorage.guardarTarjetas(this, tarjetas)
 
                             // Por cada tarjeta que se vaya comprando voy sumando monto al total de gastos

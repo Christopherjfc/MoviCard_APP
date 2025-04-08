@@ -11,7 +11,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.movicard.databinding.ActivityGraficasBinding
-import com.example.movicard.firebase.FirebaseHelper
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.BarData
@@ -89,20 +88,30 @@ class Graficas : BaseActivity() {
         val tarjetas = TarjetaStorage.cargarTarjetas(this)
 
         val conteo = mapOf(
-            "MOVI_10" to tarjetas.count { it.nombre == "MOVI_10" }.toFloat(),
-            "MOVI_MES" to tarjetas.count { it.nombre == "MOVI_MES" }.toFloat(),
-            "MOVI_TRIMESTRAL" to tarjetas.count { it.nombre == "MOVI_TRIMESTRAL" }.toFloat()
+            "MOVI_10" to tarjetas.count { it.nombre == "TENMOVI" }.toFloat(),
+            "MOVI_MES" to tarjetas.count { it.nombre == "MOVIMES" }.toFloat(),
+            "MOVI_TRIMESTRAL" to tarjetas.count { it.nombre == "TRIMOVI" }.toFloat(),
+            "SUSCRIPCIÓN PREMIUM" to tarjetas.count { it.nombre == "SUSCRIPCIÓN PREMIUM" }.toFloat()
         )
 
         val valores = ArrayList<PieEntry>()
-        valores.add(PieEntry(conteo["MOVI_10"] ?: 0f, "MOVI_10"))
-        valores.add(PieEntry(conteo["MOVI_MES"] ?: 0f, "MOVI_MES"))
-        valores.add(PieEntry(conteo["MOVI_TRIMESTRAL"] ?: 0f, "MOVI_TRIMESTRAL"))
+        valores.add(PieEntry(conteo["MOVI_10"] ?: 0f, "TENMOVI"))
+        valores.add(PieEntry(conteo["MOVI_MES"] ?: 0f, "MOVIMES"))
+        valores.add(PieEntry(conteo["MOVI_TRIMESTRAL"] ?: 0f, "TRIMOVI"))
+        valores.add(PieEntry(conteo["SUSCRIPCIÓN PREMIUM"] ?: 0f, "SUSCRIPCIÓN PREMIUM"))
 
         val conjuntoDeDatos = PieDataSet(valores, "Tarjetas Vendidas")
-        conjuntoDeDatos.colors = listOf(Color.RED, Color.GREEN, Color.BLUE)
+        conjuntoDeDatos.colors = listOf(
+            Color.rgb(88, 214, 141), // verde (10)
+            Color.rgb(93, 173, 226), // azul (mes)
+            Color.rgb(241, 148, 138), // rojo (trimestral)
+            Color.rgb(178, 144, 232)) // morado lavanda claro (premium)
+
         conjuntoDeDatos.valueTextColor = Color.BLACK
         conjuntoDeDatos.valueTextSize = 16f
+
+        binding.graficaPie.setEntryLabelColor(Color.BLACK) // Color de les etiquetes
+        binding.graficaPie.setEntryLabelTextSize(14f) // Mida del text de les etiquetes
 
         val data = PieData(conjuntoDeDatos)
         graficaPie.data = data

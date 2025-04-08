@@ -126,13 +126,13 @@
     <string name="gr_ficas">Gráficas</string>
     <string name="planificar_rutas">Planificar rutas</string>
     <string name="consultar_saldo_min">Consultar saldo</string>
-    <string name="movi_10">MOVI_10</string>
+    <string name="movi_10">TENMOVI</string>
     <string name="viajes_disponibles_10"><b>Viajes disponibles:</b> 10</string>
     <string name="duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles"><b>Duración:</b> Hasta que concluyan todos los viajes disponibles</string>
-    <string name="movi_mes">MOVI_MES</string>
+    <string name="movi_mes">MOVIMES</string>
     <string name="viajes_disponibles_30_dias"><b>Viajes disponibles:</b> 30 días</string>
     <string name="duraci_n_hasta_que_concluyan_los_30_d_as_despu_s_del_primer_registro"><b>Duración:</b> Hasta que concluyan los 30 días después del primer registro.</string>
-    <string name="movi_trimestral">MOVI_TRIMESTRAL</string>
+    <string name="movi_trimestral">TRIMOVI</string>
     <string name="viajes_disponibles_90_dias"><b>Viajes disponibles:</b> 90 días</string>
     <string name="duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro"><b>Duración:</b> Hasta que concluyan los 90 días después del primer registro.</string>
     <string name="t_tulos_disponibles">Títulos disponibles</string>

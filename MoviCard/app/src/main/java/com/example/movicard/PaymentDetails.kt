@@ -70,9 +70,9 @@ class PaymentDetails : BaseActivity() {
 
         // Validar y modificar el TextView si es necesario
         val nuevoTitulo = when (titulo) {
-            "MOVI_10" -> "MOVI_10"
-            "MOVI_MES" -> "MOVI_MES"
-            "MOVI_TRIMESTRAL" -> "MOVI_TRIMESTRAL"
+            "MOVI_10" -> "TENMOVI"
+            "MOVI_MES" -> "MOVIMES"
+            "MOVI_TRIMESTRAL" -> "TRIMOVI"
             else -> "Suscripción premium" // Si no coincide, usa el original
         }
 
@@ -81,19 +81,19 @@ class PaymentDetails : BaseActivity() {
 
         // cambios de precio según el título de la tarjeta o suscripción
         when (titulo) {
-            "MOVI_10" -> {
+            "TENMOVI" -> {
                 binding.productPrice.text = "12.55 €"
                 binding.subtotal.text =  "12.55 €"
                 binding.productPrice2.text = "13.80 €"
                 binding.gastosGestion.text = "1.25 €"
             }
-            "MOVI_MES" -> {
+            "MOVIMES" -> {
                 binding.productPrice.text = "22 €"
                 binding.subtotal.text =  "22 €"
                 binding.productPrice2.text = "24.20 €"
                 binding.gastosGestion.text = "2.2 €"
             }
-            "MOVI_TRIMESTRAL" -> {
+            "TRIMOVI" -> {
                 binding.productPrice.text = "44 €"
                 binding.subtotal.text =  "44 €"
                 binding.productPrice2.text = "48.40 €"
