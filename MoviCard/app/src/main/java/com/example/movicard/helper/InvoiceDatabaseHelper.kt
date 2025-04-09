@@ -1,10 +1,10 @@
-package com.example.movicard.DbHelper
+package com.example.movicard.helper
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.movicard.data.Invoice
+import com.example.movicard.model.Invoice
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

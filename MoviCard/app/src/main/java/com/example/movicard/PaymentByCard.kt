@@ -6,7 +6,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.movicard.DbHelper.InvoiceDatabaseHelper
+import com.example.movicard.helper.InvoiceDatabaseHelper
 import com.google.gson.Gson
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet

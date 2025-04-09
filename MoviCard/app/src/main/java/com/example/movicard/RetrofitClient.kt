@@ -1,6 +1,6 @@
 package com.example.movicard
 
-import com.example.movicard.API.APIService
+import com.example.movicard.network.APIService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

@@ -23,8 +23,13 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPerfilUsuarioBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.ClienteViewModel
+import com.example.movicard.model.viewmodel.ClienteViewModelFactory
+import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 import java.io.File
 import java.io.FileOutputStream
@@ -89,6 +94,30 @@ class PerfilUsuario : BaseActivity() {
 
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
+
+
+        /*
+        *
+        * RELLENO CAMPOS DEL USUARO CON LA API Y NO MANUALMENTE
+        *
+        */
+
+        // creo el SessionManager para poder acceder a los datos guardados del usuario
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = ClienteViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
+        viewModel.cliente.observe(this) { cliente ->
+            // actualizo los campos de la interfaz con los datos del cliente
+            binding.nombrePerfil.setText(cliente.nombre + cliente.apellido)
+            binding.correo.setText(cliente.correo)
+        }
+
+        // Llamamos a la función para iniciar la carga de datos del cliente
+        viewModel.cargarCliente()
     }
 
 

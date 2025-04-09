@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movicard.R
+import com.example.movicard.model.Invoice
 
 class InvoiceAdapter(private val invoiceList: List<Invoice>, private val listener: InvoiceClickListener) :
     RecyclerView.Adapter<InvoiceAdapter.InvoiceViewHolder>() {

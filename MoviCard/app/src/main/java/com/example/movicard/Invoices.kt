@@ -12,8 +12,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.movicard.DbHelper.InvoiceDatabaseHelper
-import com.example.movicard.data.Invoice
+import com.example.movicard.helper.InvoiceDatabaseHelper
+import com.example.movicard.model.Invoice
 import com.example.movicard.data.InvoiceAdapter
 import com.example.movicard.databinding.ActivityInvoicesBinding
 import com.google.android.material.navigation.NavigationView
@@ -25,7 +25,6 @@ import retrofit2.Response
 // Descargar pdf con WebView a partir de una URL
 import android.print.PrintManager
 import android.print.PrintAttributes
-import android.print.PrintDocumentAdapter
 import android.webkit.WebView
 import android.webkit.WebViewClient
 

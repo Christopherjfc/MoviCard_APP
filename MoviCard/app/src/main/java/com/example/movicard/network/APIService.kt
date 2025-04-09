@@ -1,4 +1,4 @@
-package com.example.movicard.API
+package com.example.movicard.network
 
 import com.example.movicard.data.ReceiptResponse
 import retrofit2.Call

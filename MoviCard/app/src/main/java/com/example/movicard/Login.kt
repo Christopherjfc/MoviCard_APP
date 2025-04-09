@@ -4,12 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityLoginBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
+import com.example.movicard.network.RetrofitInstance
+import kotlinx.coroutines.launch
 
 class Login : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -20,8 +24,51 @@ class Login : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnLogin.setOnClickListener{
-            startActivity(Intent(this, Principal::class.java))
+        binding.btnLogin.setOnClickListener {
+            val email = binding.email.text.toString().trim()
+            val password = binding.password.text.toString().trim()
+
+            if (email.isEmpty() || password.isEmpty()) {
+                binding.email.error = "Campo requerido"
+                binding.password.error = "Campo requerido"
+            } else {
+                verificarUsuario(email, password)
+            }
+        }
+    }
+
+    private fun verificarUsuario(email: String, password: String) {
+        lifecycleScope.launch {
+            try {
+                // obtengo todos los clientes
+                val clientes = RetrofitInstance.api.getAllClientes()
+
+                // verifico si el correo que introduje coincide con algún correo de un cliente
+                val cliente = clientes.find { it.correo == email }
+
+                // mensaje de rror si el correo o la contraseña no coinciden
+                if (cliente == null) {
+                    binding.email.error = "Correo no encontrado"
+                } else if (cliente.password != password) {
+                    binding.password.error = "Contraseña incorrecta"
+                } else {
+
+                    // USUARIO CORRECTO
+
+                    // tengo el permiso de entrar a la app
+                    val intent = Intent(this@Login, Principal::class.java)
+
+                    // Guardo la sesión del cliente correcto para
+
+                    // Paso la id del cliente encontrado para así obtener todos sus datos y llenar la app
+                    intent.putExtra("cliente_id", cliente.id)
+                    startActivity(intent)
+                    finish()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@Login, "Error al conectar con el servidor", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

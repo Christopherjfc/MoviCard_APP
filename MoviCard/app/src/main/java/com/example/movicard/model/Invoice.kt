@@ -1,4 +1,4 @@
-package com.example.movicard.data
+package com.example.movicard.model
 
 data class Invoice(
     val id: Int,
