@@ -54,7 +54,7 @@
     <string name="movicard_2025">MoviCard © 2025</string>
     <string name="tama_o">Size</string>
     <string name="rellena_los_campos_si_deseas_cambiar_de_contrase_a">Fill in the fields if you want to change your password:</string>
-    <string name="estad_sticas_de_la_tarjeta">Card statistics</string>
+    <string name="estad_sticas">Statistics</string>
     <string name="atenci_n_al_cliente">Customer support</string>
     <string name="correo_electr_nico">Email:</string>
     <string name="nombre_completo">Full name:</string>
@@ -139,4 +139,5 @@
     <string name="t_tulo_seleccionado">Selected Title:</string>
     <string name="hold_continue">Hold the "CONTINUE" button to proceed with the process</string>
     <string name="gesti_n">Management %</string>
+    <string name="gastos_totales">TOTAL EXPENSES:</string>
 </resources>

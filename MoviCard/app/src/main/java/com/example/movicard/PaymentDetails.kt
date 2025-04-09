@@ -70,9 +70,9 @@ class PaymentDetails : BaseActivity() {
 
         // Validar y modificar el TextView si es necesario
         val nuevoTitulo = when (titulo) {
-            "MOVI_10" -> "TENMOVI"
-            "MOVI_MES" -> "MOVIMES"
-            "MOVI_TRIMESTRAL" -> "TRIMOVI"
+            "TENMOVI" -> "TENMOVI"
+            "MOVIMES" -> "MOVIMES"
+            "TRIMOVI" -> "TRIMOVI"
             else -> "Suscripción premium" // Si no coincide, usa el original
         }
 

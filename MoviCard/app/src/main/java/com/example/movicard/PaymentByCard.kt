@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.movicard.DbHelper.InvoiceDatabaseHelper
+import com.google.gson.Gson
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
@@ -69,7 +70,7 @@ class PaymentByCard : AppCompatActivity() {
         }.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
-            .url("http://192.168.128.3:3000/create-payment-intent") // Backend local para pruebas
+            .url("http://192.168.128.244:3000/create-payment-intent") // Backend local para pruebas
             .post(requestBody)
             .build()
 
@@ -147,10 +148,35 @@ class PaymentByCard : AppCompatActivity() {
 
                             TarjetaStorage.guardarTarjetas(this, tarjetas)
 
+
+                            /*
+                            * LLENO LA LISTA DE TARJETAS PARA LLENAR LA GRÁFICA REDONDA
+                            */
+
                             // Por cada tarjeta que se vaya comprando voy sumando monto al total de gastos
                             val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
                             val totalAnterior = prefs.getInt("gasto_total", 0)
                             prefs.edit().putInt("gasto_total", totalAnterior + amount).apply()
+
+
+                            /*
+                            * LLENO LA GRÁFICA DE BARRAS
+                            */
+
+                            // ➕ Guardar gasto por fecha
+                            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                            val fechaHoy = sdf.format(java.util.Date()) // Ej: 2025-04-04
+                            val gastoPorDiaJson = prefs.getString("gastos_por_dia", "{}")
+                            val gastoMap: MutableMap<String, Int> = Gson().fromJson(
+                                gastoPorDiaJson,
+                                object : com.google.gson.reflect.TypeToken<MutableMap<String, Int>>() {}.type
+                            ) ?: mutableMapOf()
+
+                            val gastoAnterior = gastoMap[fechaHoy] ?: 0
+                            gastoMap[fechaHoy] = gastoAnterior + amount
+
+                            // Guardar actualizado
+                            prefs.edit().putString("gastos_por_dia", Gson().toJson(gastoMap)).apply()
 
                         } else {
                             Toast.makeText(this, "Error al guardar la factura", Toast.LENGTH_SHORT).show()
@@ -182,7 +208,7 @@ class PaymentByCard : AppCompatActivity() {
     private fun obtenerUrlFactura(paymentIntentId: String, callback: (String) -> Unit) {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://192.168.128.3:3000/get-receipt-url/$paymentIntentId") // 🔹 Reemplaza con la IP de tu backend si pruebas en un móvil
+            .url("http://192.168.128.244:3000/get-receipt-url/$paymentIntentId") // 🔹 Reemplaza con la IP de tu backend si pruebas en un móvil
             .get()
             .build()
 

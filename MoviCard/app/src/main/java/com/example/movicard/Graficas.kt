@@ -6,8 +6,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.movicard.databinding.ActivityGraficasBinding
@@ -20,6 +23,10 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class Graficas : BaseActivity() {
     private lateinit var binding: ActivityGraficasBinding
@@ -71,9 +78,11 @@ class Graficas : BaseActivity() {
         binding.btnLogout.setOnClickListener { logout() }
 
 
-        // Le paso la ID de la grafica Pie al method
-        // que la llenará
+        // Le paso la ID de la grafica Pie al method que la llenará
         llenarGraficaPie(binding.graficaPie)
+
+        // Inicio ñla grafica de barras
+        llenarGraficaBarra(binding.graficaBarra)
 
         val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
         val gastoTotalCentavos = prefs.getInt("gasto_total", 0)
@@ -111,16 +120,92 @@ class Graficas : BaseActivity() {
         conjuntoDeDatos.valueTextSize = 16f
 
         binding.graficaPie.setEntryLabelColor(Color.BLACK) // Color de les etiquetes
-        binding.graficaPie.setEntryLabelTextSize(14f) // Mida del text de les etiquetes
+        binding.graficaPie.setEntryLabelTextSize(12f) // Mida del text de les etiquetes
 
         val data = PieData(conjuntoDeDatos)
         graficaPie.data = data
         graficaPie.animateY(1000)
-        graficaPie.description.isEnabled = false
         graficaPie.invalidate()
+
+        // cambia el color del texto de la leyenda
+        graficaPie.legend.textColor = ContextCompat.getColor(this, R.color.text_primary)
+
+        graficaPie.description.isEnabled = false
     }
 
 
+    fun llenarGraficaBarra(graficaBarra: BarChart) {
+        val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
+        val gastoPorDiaJson = prefs.getString("gastos_por_dia", "{}") ?: "{}"
+
+        val gastoMap: Map<String, Int> = Gson().fromJson(
+            gastoPorDiaJson,
+            object : com.google.gson.reflect.TypeToken<Map<String, Int>>() {}.type
+        ) ?: emptyMap()
+
+        // Obtener los días del mes actual
+        val calendar = Calendar.getInstance()
+        val mesActual = calendar.get(Calendar.MONTH)
+        val añoActual = calendar.get(Calendar.YEAR)
+        val totalDias = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+
+        val formatoFecha = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val entries = ArrayList<BarEntry>()
+        val labels = ArrayList<String>()
+
+        for (dia in 1..totalDias) {
+            calendar.set(Calendar.DAY_OF_MONTH, dia)
+            val fecha = formatoFecha.format(calendar.time)
+
+            val gastoCentavos = gastoMap[fecha] ?: 0
+            val gastoEuros = gastoCentavos / 100f
+
+            entries.add(BarEntry(dia.toFloat(), gastoEuros))
+            labels.add(dia.toString())
+        }
+
+        val dataSet = BarDataSet(entries, "Gastos por día (€)")
+        dataSet.color = Color.rgb(0, 123, 255)
+        dataSet.valueTextSize = 12f
+        dataSet.valueTextColor = ContextCompat.getColor(this, R.color.text_primary)
+
+        val barData = BarData(dataSet)
+        graficaBarra.data = barData
+
+        graficaBarra.description.isEnabled = false
+        graficaBarra.animateY(1000)
+
+        // cambia el color del texto de la leyenda
+        graficaBarra.legend.textColor = ContextCompat.getColor(this, R.color.text_primary)
+
+        // cambia el color del texto de los ejes
+        graficaBarra.xAxis.textColor = ContextCompat.getColor(this, R.color.text_primary)
+        graficaBarra.axisLeft.textColor = ContextCompat.getColor(this, R.color.text_primary)
+        graficaBarra.axisRight.textColor = ContextCompat.getColor(this, R.color.text_primary)
+        graficaBarra.invalidate()
+    }
+
+
+    fun insertarDatosDePrueba(view: View) {
+        val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        val gastos = mutableMapOf<String, Int>()
+
+        for (i in 1..30) {
+            calendar.set(Calendar.DAY_OF_MONTH, i)
+            val fecha = sdf.format(calendar.time)
+            gastos[fecha] = (1500..16000).random() // entre $5.00 y $20.00
+        }
+
+        prefs.edit().putString("gastos_por_dia", Gson().toJson(gastos)).apply()
+
+        Toast.makeText(this, "Datos de prueba insertados", Toast.LENGTH_SHORT).show()
+
+        // Opcional: actualizar la gráfica automáticamente
+        llenarGraficaBarra(binding.graficaBarra)
+    }
 
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
@@ -196,27 +281,3 @@ class Graficas : BaseActivity() {
     }
 }
 
-//    fun llenarGraficaBarra(graficaBarra: BarChart) {
-//        // Datos de ejemplo para la gráfica de barras
-//        val valores = ArrayList<BarEntry>()
-//        valores.add(BarEntry(0f, 15f)) // Barra 1
-//        valores.add(BarEntry(1f, 30f)) // Barra 2
-//        valores.add(BarEntry(2f, 50f)) // Barra 3
-//        valores.add(BarEntry(3f, 25f)) // Barra 4
-//        valores.add(BarEntry(4f, 40f)) // Barra 5
-//
-//        // Crear un conjunto de datos de barras
-//        val conjuntoDeDatos = BarDataSet(valores, "Valores de Ejemplo")
-//
-//        // Establecer colores para las barras
-//        conjuntoDeDatos.colors = listOf(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.CYAN)
-//
-//        // Crear los datos para la gráfica
-//        val data = BarData(conjuntoDeDatos)
-//
-//        // Asignar los datos a la gráfica
-//        graficaBarra.data = data
-//        graficaBarra.animateY(1000)
-//        graficaBarra.description.isEnabled = false
-//        graficaBarra.invalidate() // Refresca la gráfica
-//    }
