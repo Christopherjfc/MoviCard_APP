@@ -141,4 +141,17 @@
     <string name="hold_continue">Mantén pulsado el botón \"CONTINUAR\" para proceder con el trámite</string>
     <string name="gesti_n">Gestión %</string>
     <string name="gastos_totales">GASTOS TOTALES:</string>
+    <string name="datos_personales">Datos personales</string>
+    <string name="SinTarjeta">----------</string>
+    <string name="cambiar_datos_personales"><u>Cambiar datos personales</u></string>
+    <string name="nuevo_nombre">Nuevo nombre:</string>
+    <string name="nuevo_apellido">Nuevo apellido:</string>
+    <string name="nuevo_dni">Nuevo DNI:</string>
+    <string name="nueva_direcci_n">Nueva dirección:</string>
+    <string name="nuevo_tel_fono">Nuevo teléfono:</string>
+    <string name="nuevo_correo">Nuevo correo:</string>
+    <string name="nuevo_n_bloque">Nuevo Nº bloque:</string>
+    <string name="nuevo_n_piso">Nuevo Nº piso:</string>
+    <string name="nuevo_c_p">Nuevo C.P:</string>
+    <string name="nueva_ciudad">Nueva ciudad:</string>
 </resources>

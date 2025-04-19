@@ -39,8 +39,6 @@ class PerfilUsuario : BaseActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.enableEdgeToEdge()
@@ -85,7 +83,11 @@ class PerfilUsuario : BaseActivity() {
 
         //Desplegar la función para cambiar de contraseña
         binding.desplegarContra.setOnClickListener{
-            toggleVisibility()
+            toggleVisibilityCambiarContra()
+        }
+
+        binding.desplegarDatos.setOnClickListener {
+            toggleVisibilityCambiarDatos()
         }
 
         binding.btnLogout.setOnClickListener {
@@ -121,19 +123,41 @@ class PerfilUsuario : BaseActivity() {
     }
 
 
-    private fun toggleVisibility() {
+    private fun toggleVisibilityCambiarContra() {
+        // Cambiar de contraseña
         if (binding.cardCambiarContra.visibility == View.GONE) {
             TransitionManager.beginDelayedTransition(binding.cardCambiarContra, AutoTransition())
             binding.cardCambiarContra.visibility = View.VISIBLE
             binding.cardSuscripcion.visibility = View.GONE
             binding.cardUUIDTarjeta.visibility = View.GONE
+            binding.btnDatosPersonales.visibility = View.GONE
             binding.desplegarContra.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_abajo, 0)
         } else {
             TransitionManager.beginDelayedTransition(binding.cardCambiarContra, AutoTransition())
             binding.cardCambiarContra.visibility = View.GONE
             binding.cardSuscripcion.visibility = View.VISIBLE
             binding.cardUUIDTarjeta.visibility = View.VISIBLE
+            binding.btnDatosPersonales.visibility = View.VISIBLE
             binding.desplegarContra.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_derecha, 0)
+        }
+    }
+
+    private fun toggleVisibilityCambiarDatos() {
+        // Cambiar datos personales
+        if (binding.cardDatosPersonales.visibility == View.GONE) {
+            TransitionManager.beginDelayedTransition(binding.cardDatosPersonales, AutoTransition())
+            binding.cardDatosPersonales.visibility = View.VISIBLE
+            binding.cardSuscripcion.visibility = View.GONE
+            binding.cardUUIDTarjeta.visibility = View.GONE
+            binding.btnCambiarContra.visibility = View.GONE
+            binding.desplegarDatos.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_abajo, 0)
+        } else {
+            TransitionManager.beginDelayedTransition(binding.cardDatosPersonales, AutoTransition())
+            binding.cardDatosPersonales.visibility = View.GONE
+            binding.cardSuscripcion.visibility = View.VISIBLE
+            binding.btnCambiarContra.visibility = View.VISIBLE
+            binding.cardUUIDTarjeta.visibility = View.VISIBLE
+            binding.desplegarDatos.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_derecha, 0)
         }
     }
 

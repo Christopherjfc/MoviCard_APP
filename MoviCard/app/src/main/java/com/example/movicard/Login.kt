@@ -42,6 +42,7 @@ class Login : BaseActivity() {
             try {
                 // obtengo todos los clientes
                 val clientes = RetrofitInstance.api.getAllClientes()
+                println(clientes)
 
                 // verifico si el correo que introduje coincide con algún correo de un cliente
                 val cliente = clientes.find { it.correo == email }

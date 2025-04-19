@@ -8,6 +8,7 @@
     android:background="@color/background_app"
     tools:context=".PerfilUsuario">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,26 +24,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/rowdies"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
         </androidx.appcompat.widget.Toolbar>
+
 
         <LinearLayout
             android:id="@+id/perfil"
             android:layout_width="match_parent"
-            android:layout_marginHorizontal="25dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.05">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -56,7 +50,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/foto_perfil" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -95,6 +88,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/background_card_view"
+            android:visibility="visible"
             app:cardCornerRadius="0dp"
             app:cardElevation="1dp"
             app:layout_constraintTop_toBottomOf="@id/perfil">
@@ -128,7 +122,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/background_card_view_cambiar_contra"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@id/btn_cambiar_contra">
@@ -288,6 +282,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/background_card_view"
+            android:visibility="visible"
             app:cardCornerRadius="0dp"
             app:cardElevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -332,6 +327,7 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/background_card_view"
+            android:visibility="visible"
             app:cardCornerRadius="0dp"
             app:cardElevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -363,11 +359,431 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:text="----------"
+                    android:text="@string/SinTarjeta"
                     android:textColor="@color/text_primary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+
+        <!-- Cambiar contraseña -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btn_datos_personales"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/background_card_view"
+            android:visibility="visible"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="1dp"
+            app:layout_constraintTop_toBottomOf="@id/card_UUID_tarjeta">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/desplegar_datos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/datos_personales"
+                    android:textColor="@color/text_primary"
+                    app:drawableEndCompat="@drawable/flecha_derecha" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Cambiar los datos -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_datos_personales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/background_card_view_cambiar_contra"
+            android:visibility="gone"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/btn_datos_personales">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
+
+                <!-- Campos de texto y botones -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/cambiar_datos_personales"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nuevo_nombre"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevoNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nuevo_apellido"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevoApellido"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nuevo_dni"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevoDNI"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nuevo_correo"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevoCorreo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nuevo_tel_fono"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevoTelefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nueva_direcci_n"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevaDireccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/linear_bloque_piso_postal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:text="@string/nuevo_n_bloque"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:backgroundTint="@color/white"
+                                app:cardCornerRadius="0dp"
+                                app:strokeColor="#99000000">
+
+                                <EditText
+                                    android:id="@+id/nuevoNBloque"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:hint="@string/nuevaContra"
+                                    android:textColor="@color/text_cambiar_contra"
+                                    android:textColorHint="@color/text_cambiar_contra_editText"
+                                    android:textSize="12sp" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:text="@string/nuevo_n_piso"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:backgroundTint="@color/white"
+                                app:cardCornerRadius="0dp"
+                                app:strokeColor="#99000000">
+
+                                <EditText
+                                    android:id="@+id/nuevoNPiso"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:hint="@string/nuevaContra"
+                                    android:textColor="@color/text_cambiar_contra"
+                                    android:textColorHint="@color/text_cambiar_contra_editText"
+                                    android:textSize="12sp" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto"
+                                android:text="@string/nuevo_c_p"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="5dp"
+                                android:backgroundTint="@color/white"
+                                app:cardCornerRadius="0dp"
+                                app:strokeColor="#99000000">
+
+                                <EditText
+                                    android:id="@+id/nuevoCodigoPostal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:backgroundTint="@android:color/transparent"
+                                    android:hint="@string/nuevaContra"
+                                    android:textColor="@color/text_cambiar_contra"
+                                    android:textColorHint="@color/text_cambiar_contra_editText"
+                                    android:textSize="12sp" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/nueva_ciudad"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:backgroundTint="@color/white"
+                    app:cardCornerRadius="0dp"
+                    app:strokeColor="#99000000">
+
+                    <EditText
+                        android:id="@+id/nuevaCiudad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/nuevaContra"
+                        android:textColor="@color/text_cambiar_contra"
+                        android:textColorHint="@color/text_cambiar_contra_editText"
+                        android:textSize="12sp" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_cancelar_datos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/btn_gris"
+                        android:text="@string/cancelar"
+                        android:textColor="@color/black" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btn_guardar_datos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/button_guardar"
+                        android:text="@string/guardar"
+                        android:textColor="@color/button_primary_text" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
@@ -404,6 +820,7 @@
 
             <!-- Espacio para los ítems del menú -->
             <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />

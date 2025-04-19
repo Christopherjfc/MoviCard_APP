@@ -8,8 +8,8 @@ data class Cliente(
     val correo: String,
     val telefono: String,
     val direccion: String,
-    val numero_bloque: Int,
-    val numero_piso: Int?,
+    val numero_bloque: String,
+    val numero_piso: String?,
     val codigopostal: Int,
     val ciudad: String,
     val password: String
