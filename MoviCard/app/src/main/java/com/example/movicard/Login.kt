@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityLoginBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
+import com.example.movicard.helper.SessionManager
 import com.example.movicard.network.RetrofitInstance
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,6 @@ class Login : BaseActivity() {
             try {
                 // obtengo todos los clientes
                 val clientes = RetrofitInstance.api.getAllClientes()
-                println(clientes)
 
                 // verifico si el correo que introduje coincide con algún correo de un cliente
                 val cliente = clientes.find { it.correo == email }
@@ -59,10 +59,10 @@ class Login : BaseActivity() {
                     // tengo el permiso de entrar a la app
                     val intent = Intent(this@Login, Principal::class.java)
 
-                    // Guardo la sesión del cliente correcto para
+                    // Guardo la sesión del cliente correcto para así llenar la app con sus datos
+                    val sessionManager = SessionManager(this@Login)
+                    sessionManager.saveCliente(cliente)
 
-                    // Paso la id del cliente encontrado para así obtener todos sus datos y llenar la app
-                    intent.putExtra("cliente_id", cliente.id)
                     startActivity(intent)
                     finish()
                 }

@@ -28,4 +28,14 @@
     <color name="button_guardar">#1F5592</color>
     <color name="button_secondary">#8A817C</color> <!-- Gris neutro para botones secundarios -->
     <color name="button_text">@color/white</color> <!-- Gris neutro para botones secundarios -->
+
+
+    <!-- Colores RatingBar-->
+    <color name="starYellow">#FFD700</color> <!-- Dorado -->
+    <color name="starGrey">#D3D3D3</color> <!-- Gris claro -->
+
+
+    <!-- Colores para el Item de facturas-->
+    <color name="color_precioTotal">#ff99cc00</color>
+    <color name="strokeInvoices">#585757</color>
 </resources>

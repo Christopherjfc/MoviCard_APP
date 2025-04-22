@@ -115,7 +115,7 @@
     <string name="direcci_n">Address:</string>
     <string name="localidad">Locality:</string>
     <string name="consultar_saldo">CONSULT BALANCE</string><string name="consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta">- Check balance\n- Reload balance\n- Card blocking\n- Card insurance</string>
-    <string name="consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta_n_estadisticas_n_facturas_n_planificar_rutas_n_notificaciones_personalizadas">- Check balance\n- Reload balance\n- Card blocking\n- Card insurance\n- Statistics\n- Invoices\n- Route planning\n- Personalized notifications</string>
+    <string name="consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta_n_estadisticas_n_facturas_n_planificar_rutas_n_notificaciones_personalizadas">- Check balance\n- Reload balance\n- Card blocking\n- Card insurance\n- Statistics\n- Invoices\n- Route planning</string>
     <string name="detalle_del_pedido">Order Details</string>
     <string name="producto_suscripci_n_premium">Product: Premium Subscription</string>
     <string name="cantidad_1">Quantity: 1</string>
@@ -125,13 +125,13 @@
     <string name="gr_ficas">Graphs</string>
     <string name="planificar_rutas">Plan routes</string>
     <string name="consultar_saldo_min">Check balance</string>
-    <string name="movi_10">MOVI_10</string>
     <string name="viajes_disponibles_10"><b>Available trips:</b> 10</string>
     <string name="duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles"><b>Duration:</b> Until all available trips are completed</string>
-    <string name="movi_mes">MOVI_MONTH</string>
+    <string name="movi_10">TENMOVI</string>
+    <string name="movi_mes">MOVIMES</string>
+    <string name="movi_trimestral">TRIMOVI</string>
     <string name="viajes_disponibles_30_dias"><b>Available trips:</b> 30 days</string>
     <string name="duraci_n_hasta_que_concluyan_los_30_d_as_despu_s_del_primer_registro"><b>Duration:</b> Until 30 days after the first registration are completed.</string>
-    <string name="movi_trimestral">MOVI_QUARTERLY</string>
     <string name="viajes_disponibles_90_dias"><b>Available trips:</b> 90 days</string>
     <string name="duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro"><b>Duration:</b> Until 90 days after the first registration are completed.</string>
     <string name="t_tulos_disponibles">Available Titles</string>
@@ -140,4 +140,24 @@
     <string name="hold_continue">Hold the "CONTINUE" button to proceed with the process</string>
     <string name="gesti_n">Management %</string>
     <string name="gastos_totales">TOTAL EXPENSES:</string>
+    <string name="datos_personales">Personal data</string>
+    <string name="SinTarjeta">----------</string>
+    <string name="cambiar_datos_personales"><u>Change personal data</u></string>
+    <string name="nuevo_nombre">New name:</string>
+    <string name="nuevo_apellido">New surname:</string>
+    <string name="nuevo_dni">New ID number:</string>
+    <string name="nueva_direcci_n">New address:</string>
+    <string name="nuevo_tel_fono">New phone number:</string>
+    <string name="nuevo_correo">New email:</string>
+    <string name="nuevo_n_bloque">New block Nº:</string>
+    <string name="nuevo_n_piso">New floor Nº:</string>
+    <string name="nuevo_c_p">New P.C:</string>
+    <string name="nueva_ciudad">New city:</string>
+    <string name="valoranos_seg_n_tu_satisfacci_n_de_compra">Rate us based on your purchase satisfaction!</string>
+    <string name="acceso_restringido">Restricted access</string>
+    <string name="cuadro_dialogo_restriccion_entrada">🔒 <b>To access %1$s, you need to purchase a subscription and get the PREMIUM plan.</b></string>
+    <string name="ver_planes">View plans</string>
+    <string name="fecha_de_inicio">start date: </string>
+    <string name="d_as_restantes">Remaining days: </string>
+    <string name="gracias_por_valorar_con">Thank you for valuing with %1$s ⭐</string>
 </resources>

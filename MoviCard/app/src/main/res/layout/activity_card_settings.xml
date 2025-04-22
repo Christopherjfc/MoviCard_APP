@@ -164,6 +164,7 @@
                 android:text="@string/logout"
                 android:textColor="@color/white"
                 app:icon="@drawable/logout"
+                app:iconTint="@color/white"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp" />
 
@@ -178,7 +179,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/movicard_2025"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>

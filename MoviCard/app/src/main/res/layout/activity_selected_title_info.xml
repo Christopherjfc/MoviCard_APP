@@ -54,14 +54,14 @@
             android:layout_height="120dp"
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="5dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@color/background_card_view"
             app:cardCornerRadius="5dp"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textInfo2"
             app:layout_constraintVertical_bias="0.1"
-            app:strokeColor="@color/azul_main">
+            app:strokeColor="@color/strokeInvoices">
 
             <LinearLayout
                 android:id="@+id/linear_cardSelected"
@@ -90,7 +90,7 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="@font/roboto"
                         android:text="@string/movi_10"
-                        android:textColor="@color/text_cambiar_contra"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp" />
 
                     <TextView
@@ -98,14 +98,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/viajes_disponibles_10"
-                        android:textColor="@color/text_cambiar_contra" />
+                        android:textColor="@color/text_primary" />
 
                     <TextView
                         android:id="@+id/duracion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles"
-                        android:textColor="@color/text_cambiar_contra" />
+                        android:textColor="@color/text_primary" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -191,6 +191,7 @@
                 android:text="@string/logout"
                 android:textColor="@color/white"
                 app:icon="@drawable/logout"
+                app:iconTint="@color/white"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp" />
 
@@ -205,7 +206,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/movicard_2025"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>

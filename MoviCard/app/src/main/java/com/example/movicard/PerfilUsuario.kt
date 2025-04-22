@@ -1,38 +1,26 @@
 package com.example.movicard
 
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPerfilUsuarioBinding
-import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.ClienteViewModel
-import com.example.movicard.model.viewmodel.ClienteViewModelFactory
+import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
-import java.io.File
-import java.io.FileOutputStream
+import androidx.core.view.isGone
 
 class PerfilUsuario : BaseActivity() {
     private lateinit var binding: ActivityPerfilUsuarioBinding
@@ -108,24 +96,157 @@ class PerfilUsuario : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = ClienteViewModelFactory(RetrofitInstance.api, sessionManager)
-        val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelCliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+        val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
-        viewModel.cliente.observe(this) { cliente ->
+        viewModelCliente.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
-            binding.nombrePerfil.setText(cliente.nombre + cliente.apellido)
+            binding.nombrePerfil.setText(cliente.nombre + " " + cliente.apellido)
             binding.correo.setText(cliente.correo)
+            binding.nuevoNombre.setText(cliente.nombre)
+            binding.nuevoApellido.setText(cliente.apellido)
+            binding.nuevoDNI.setText(cliente.dni)
+            binding.nuevoCorreo.setText(cliente.correo)
+            binding.nuevoTelefono.setText(cliente.telefono)
+            binding.nuevaDireccion.setText(cliente.direccion)
+            binding.nuevoNPiso.setText(cliente.numero_piso)
+            binding.nuevoNBloque.setText(cliente.numero_bloque)
+            binding.nuevoCodigoPostal.setText(cliente.codigopostal)
+            binding.nuevaCiudad.setText(cliente.ciudad)
+        }
+
+        viewModelSuscripcion.suscripcion.observe(this) { suscripcion ->
+            binding.textSuscripcion.setText(suscripcion.suscripcion)
         }
 
         // Llamamos a la función para iniciar la carga de datos del cliente
-        viewModel.cargarCliente()
+        viewModelCliente.cargarCliente()
+
+        viewModelSuscripcion.cargarSuscripcion()
+
+
+        // Botones para guardar o cancelar el cambio de datos personales
+        binding.btnGuardarDatos.setOnClickListener {
+            val clienteActual = sessionManager.getCliente()
+
+            val nombre = binding.nuevoNombre.text.toString().trim()
+            val apellido = binding.nuevoApellido.text.toString().trim()
+            val dni = binding.nuevoDNI.text.toString().trim()
+            val correo = binding.nuevoCorreo.text.toString().trim()
+            val telefono = binding.nuevoTelefono.text.toString().trim()
+            val direccion = binding.nuevaDireccion.text.toString().trim()
+            val numeroPiso = binding.nuevoNPiso.text.toString().trim()
+            val numeroBloque = binding.nuevoNBloque.text.toString().trim()
+            val codigoPostal = binding.nuevoCodigoPostal.text.toString().trim()
+            val ciudad = binding.nuevaCiudad.text.toString().trim()
+
+            // Validaciones previas
+
+            // 1. Comprobamos campos vacíos obligatorios (excepto número de piso)
+            if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty() || correo.isEmpty() ||
+                telefono.isEmpty() || direccion.isEmpty() || numeroBloque.isEmpty() ||
+                codigoPostal.isEmpty() || ciudad.isEmpty()
+            ) {
+                showToast("Todos los campos deben estar completos (excepto el piso)")
+                return@setOnClickListener
+            }
+
+            // 2. Validación de formato del DNI español
+            if (!dni.matches(Regex("^[XYZ]?[0-9]{7,8}[A-Za-z]$"))) {
+                binding.nuevoDNI.error = "DNI inválido. Debe tener 8 números y 1 letra."
+                return@setOnClickListener
+            }
+
+            // 3. Validación del código postal: 5 dígitos numéricos
+            if (!codigoPostal.matches(Regex("^\\d{5}$"))) {
+                binding.nuevoCodigoPostal.error = "Código postal inválido (debe tener 5 dígitos)"
+                return@setOnClickListener
+            }
+
+            if (clienteActual != null) {
+
+                // Creo un objeto cliente actualizado
+                val clienteActualizado = clienteActual.copy(
+                    nombre = nombre,
+                    apellido = apellido,
+                    dni = dni,
+                    correo = correo,
+                    telefono = telefono,
+                    direccion = direccion,
+                    numero_piso = if (numeroPiso.isEmpty()) null else numeroPiso,
+                    numero_bloque = numeroBloque,
+                    codigopostal = codigoPostal,
+                    ciudad = ciudad,
+                    password = clienteActual.password
+                )
+                viewModelCliente.actualizarDatosCliente(clienteActualizado)
+                viewModelCliente.cargarCliente()
+
+                showToast("Datos actualizados correctamente")
+                toggleVisibilityCambiarDatos()
+            }
+        }
+
+        binding.btnCancelarDatos.setOnClickListener {
+            toggleVisibilityCambiarDatos()
+        }
+
+
+        // Botones para guardar o cancelar el cambio de contraseña
+        binding.btnGuardarContra.setOnClickListener {
+            val clienteActual = sessionManager.getCliente()
+            val actual = binding.contraActual.text.toString()
+
+            if (clienteActual != null && clienteActual.password.toString() != actual) {
+                binding.contraActual.error = "La contraseña no coincide"
+            }
+
+            val nueva = binding.nuevaContra.text.toString()
+            val repetir = binding.repiteNuevaContra.text.toString()
+
+            if (repetir != nueva) {
+                binding.repiteNuevaContra.error = "La contraseña de confirmación no coincide con la nueva"
+                return@setOnClickListener
+            }
+
+            viewModelCliente.cambiarPassword(actual, nueva,
+                onSuccess = {
+                    toggleVisibilityCambiarContra()
+                    showToast("Contraseña actualizada con éxito")
+                    limpiaCamposCambiarContra()
+                },
+                onError = {
+                    print("Error al cambiar la contraseña: $it")
+                }
+            )
+            viewModelCliente.cargarCliente()
+        }
+
+        binding.btnCancelarContra.setOnClickListener {
+            toggleVisibilityCambiarContra()
+            limpiaCamposCambiarContra()
+        }
+
+    }
+
+    // limpia los campos al cancelar o guardar el cambio de conraseña
+    private fun limpiaCamposCambiarContra() {
+        binding.contraActual.text.clear()
+        binding.nuevaContra.text.clear()
+        binding.repiteNuevaContra.text.clear()
+    }
+
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 
     private fun toggleVisibilityCambiarContra() {
-        // Cambiar de contraseña
-        if (binding.cardCambiarContra.visibility == View.GONE) {
+        // se despliega cuando se le da clic y no está visible el cardView
+        if (binding.cardCambiarContra.isGone) {
             TransitionManager.beginDelayedTransition(binding.cardCambiarContra, AutoTransition())
             binding.cardCambiarContra.visibility = View.VISIBLE
             binding.cardSuscripcion.visibility = View.GONE
@@ -133,6 +254,7 @@ class PerfilUsuario : BaseActivity() {
             binding.btnDatosPersonales.visibility = View.GONE
             binding.desplegarContra.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.flecha_abajo, 0)
         } else {
+            // se vuelve invisible cuando se le da clic y está visible el cardView
             TransitionManager.beginDelayedTransition(binding.cardCambiarContra, AutoTransition())
             binding.cardCambiarContra.visibility = View.GONE
             binding.cardSuscripcion.visibility = View.VISIBLE

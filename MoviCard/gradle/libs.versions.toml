@@ -1,6 +1,7 @@
 [versions]
 activityKtx = "1.10.1"
 agp = "8.9.1"
+androidMail = "1.6.7"
 circleimageview = "3.1.0"
 firebaseAuth = "22.1.1"
 firebaseBom = "33.12.0"
@@ -26,6 +27,8 @@ ui = "1.7.8"
 [libraries]
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
+android-activation = { module = "com.sun.mail:android-activation", version.ref = "androidMail" }
+android-mail = { module = "com.sun.mail:android-mail", version.ref = "androidMail" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalytics" }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/background_card_view"
+    app:strokeColor="@color/strokeInvoices"
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 
@@ -14,6 +17,7 @@
             android:id="@+id/textInvoiceName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
             android:textStyle="bold"
             android:textSize="18sp"
             android:text="Nombre de la factura" />
@@ -21,6 +25,7 @@
         <TextView
             android:id="@+id/textInvoiceDate"
             android:layout_width="wrap_content"
+            android:textColor="@color/text_primary"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:text="Fecha: 01/01/2025" />
@@ -30,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@android:color/holo_green_dark"
+            android:textColor="@color/color_precioTotal"
             android:text="Monto: $100.00" />
 
         <LinearLayout
@@ -44,14 +49,18 @@
                 android:id="@+id/btnViewInvoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/button_guardar"
+                android:textColor="@color/button_primary_text"
                 android:text="Ver" />
 
             <Button
                 android:id="@+id/btnDownloadInvoice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/button_guardar"
+                android:textColor="@color/button_primary_text"
                 android:text="Descargar"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

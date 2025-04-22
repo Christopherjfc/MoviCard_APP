@@ -10,7 +10,7 @@ data class Cliente(
     val direccion: String,
     val numero_bloque: String,
     val numero_piso: String?,
-    val codigopostal: Int,
+    val codigopostal: String,
     val ciudad: String,
     val password: String
 )

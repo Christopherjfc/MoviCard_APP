@@ -18,7 +18,8 @@ class SessionManager(context: Context) {
             putString("dni", cliente.dni)
             putString("numero_bloque", cliente.numero_bloque)
             cliente.numero_piso?.let { putString("numero_piso", it) }
-            putInt("codigopostal", cliente.codigopostal)
+            putString("codigopostal", cliente.codigopostal)
+            putString("password", cliente.password)
             apply()
         }
     }
@@ -38,8 +39,8 @@ class SessionManager(context: Context) {
             dni = prefs.getString("dni", "") ?: "",
             numero_bloque = prefs.getString("numero_bloque", "").toString(),
             numero_piso = if (prefs.contains("numero_piso")) prefs.getString("numero_piso", "") else null,
-            codigopostal = prefs.getInt("codigopostal", 0),
-            password = "" // No lo necesitamos, se deja vacío
+            codigopostal = prefs.getString("codigopostal", "") ?: "",
+            password = prefs.getString("password", "") ?: ""
         )
     }
 

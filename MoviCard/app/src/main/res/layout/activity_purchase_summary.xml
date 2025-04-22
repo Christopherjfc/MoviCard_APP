@@ -54,7 +54,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/fecha"
             android:textColor="@color/text_primary"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textInfo" />
@@ -101,10 +101,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="18dp"
                 android:text="@string/suscripci_n_premium"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <View
@@ -149,7 +149,7 @@
                 android:id="@+id/total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/nombres"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -210,7 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </TableRow>
 
             <TableRow>
@@ -221,7 +221,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/apellidos"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -231,7 +231,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </TableRow>
 
             <TableRow>
@@ -242,7 +242,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/correo"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -252,7 +252,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </TableRow>
 
             <TableRow>
@@ -263,7 +263,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/tel_fono"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -273,7 +273,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </TableRow>
 
         </TableLayout>
@@ -286,7 +286,7 @@
             android:layout_marginTop="25dp"
             android:text="@string/informaci_n_del_env_o"
             android:textColor="@color/text_primary"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/infoCliente" />
@@ -310,7 +310,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/direcci_n"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -319,7 +319,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </TableRow>
 
             <TableRow>
@@ -330,7 +330,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/localidad"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -340,10 +340,9 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </TableRow>
         </TableLayout>
-
 
 
         <LinearLayout
@@ -351,24 +350,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/infoEnvio">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/descargar"
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#EDE1AB"
-                app:strokeColor="@color/black"
-                app:strokeWidth="1dp"
-                android:drawableEnd="@drawable/ic_download"
-                android:text="@string/descargar_pdf"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/infoEnvio" />
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/valoranos_seg_n_tu_satisfacci_n_de_compra"
+                android:textColor="@color/text_primary"
+                android:textSize="18sp" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/starGrey"
+                android:numStars="5"
+                android:progressTint="@color/starYellow"
+                android:secondaryProgressTint="@color/starGrey" />
         </LinearLayout>
 
         <!-- Menu bottom navagation -->
@@ -422,6 +428,7 @@
                 android:text="@string/logout"
                 android:textColor="@color/white"
                 app:icon="@drawable/logout"
+                app:iconTint="@color/white"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp" />
 
@@ -436,7 +443,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/movicard_2025"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>

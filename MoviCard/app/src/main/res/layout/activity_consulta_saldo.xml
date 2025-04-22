@@ -47,19 +47,19 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <com.google.android.material.card.MaterialCardView
-            android:backgroundTint="@color/background_card_view"
             android:id="@+id/cardSaldo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
+            android:backgroundTint="@color/background_card_view"
             app:cardCornerRadius="12dp"
-            app:strokeColor="@color/text_primary"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4">
+            app:layout_constraintVertical_bias="0.4"
+            app:strokeColor="@color/text_primary">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,6 +79,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/cantidad_saldo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -88,6 +89,47 @@
                     android:textColor="@color/text_primary"
                     android:textSize="80sp" />
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/fecha_de_inicio"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:id="@+id/fechaCompra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="yyyy-mm-dd"
+                        android:textColor="@color/text_primary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/d_as_restantes"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:id="@+id/dias_restantes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="45"
+                        android:textColor="@color/text_primary" />
+
+                </LinearLayout>
+
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -96,7 +138,6 @@
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="15dp"
                     android:max="100"
-                    android:progress="80"
                     android:progressDrawable="@drawable/custom_progressbar" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -108,9 +149,9 @@
             android:layout_marginHorizontal="100dp"
             android:backgroundTint="@color/azul_main"
             android:text="@string/recargar_saldo"
+            android:textColor="@color/button_primary_text"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/button_primary_text"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -167,7 +208,8 @@
                 android:textColor="@color/white"
                 app:icon="@drawable/logout"
                 app:iconGravity="textStart"
-                app:iconPadding="8dp"/>
+                app:iconPadding="8dp"
+                app:iconTint="@color/white" />
 
             <!-- Copyright -->
             <TextView
@@ -175,12 +217,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:padding="16dp"
                 android:layout_marginTop="60dp"
                 android:layout_marginBottom="60dp"
+                android:gravity="center"
+                android:padding="16dp"
                 android:text="@string/movicard_2025"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>

@@ -19,7 +19,13 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPurchaseSummaryBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.TicketViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 import java.io.File
 import java.io.FileOutputStream
@@ -63,6 +69,8 @@ class PurchaseSummary : BaseActivity() {
         binding.navView.setNavigationItemSelectedListener(navMenuListener)
 
 
+        // Desenmarco todos iconos del menu inferior porque esta clase no pertenece a
+        // ni uno de esos 3
         binding.bottomNavigationView.menu.setGroupCheckable(0, true, false)
         for (i in 0 until binding.bottomNavigationView.menu.size()) {
             binding.bottomNavigationView.menu.getItem(i).isChecked = false
@@ -89,11 +97,39 @@ class PurchaseSummary : BaseActivity() {
         val premium = intent.getStringExtra("premium")
 
 
+        /*
+         *   API + Título de compra
+         */
+
+
+        // creo el SessionManager para poder acceder a los datos guardados del usuario
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+
         // Si el título != null, actualizo el TextView
         if (!titulo.isNullOrEmpty()) {
             binding.productTitle.text = titulo
+            println(titulo)
+            val idCliente = sessionManager.getCliente()?.id ?: -1
+            val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
+            viewModelTicket.existeTicket { existe ->
+                if (existe) {
+                    viewModelTicket.actualizarTicket(titulo, idCliente)
+                    viewModelTicket.cargarTicket()
+                } else {
+                    viewModelTicket.crearTicket(titulo)
+                    viewModelTicket.cargarTicket()
+                }
+            }
+
         } else {
             binding.productTitle.text = premium
+            val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
+
+            viewModelSuscripcion.actualizarASuscripcionPremium()
+            viewModelSuscripcion.cargarSuscripcion()
         }
 
         // Obtengo el precio final de la tarjeta comprada desde el Intent
@@ -114,6 +150,13 @@ class PurchaseSummary : BaseActivity() {
             binding.direccion.setText(getString("direccion"))
             binding.localidad.setText(getString("localidad"))
         }
+
+        // Interacción al asignar un grado de satifacción con el RatingBar
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
+            Toast.makeText(this,
+                getString(R.string.gracias_por_valorar_con, rating.toString()), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 

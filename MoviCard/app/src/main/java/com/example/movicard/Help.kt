@@ -13,18 +13,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityHelpBinding
+import com.example.movicard.email.GmailSender
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.ClienteViewModel
-import com.example.movicard.model.viewmodel.ClienteViewModelFactory
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.*
 
 class Help : BaseActivity() {
 
@@ -66,18 +65,60 @@ class Help : BaseActivity() {
         binding.btnLogout.setOnClickListener { logout() }
 
         // selecciona el tipo de consulta
-        val consultas = listOf(getString(R.string.consulta_general),
+        val consultas = listOf(
+            getString(R.string.consulta_general),
             getString(R.string.problemas_con_la_tarjeta),
             getString(R.string.errores_en_el_saldo_o_recargas),
-            getString(R.string.sugerencias_y_mejoras), getString(R.string.otra_consulta))
+            getString(R.string.sugerencias_y_mejoras), getString(R.string.otra_consulta)
+        )
         configurarSpinner(binding.tipoConsulta, consultas)
 
         // botón que comprueba y envía el mensaje
         binding.btnEnviarMensaje.setOnClickListener {
             if (mensajeValido()) {
-                Toast.makeText(this, "Mensaje enviado.", Toast.LENGTH_SHORT).show()
+                val nombre = binding.nombreUsuario.text.toString().trim()
+                val correo = binding.correoUsuario.text.toString().trim()
+                val mensaje = binding.mensajeUsuario.text.toString().trim()
+                val tipoConsulta = binding.tipoConsulta.selectedItem.toString()
+
+                val asunto = "Consulta: $tipoConsulta"
+                val cuerpo = """
+                    Nombre: $nombre
+                    Correo: $correo
+                    
+                    Mensaje:
+                    $mensaje
+                """.trimIndent()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val sender = GmailSender(
+                            "christopherjfc2@gmail.com", // <-- reemplázalo con tu cuenta
+                            "evihbojhtbgrmuln"       // <-- reemplázalo con tu clave de aplicación
+                        )
+                        sender.sendMail(asunto, cuerpo, "2025.movicard@gmail.com")
+
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@Help,
+                                "Mensaje enviado correctamente.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            binding.mensajeUsuario.setText("") // Limpiar campo mensaje si quieres
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                this@Help,
+                                "Error al enviar el mensaje: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
             } else {
-                Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -96,13 +137,13 @@ class Help : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = ClienteViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModel.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
-            binding.nombreUsuario.setText(cliente.nombre + cliente.apellido)
+            binding.nombreUsuario.setText(cliente.nombre + " " + cliente.apellido)
             binding.correoUsuario.setText(cliente.correo)
         }
 
@@ -120,25 +161,45 @@ class Help : BaseActivity() {
     }
 
     private fun configurarSpinner(spinner: Spinner, opciones: List<String>) {
-        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getView(position, convertView, parent)
-                (view as TextView).setTextColor(resources.getColor(R.color.text_cambiar_contra, theme)) // Establecer color aquí
-                return view
-            }
+        val adapter =
+            object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones) {
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getView(position, convertView, parent)
+                    (view as TextView).setTextColor(
+                        resources.getColor(
+                            R.color.text_cambiar_contra,
+                            theme
+                        )
+                    ) // Establecer color aquí
+                    return view
+                }
 
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getDropDownView(position, convertView, parent)
-                (view as TextView).setTextColor(resources.getColor(R.color.text_cambiar_contra, theme)) // Establecer color aquí también
-                return view
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    val view = super.getDropDownView(position, convertView, parent)
+                    (view as TextView).setTextColor(
+                        resources.getColor(
+                            R.color.text_cambiar_contra,
+                            theme
+                        )
+                    ) // Establecer color aquí también
+                    return view
+                }
             }
-        }
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 // Aquí puedes obtener el texto seleccionado si lo necesitas
                 if (position > 0) {
                     val seleccionado = parent.getItemAtPosition(position).toString()
@@ -148,7 +209,6 @@ class Help : BaseActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
-
 
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
@@ -166,7 +226,7 @@ class Help : BaseActivity() {
         navView.layoutParams = layoutParams
     }
 
-    
+
     // Listener para los elementos del MENÚ LATERAL
     private val navMenuListener = NavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -174,10 +234,12 @@ class Help : BaseActivity() {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
             }
+
             R.id.nav_suscription -> {
                 // Abrir suscripciones (Princin cards)
                 startActivity(Intent(this, PricingCards::class.java))
             }
+
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
@@ -209,6 +271,7 @@ class Help : BaseActivity() {
                 startActivity(Intent(this, Principal::class.java))
                 return true
             }
+
             R.id.tarjeta -> {
                 startActivity(Intent(this, TarjetaUUID::class.java))
                 return true

@@ -11,9 +11,18 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityConsultaSaldoBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TicketViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ConsultaSaldo : BaseActivity() {
     private lateinit var binding: ActivityConsultaSaldoBinding
@@ -34,7 +43,13 @@ class ConsultaSaldo : BaseActivity() {
 
         // Configuración de DrawerLayout después de la Toolbar
         drawerLayout = binding.drawerLayoutConsulta
-        toggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.open_nav, R.string.close_nav)
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            binding.toolbar,
+            R.string.open_nav,
+            R.string.close_nav
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -49,7 +64,7 @@ class ConsultaSaldo : BaseActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
 
         // Cambia a la actividad donde se encuentran los tipos de tickets
-        binding.btnTipoTarjeta.setOnClickListener{
+        binding.btnTipoTarjeta.setOnClickListener {
             val intent = Intent(this, TicketTypes::class.java)
             startActivity(intent)
         }
@@ -59,9 +74,83 @@ class ConsultaSaldo : BaseActivity() {
         setDrawerWidth(binding.navView, 0.55)
 
 
+        /*
+        *
+        * RELLENO CAMPOS DEL USUARO CON LA API Y NO MANUALMENTE
+        *
+        */
+
+        // creo el SessionManager para poder acceder a los datos guardados del usuario
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelTicket =
+            ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
+        // Cargar y observar el ticket
+        viewModelTicket.cargarTicket()
+        viewModelTicket.existeTicket { existe ->
+            if (existe) {
+                viewModelTicket.ticket.observe(this) { ticket ->
+                    if (ticket != null) {
+                        val tipo = ticket.tipo
+                        val cantidad = ticket.cantidad
+                        val fechaCompra = formatFecha(ticket.fecha_inicio)
+                        val diasRestantes = ticket.duracion_dias
+
+                        when (tipo) {
+                            "TENMOVI" -> {
+                                binding.cantidadSaldo.text = cantidad?.toString() ?: "-"
+                                binding.fechaCompra.text = fechaCompra ?: "-"
+                                binding.diasRestantes.text = "∞"
+                                val progreso = (cantidad?.coerceAtMost(10)?.times(10)) ?: 0
+                                binding.progressBar.progress = progreso
+                            }
+
+                            "MOVIMES" -> {
+                                binding.cantidadSaldo.text = "∞"
+                                binding.fechaCompra.text = fechaCompra ?: "-"
+                                binding.diasRestantes.text = diasRestantes?.toString() ?: "-"
+                                binding.progressBar.progress = 100
+                            }
+
+                            "TRIMOVI" -> {
+                                binding.cantidadSaldo.text = "∞"
+                                binding.fechaCompra.text = fechaCompra ?: "-"
+                                binding.diasRestantes.text = diasRestantes?.toString() ?: "-"
+                                binding.progressBar.progress = 100
+                            }
+
+                            else -> {
+                                binding.cantidadSaldo.text = "-"
+                                binding.fechaCompra.text = "-"
+                                binding.diasRestantes.text = "-"
+                                binding.progressBar.progress = 0
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                binding.cantidadSaldo.text = "-"
+                binding.fechaCompra.text = "-"
+                binding.diasRestantes.text = "-"
+                binding.progressBar.progress = 0
+            }
+        }
+
+
+        // cerrar sesión
         binding.btnLogout.setOnClickListener {
             logout()
         }
+    }
+
+    // Me formatea la fecha Date a yyyy--mm-dd
+    fun formatFecha(fecha: Date?): String {
+        // Formato de fecha: "yyyy-MM-dd"
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return format.format(fecha)
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
@@ -87,10 +176,12 @@ class ConsultaSaldo : BaseActivity() {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
             }
+
             R.id.nav_suscription -> {
                 // Abrir suscripciones (Princin cards)
                 startActivity(Intent(this, PricingCards::class.java))
             }
+
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
@@ -103,7 +194,7 @@ class ConsultaSaldo : BaseActivity() {
 
     // Lógica de logout
     private fun logout() {
-        startActivity(Intent(this, Login ::class.java))
+        startActivity(Intent(this, Login::class.java))
         finish()
     }
 
@@ -117,18 +208,20 @@ class ConsultaSaldo : BaseActivity() {
         }
     }
 
-    private val bottomNavListener = fun(item: MenuItem): Boolean{
+    private val bottomNavListener = fun(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.help -> {
                 // Cambia a ayuda
                 startActivity(Intent(this, Help::class.java))
                 return true
             }
+
             R.id.home -> {
                 // Cambia a pantalla principal
                 startActivity(Intent(this, Principal::class.java))
                 return true
             }
+
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
                 startActivity(Intent(this, TarjetaUUID::class.java))

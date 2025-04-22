@@ -44,4 +44,48 @@ class ClienteViewModel(
             }
         }
     }
+
+    fun actualizarDatosCliente(cliente: Cliente) {
+        viewModelScope.launch {
+            try {
+                api.actualizarDatosCliente(
+                    id = cliente.id,
+                    nombre = cliente.nombre,
+                    apellido = cliente.apellido,
+                    dni = cliente.dni,
+                    correo = cliente.correo,
+                    telefono = cliente.telefono,
+                    direccion = cliente.direccion,
+                    numeroBloque = cliente.numero_bloque,
+                    numeroPiso = cliente.numero_piso ?: "",
+                    codigoPostal = cliente.codigopostal,
+                    ciudad = cliente.ciudad,
+                    password = cliente.password
+                )
+                cargarCliente() // recarga los datos actualizados
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun cambiarPassword(actual: String, nueva: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val cliente = sessionManager.getCliente()
+        if (cliente != null) {
+            viewModelScope.launch {
+                try {
+                    val response = api.actualizarPassword(cliente.id, actual, nueva)
+                    if (response.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        onError("Error: ${response.code()} - ${response.message()}")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    onError("Excepción: ${e.localizedMessage}")
+                }
+            }
+        }
+    }
+
 }

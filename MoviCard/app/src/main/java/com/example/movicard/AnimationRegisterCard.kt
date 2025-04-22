@@ -25,6 +25,12 @@ class AnimationRegisterCard : AppCompatActivity() {
     private var titulo: String? = null
     private var premium: String? = null
     private var precio: String? = null
+    private var nombre: String? = null
+    private var apellido: String? = null
+    private var correo: String? = null
+    private var telefono: String? = null
+    private var  direccion: String? = null
+    private var localidad: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +41,26 @@ class AnimationRegisterCard : AppCompatActivity() {
         premium = intent.getStringExtra("premium") ?: ""
         precio = intent.getStringExtra("precio") ?: ""
 
+        nombre = intent.getStringExtra("nombre")
+        apellido = intent.getStringExtra("apellido")
+        correo = intent.getStringExtra("correo")
+        telefono = intent.getStringExtra("telefono")
+        direccion = intent.getStringExtra("direccion")
+        localidad = intent.getStringExtra("localidad")
+
+
         val bundle = intent.extras ?: Bundle()  // Aseguramos que no sea nulo
 
         // 🔹 Aseguramos que "titulo" se mantenga en el bundle
         bundle.putString("titulo", titulo)
         bundle.putString("precio", precio)
         bundle.putString("premium", premium)
+        bundle.putString("nombre", nombre)
+        bundle.putString("apellido", apellido)
+        bundle.putString("correo", correo)
+        bundle.putString("telefono", telefono)
+        bundle.putString("direccion", direccion)
+        bundle.putString("localidad", localidad)
 
         setContent {
             ModernSuccessAnimation(

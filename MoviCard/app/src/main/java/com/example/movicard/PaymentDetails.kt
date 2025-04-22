@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import com.example.movicard.databinding.ActivityGraficasBinding
 import com.example.movicard.databinding.ActivityPaymentDetailsBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.ClienteViewModel
-import com.example.movicard.model.viewmodel.ClienteViewModelFactory
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 
@@ -119,7 +114,7 @@ class PaymentDetails : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = ClienteViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta

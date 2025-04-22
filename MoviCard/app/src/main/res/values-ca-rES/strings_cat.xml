@@ -2,14 +2,14 @@
 <resources>
     <string name="app_name">MoviCard</string>
     <string name="bienvenido">Benvingut!</string>
-    <string name="registrate_inicia_sesi_n">Registra´t / Inicia sessió</string>
+    <string name="registrate_inicia_sesi_n">Registra’t / Inicia sessió</string>
     <string name="jmiguel94_gmail_com">jmiguel94@gmail.com</string>
-    <string name="registrate">Registra´t</string>
+    <string name="registrate">Registra’t</string>
     <string name="iniciar_sesi_n">Inicia sessió</string>
     <string name="contraseña">*************</string>
     <string name="bienvenido_de_nuevo">Benvingut de nou!</string>
     <string name="inicia_sesi_n_o">Inicia sessió o</string>
-    <string name="registrate_para_crea_una_cuenta">Registra´t per crear un compte</string>
+    <string name="registrate_para_crea_una_cuenta">Registra’t per crear un compte</string>
     <string name="introduzca_la_uuid_de_la_tarjeta">Introdueix la <u>UUID</u> de la targeta:</string>
     <string name="entrar">Entrar</string>
     <string name="uuid">UUID:</string>
@@ -42,7 +42,7 @@
     <string name="cambiar_contrasenya"><u>Canviar contrasenya</u></string>
     <string name="cancelar">Cancel·lar</string>
     <string name="guardar">Guardar</string>
-    <string name="perfil_de_usuario">Perfil d´usuari</string>
+    <string name="perfil_de_usuario">Perfil d’usuari</string>
     <string name="suscripciones">Subscripcions</string>
     <string name="configuraci_n">Configuració</string>
     <string name="logout">Tancar sessió</string>
@@ -88,7 +88,7 @@
     <string name="ejemplo_apellidos">Introdueix els teus cognoms</string>
     <string name="ejemplo_correo">Correu electrònic vàlid</string>
     <string name="ejemplo_numero">Número de telèfon amb prefix</string>
-    <string name="ejemplo_direccion">Adreça d´enviament</string>
+    <string name="ejemplo_direccion">Adreça d’enviament</string>
     <string name="ejemplo_localidad">Ciutat o localitat</string>
     <string name="cognoms">Cognoms</string>
     <string name="correu">Correu</string>
@@ -105,8 +105,8 @@
     <string name="resumen_de_la_compra">Resum de la compra</string>
     <string name="fecha">Data:</string>
     <string name="pagado"><u>PAGAT</u></string>
-    <string name="informaci_n_del_usuario">Informació de l´usuari:</string>
-    <string name="informaci_n_del_env_o">Informació de l´enviament:</string>
+    <string name="informaci_n_del_usuario">Informació de l’usuari:</string>
+    <string name="informaci_n_del_env_o">Informació de l’enviament:</string>
     <string name="descargar_pdf">Descarregar PDF</string>
     <string name="apellidos">Cognoms:</string>
     <string name="nombres">Noms:</string>
@@ -116,7 +116,7 @@
     <string name="localidad">Localitat:</string>
     <string name="consultar_saldo">CONSULTAR SALDO</string>
     <string name="consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta">- Consultar saldo\n- Recargar saldo\n- Bloqueig de targeta\n- Asseguranca de targeta</string>
-    <string name="consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta_n_estadisticas_n_facturas_n_planificar_rutas_n_notificaciones_personalizadas">- Consultar saldo\n- Recargar saldo\n- Bloqueig de targeta\n- Asseguranca de targeta\n- Estadístiques\n- Factures\n- Planificar rutes\n- Notificacions personalitzades</string>
+    <string name="consultar_saldo_n_recargar_saldo_n_bloqueo_de_tarjeta_n_seguro_de_tarjeta_n_estadisticas_n_facturas_n_planificar_rutas_n_notificaciones_personalizadas">- Consultar saldo\n- Recargar saldo\n- Bloqueig de targeta\n- Asseguranca de targeta\n- Estadístiques\n- Factures\n- Planificar rutes</string>
     <string name="detalle_del_pedido">Detall de la Comanda</string>
     <string name="producto_suscripci_n_premium">Producte: Subscripció Premium</string>
     <string name="cantidad_1">Quantitat: 1</string>
@@ -126,13 +126,13 @@
     <string name="gr_ficas">Gràfiques</string>
     <string name="planificar_rutas">Planificar rutes</string>
     <string name="consultar_saldo_min">Consultar saldo</string>
-    <string name="movi_10">MOVI_10</string>
     <string name="viajes_disponibles_10"><b>Viatges disponibles:</b> 10</string>
     <string name="duraci_n_hasta_que_concluyan_todos_los_viajes_disponibles"><b>Durada:</b> Fins que concloguin tots els viatges disponibles</string>
-    <string name="movi_mes">MOVI_MES</string>
+    <string name="movi_10">TENMOVI</string>
+    <string name="movi_mes">MOVIMES</string>
+    <string name="movi_trimestral">TRIMOVI</string>
     <string name="viajes_disponibles_30_dias"><b>Viatges disponibles:</b> 30 dies</string>
     <string name="duraci_n_hasta_que_concluyan_los_30_d_as_despu_s_del_primer_registro"><b>Durada:</b> Fins que concloguin els 30 dies després del primer registre.</string>
-    <string name="movi_trimestral">MOVI_TRIMESTRAL</string>
     <string name="viajes_disponibles_90_dias"><b>Viatges disponibles:</b> 90 dies</string>
     <string name="duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro"><b>Durada:</b> Fins que concloguin els 90 dies després del primer registre.</string>
     <string name="t_tulos_disponibles">Títols disponibles</string>
@@ -141,4 +141,24 @@
     <string name="hold_continue">Mantingui premut el botó "CONTINUAR" per continuar amb el tràmit</string>
     <string name="gesti_n">Gestió %</string>
     <string name="gastos_totales">DESPESES TOTALS:</string>
+    <string name="datos_personales">Dades personals</string>
+    <string name="SinTarjeta">----------</string>
+    <string name="cambiar_datos_personales"><u>Canviar dades personals</u></string>
+    <string name="nuevo_nombre">Nom nou:</string>
+    <string name="nuevo_apellido">Cognom nou:</string>
+    <string name="nuevo_dni">DNI nou:</string>
+    <string name="nueva_direcci_n">Adreça nova:</string>
+    <string name="nuevo_tel_fono">Telèfon nou:</string>
+    <string name="nuevo_correo">Correu nou:</string>
+    <string name="nuevo_n_bloque">Nou Nº bloc:</string>
+    <string name="nuevo_n_piso">Nou Nº pis:</string>
+    <string name="nuevo_c_p">Nou C.P:</string>
+    <string name="nueva_ciudad">Ciutat nova:</string>
+    <string name="valoranos_seg_n_tu_satisfacci_n_de_compra">Valora’ns segons la teva satisfacció de compra!</string>
+    <string name="acceso_restringido">Accés restringit</string>
+    <string name="cuadro_dialogo_restriccion_entrada">🔒 <b>Per poder accedir a %1$s necessites comprar una subscripció i obtenir el pla PREMIUM.</b></string>
+    <string name="ver_planes">Veure plans</string>
+    <string name="fecha_de_inicio">Data d’inici: </string>
+    <string name="d_as_restantes">Dies restants: </string>
+    <string name="gracias_por_valorar_con">Gràcies per valorar amb %1$s ⭐</string>
 </resources>

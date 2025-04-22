@@ -1,5 +1,6 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -9,7 +10,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPrincipalBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 
 class Principal : BaseActivity() {
@@ -41,7 +47,13 @@ class Principal : BaseActivity() {
 
         // Configuración de DrawerLayout después de la Toolbar
         drawerLayout = binding.drawerLayoutMain
-        toggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.open_nav, R.string.close_nav)
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            binding.toolbar,
+            R.string.open_nav,
+            R.string.close_nav
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
@@ -49,7 +61,6 @@ class Principal : BaseActivity() {
         // Aplica el color blanco a la hamburguesa del toolbar
         val iconColor = resources.getColor(R.color.white, theme)
         toggle.drawerArrowDrawable.color = iconColor
-
 
 
         // Manejar la navegación en el menú lateral
@@ -61,6 +72,20 @@ class Principal : BaseActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
 
 
+        /*
+         * LE CREO UNA SUSCRIPCIÓN AL USUARIO
+         */
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelSuscripcion =
+            ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
+
+        viewModelSuscripcion.creaSuscripcion()
+        viewModelSuscripcion.cargarSuscripcion()
+
+
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
 
@@ -68,21 +93,53 @@ class Principal : BaseActivity() {
             startActivity(Intent(this, ConsultaSaldo::class.java))
         }
 
-        binding.btnGraficas.setOnClickListener{
-            startActivity(Intent(this, Graficas::class.java))
-        }
+        viewModelSuscripcion.suscripcion.observe(this) { suscripcion ->
+            binding.btnGraficas.setOnClickListener {
+                if (suscripcion.suscripcion == "PREMIUM") {
+                    startActivity(Intent(this, Graficas::class.java))
+                } else {
+                    mostrarDialogoPremium(getString(R.string.gr_ficas))
+                }
+            }
 
-        binding.btnFacturas.setOnClickListener {
-            startActivity(Intent(this, Invoices::class.java))
+            binding.btnFacturas.setOnClickListener {
+                if (suscripcion.suscripcion == "PREMIUM") {
+                    startActivity(Intent(this, Invoices::class.java))
+                } else {
+                    mostrarDialogoPremium(getString(R.string.facturas))
+                }
+            }
         }
 
         binding.btnLogout.setOnClickListener {
             logout()
         }
-
     }
 
-    // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
+    /*
+     * Muestro un dialogo emergente si el usuario con plan GRATUITO quieroe entrar a las
+     * pantallas Graficas e Invoices. Para estas pantallas se necesita el plan PREMIUM
+     *
+     * Añado también un botón que redirije al usuario a la activity donde puede
+     * conseguir el plan PREMIUM
+     */
+
+    private fun mostrarDialogoPremium(destino: String) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.acceso_restringido))
+            .setMessage(getString(R.string.cuadro_dialogo_restriccion_entrada, destino))
+            .setPositiveButton(getString(R.string.ver_planes)) { _, _ ->
+                startActivity(Intent(this, PricingCards::class.java))
+            }
+            .setNegativeButton(getString(R.string.cancelar), null)
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+
+    // Méthod para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -105,10 +162,12 @@ class Principal : BaseActivity() {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
             }
+
             R.id.nav_suscription -> {
                 // Abrir suscripciones (Princin cards)
                 startActivity(Intent(this, PricingCards::class.java))
             }
+
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
@@ -121,7 +180,7 @@ class Principal : BaseActivity() {
 
     // Lógica de logout
     private fun logout() {
-        startActivity(Intent(this, Login ::class.java))
+        startActivity(Intent(this, Login::class.java))
         finish()
     }
 
@@ -142,6 +201,7 @@ class Principal : BaseActivity() {
                 startActivity(Intent(this, Help::class.java))
                 return true
             }
+
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
                 startActivity(Intent(this, TarjetaUUID::class.java))
