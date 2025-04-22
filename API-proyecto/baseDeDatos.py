@@ -6,8 +6,7 @@ def connect_to_db():
             host="localhost",
             user="root",
             password="12345",
-            database="movicard",
-            port=3307
+            database="movicard"
         )
         return connection
     except mariadb.Error as err:

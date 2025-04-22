@@ -15,6 +15,11 @@ class EstadoEnum(str, Enum):
 class TipoTransporteEnum(str, Enum):
     METRO = "METRO"
     RENFE = "RENFE"
+    
+class TicketTipo(str, Enum):
+    TENMOVI = "TENMOVI"
+    MOVIMES = "MOVIMES"
+    TRIMOVI = "TRIMOVI"
 
 class Cliente(BaseModel):
     id: int
@@ -33,17 +38,22 @@ class Cliente(BaseModel):
 class Suscripcion(BaseModel):
     id: int
     suscripcion: PlanEnum
+    id_cliente: int
+    
 
-class Saldo(BaseModel):
+class Ticket(BaseModel):
     id: int
-    cantidad: int
-    duracion: date
+    tipo: TicketTipo
+    cantidad: Optional[int] = None
+    duracion_dias: Optional[int] = None
+    fecha_inicio: Optional[date] = None
+    id_cliente: int
 
 class TarjetaMoviCard(BaseModel):
     id: int
     UUID: Optional[str] = None 
     id_suscripcion: int
-    id_saldo: int
+    id_ticket: int
     estadotarjeta: EstadoEnum
 
 class Destino(BaseModel):
