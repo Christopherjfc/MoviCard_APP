@@ -161,4 +161,6 @@
     <string name="fecha_de_inicio">Data d’inici: </string>
     <string name="d_as_restantes">Dies restants: </string>
     <string name="gracias_por_valorar_con">Gràcies per valorar amb %1$s ⭐</string>
+    <string name="activada">ACTIVADA</string>
+    <string name="bloqueada">BLOQUEJADA</string>
 </resources>

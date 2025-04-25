@@ -113,6 +113,31 @@
                 app:drawableEndCompat="@drawable/flecha_derecha" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/cardCancelarSuscripion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cardBloqueaTarjeta">
+
+            <TextView
+                android:id="@+id/cancelarSuscripion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/text_primary"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/roboto"
+                android:text="@string/bloquea_desbloquea_tarjeta"
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/flecha_derecha" />
+        </LinearLayout>
+
 
         <!-- Menu bottom navagation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView

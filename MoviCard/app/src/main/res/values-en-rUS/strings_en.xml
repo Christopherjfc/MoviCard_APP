@@ -160,4 +160,6 @@
     <string name="fecha_de_inicio">start date: </string>
     <string name="d_as_restantes">Remaining days: </string>
     <string name="gracias_por_valorar_con">Thank you for valuing with %1$s ⭐</string>
+    <string name="activada">ACTIVATED</string>
+    <string name="bloqueada">BLOCKED</string>
 </resources>

@@ -109,35 +109,6 @@
                         android:textSize="14sp" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="@string/correo_electr_nico"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:backgroundTint="@color/white"
-                    app:cardCornerRadius="0dp"
-                    app:strokeColor="#99000000">
-
-                    <EditText
-                        android:id="@+id/correoUsuario"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:backgroundTint="@android:color/transparent"
-                        android:hint="@string/ejemplo_nombre_gmail_com"
-                        android:textColor="@color/text_cambiar_contra"
-                        android:textColorHint="@color/text_cambiar_contra_editText"
-                        android:textSize="14sp" />
-                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:layout_width="wrap_content"

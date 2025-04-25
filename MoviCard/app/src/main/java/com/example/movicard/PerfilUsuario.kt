@@ -21,6 +21,7 @@ import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.isGone
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 
 class PerfilUsuario : BaseActivity() {
     private lateinit var binding: ActivityPerfilUsuarioBinding
@@ -99,6 +100,7 @@ class PerfilUsuario : BaseActivity() {
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
         val viewModelCliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModelCliente.cliente.observe(this) { cliente ->
@@ -119,12 +121,19 @@ class PerfilUsuario : BaseActivity() {
 
         viewModelSuscripcion.suscripcion.observe(this) { suscripcion ->
             binding.textSuscripcion.setText(suscripcion.suscripcion)
+            viewModelTarjeta.crearTarjeta(suscripcion.id)
+        }
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            binding.textUUIDTarjeta.setText(tarjeta?.estadotarjeta)
         }
 
         // Llamamos a la función para iniciar la carga de datos del cliente
         viewModelCliente.cargarCliente()
 
         viewModelSuscripcion.cargarSuscripcion()
+
+        viewModelTarjeta.cargarTarjeta()
 
 
         // Botones para guardar o cancelar el cambio de datos personales

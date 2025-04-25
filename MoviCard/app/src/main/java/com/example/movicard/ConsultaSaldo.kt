@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityConsultaSaldoBinding
 import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.TicketViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
@@ -76,7 +77,7 @@ class ConsultaSaldo : BaseActivity() {
 
         /*
         *
-        * RELLENO CAMPOS DEL USUARO CON LA API Y NO MANUALMENTE
+        * RELLENO CAMPOS DEL USUARO CON LA API
         *
         */
 
@@ -85,66 +86,40 @@ class ConsultaSaldo : BaseActivity() {
 
         // creo el ViewModel usando el Factory personalizado
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
-        val viewModelTicket =
-            ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
-        // Cargar y observar el ticket
-        viewModelTicket.cargarTicket()
-        viewModelTicket.existeTicket { existe ->
-            if (existe) {
-                viewModelTicket.ticket.observe(this) { ticket ->
-                    if (ticket != null) {
-                        val tipo = ticket.tipo
-                        val cantidad = ticket.cantidad
-                        val fechaCompra = formatFecha(ticket.fecha_inicio)
-                        val diasRestantes = ticket.duracion_dias
+        val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
 
-                        when (tipo) {
-                            "TENMOVI" -> {
-                                binding.cantidadSaldo.text = cantidad?.toString() ?: "-"
-                                binding.fechaCompra.text = fechaCompra ?: "-"
-                                binding.diasRestantes.text = "∞"
-                                val progreso = (cantidad?.coerceAtMost(10)?.times(10)) ?: 0
-                                binding.progressBar.progress = progreso
-                            }
-
-                            "MOVIMES" -> {
-                                binding.cantidadSaldo.text = "∞"
-                                binding.fechaCompra.text = fechaCompra ?: "-"
-                                binding.diasRestantes.text = diasRestantes?.toString() ?: "-"
-                                binding.progressBar.progress = 100
-                            }
-
-                            "TRIMOVI" -> {
-                                binding.cantidadSaldo.text = "∞"
-                                binding.fechaCompra.text = fechaCompra ?: "-"
-                                binding.diasRestantes.text = diasRestantes?.toString() ?: "-"
-                                binding.progressBar.progress = 100
-                            }
-
-                            else -> {
-                                binding.cantidadSaldo.text = "-"
-                                binding.fechaCompra.text = "-"
-                                binding.diasRestantes.text = "-"
-                                binding.progressBar.progress = 0
-                            }
-                        }
-                    }
-                }
-
+        viewModelTarjeta.cargarTarjeta()
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            if (tarjeta?.estadotarjeta == "BLOQUEADA") {
+                mostrarDialogoTarjetaBloqueada()
             } else {
-                binding.cantidadSaldo.text = "-"
-                binding.fechaCompra.text = "-"
-                binding.diasRestantes.text = "-"
-                binding.progressBar.progress = 0
+                inicializaUITicket(viewModelTicket)
             }
         }
-
 
         // cerrar sesión
         binding.btnLogout.setOnClickListener {
             logout()
         }
     }
+
+    private fun mostrarDialogoTarjetaBloqueada() {
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Tarjeta Bloqueada")
+            .setMessage("🔒 Tu tarjeta está bloqueada. No puedes consultar el saldo.\n\nVuelve a activarla desde tu perfil.")
+            .setCancelable(false)
+            .setPositiveButton("Volver al inicio") { _, _ ->
+                startActivity(Intent(this, Principal::class.java))
+                finish()
+            }
+            .show()
+
+        dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+            resources.getColor(R.color.text_primary, theme)
+        )
+    }
+
 
     // Me formatea la fecha Date a yyyy--mm-dd
     fun formatFecha(fecha: Date?): String {
@@ -198,6 +173,52 @@ class ConsultaSaldo : BaseActivity() {
         finish()
     }
 
+    private fun inicializaUITicket(viewModelTicket: TicketViewModel) {
+        // Cargar y observar el ticket
+        viewModelTicket.cargarTicket()
+        viewModelTicket.existeTicket { existe ->
+            if (existe) {
+                viewModelTicket.ticket.observe(this) { ticket ->
+                    if (ticket != null) {
+                        val tipo = ticket.tipo
+                        val cantidad = ticket.cantidad
+                        val fechaCompra = formatFecha(ticket.fecha_inicio)
+                        val diasRestantes = ticket.duracion_dias
+
+                        when (tipo) {
+                            "TENMOVI" -> {
+                                binding.cantidadSaldo.text = cantidad?.toString() ?: "-"
+                                binding.fechaCompra.text = fechaCompra ?: "-"
+                                binding.diasRestantes.text = "∞"
+                                val progreso = (cantidad?.coerceAtMost(10)?.times(10)) ?: 0
+                                binding.progressBar.progress = progreso
+                            }
+
+                            "MOVIMES", "TRIMOVI" -> {
+                                binding.cantidadSaldo.text = "∞"
+                                binding.fechaCompra.text = fechaCompra ?: "-"
+                                binding.diasRestantes.text = diasRestantes?.toString() ?: "-"
+                                binding.progressBar.progress = 100
+                            }
+
+                            else -> {
+                                binding.cantidadSaldo.text = "-"
+                                binding.fechaCompra.text = "-"
+                                binding.diasRestantes.text = "-"
+                                binding.progressBar.progress = 0
+                            }
+                        }
+                    }
+                }
+
+            } else {
+                binding.cantidadSaldo.text = "-"
+                binding.fechaCompra.text = "-"
+                binding.diasRestantes.text = "-"
+                binding.progressBar.progress = 0
+            }
+        }
+    }
 
     override fun onBackPressed() {
         // Si el drawer está abierto, cerrarlo al presionar la tecla de retroceso

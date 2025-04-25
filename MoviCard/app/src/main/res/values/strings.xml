@@ -161,4 +161,9 @@
     <string name="fecha_de_inicio">Fecha de inicio: </string>
     <string name="d_as_restantes">Días restantes: </string>
     <string name="gracias_por_valorar_con">Gracias por valorar con %1$s ⭐</string>
+    <string name="activada">ACTIVADA</string>
+    <string name="bloqueada">BLOQUEADA</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="est_totalmente_seguro_de_que_quiere_cancelar_la_suscripci_n">\n¿Está totalmente seguro de que quiere cancelar la Suscripción?</string>
+    <string name="cancelar_plan_premium">Cancelar plan PREMIUM</string>
 </resources>

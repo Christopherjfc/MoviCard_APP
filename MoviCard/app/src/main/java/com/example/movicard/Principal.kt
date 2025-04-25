@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
@@ -71,6 +72,12 @@ class Principal : BaseActivity() {
         binding.bottomNavigationView.selectedItemId = R.id.home
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
 
+        // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
+        setDrawerWidth(binding.navView, 0.55)
+
+        binding.btnSaldo.setOnClickListener {
+            startActivity(Intent(this, ConsultaSaldo::class.java))
+        }
 
         /*
          * LE CREO UNA SUSCRIPCIÓN AL USUARIO
@@ -79,21 +86,16 @@ class Principal : BaseActivity() {
 
         // creo el ViewModel usando el Factory personalizado
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
-        val viewModelSuscripcion =
-            ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
+        val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
 
         viewModelSuscripcion.creaSuscripcion()
         viewModelSuscripcion.cargarSuscripcion()
 
 
-        // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
-        setDrawerWidth(binding.navView, 0.55)
-
-        binding.btnSaldo.setOnClickListener {
-            startActivity(Intent(this, ConsultaSaldo::class.java))
-        }
-
+        // Creo Tarjeta MoviCard y gestiono actividades con AlertDialog si
+        // el usuario no tiene un plan PREMIUM para poder acceder a ellas
         viewModelSuscripcion.suscripcion.observe(this) { suscripcion ->
+
             binding.btnGraficas.setOnClickListener {
                 if (suscripcion.suscripcion == "PREMIUM") {
                     startActivity(Intent(this, Graficas::class.java))

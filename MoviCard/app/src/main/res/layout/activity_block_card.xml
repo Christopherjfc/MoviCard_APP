@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rowdies"
                 android:layout_marginStart="10dp"
-                android:text="ACTIVA"
+                android:text="@string/activada"
                 android:textColor="#34C759"
                 android:textSize="18sp"/>
         </LinearLayout>
@@ -142,7 +142,7 @@
                 android:layout_height="50dp"
                 android:backgroundTint="@color/btn_gris"
                 android:text="@string/desbloquear"
-                android:textColor="@color/black"
+                android:textColor="@color/text_primary"
                 android:fontFamily="@font/roboto"
                 android:textSize="16sp"/>
         </LinearLayout>

@@ -14,16 +14,25 @@ class UsuarioViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         // Verificamos que el ViewModel solicitado sea del tipo correcto
         return when {
+
+            // CLIENTE
             modelClass.isAssignableFrom(ClienteViewModel::class.java) -> {
                 ClienteViewModel(api, sessionManager) as T
             }
 
+            // SUSCRIPCIÓN
             modelClass.isAssignableFrom(SuscripcionViewModel::class.java) -> {
                 SuscripcionViewModel(api, sessionManager) as T
             }
 
+            // TICKET
             modelClass.isAssignableFrom(TicketViewModel::class.java) -> {
                 TicketViewModel(api, sessionManager) as T
+            }
+
+            // TARJETA MOVICARD
+            modelClass.isAssignableFrom(TarjetaViewModel::class.java) -> {
+                TarjetaViewModel(api, sessionManager) as T
             }
             // Agregá más ViewModels aquí si es necesario
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -11,7 +11,12 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityBlockCardBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 
 class BlockCard : BaseActivity() {
@@ -64,7 +69,59 @@ class BlockCard : BaseActivity() {
         setDrawerWidth(binding.navView, 0.55)
 
         binding.btnLogout.setOnClickListener { logout() }
+
+        binding.btnBloquear.isEnabled = true
+        binding.btnDesbloquear.isEnabled = false
+        /*
+        * ACTUALIZO LOS TEXTOS DE LA ACTIVITY
+        *                Y
+        * EL ESTADO DE LA TARJETA CON LA API
+        */
+
+        // creo el SessionManager para poder acceder a los datos guardados del usuario
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        binding.btnBloquear.setOnClickListener {
+            viewModelTarjeta.cambiarEstadoTarjeta("BLOQUEADA")
+            binding.btnBloquear.isEnabled = false
+            binding.btnBloquear.setBackgroundColor(getColor(R.color.btn_gris))
+            binding.btnDesbloquear.setBackgroundColor(getColor(R.color.azul_main))
+            binding.btnDesbloquear.isEnabled = true
+        }
+        binding.btnDesbloquear.setOnClickListener {
+            viewModelTarjeta.cambiarEstadoTarjeta("ACTIVADA")
+            binding.btnDesbloquear.isEnabled = false
+            binding.btnDesbloquear.setBackgroundColor(getColor(R.color.btn_gris))
+            binding.btnBloquear.setBackgroundColor(getColor(R.color.azul_main))
+            binding.btnBloquear.isEnabled = true
+
+        }
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            if (tarjeta?.estadotarjeta == "ACTIVADA") {
+                binding.cardStatus.text = getString(R.string.activada)
+                binding.btnDesbloquear.isEnabled = false
+                binding.btnDesbloquear.setBackgroundColor(getColor(R.color.btn_gris))
+                binding.btnBloquear.setBackgroundColor(getColor(R.color.azul_main))
+                binding.btnBloquear.isEnabled = true
+            } else {
+                binding.cardStatus.text = getString(R.string.bloqueada)
+                binding.btnBloquear.isEnabled = false
+                binding.btnBloquear.setBackgroundColor(getColor(R.color.btn_gris))
+                binding.btnDesbloquear.setBackgroundColor(getColor(R.color.azul_main))
+                binding.btnDesbloquear.isEnabled = true
+            }
+        }
     }
+
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {

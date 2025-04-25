@@ -1,18 +1,27 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityCardSettingsBinding
 import com.example.movicard.databinding.ActivityGraficasBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.Suscripcion
+import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 
 class CardSettings : AppCompatActivity() {
@@ -71,6 +80,41 @@ class CardSettings : AppCompatActivity() {
         binding.recargaSaldo.setOnClickListener {
             startActivity(Intent(this, ConsultaSaldo::class.java))
         }
+
+        val sessionManager = SessionManager(this)
+
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
+        viewModelSuscripcion.creaSuscripcion()
+        binding.cancelarSuscripion.setOnClickListener {
+            viewModelSuscripcion.verificaSuscripcionGratuita { esGratuita ->
+                if (esGratuita) {
+                    showToast("Aún no dispone de una suscripción")
+                } else {
+                    alertDialogCancelarSuscipcion(viewModelSuscripcion)
+                }
+            }
+        }
+    }
+
+    private fun alertDialogCancelarSuscipcion(viewModelSuscripcion : SuscripcionViewModel){
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.cancelar_plan_premium))
+            .setMessage(getString(R.string.est_totalmente_seguro_de_que_quiere_cancelar_la_suscripci_n))
+            .setPositiveButton(getString(R.string.confirmar)) { _, _ ->
+                viewModelSuscripcion.actualizarASuscripcionGratuita()
+                viewModelSuscripcion.cargarSuscripcion()
+                showToast("Cambio de plan actualizado con éxito.")
+            }
+            .setNegativeButton(getString(R.string.cancelar), null)
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

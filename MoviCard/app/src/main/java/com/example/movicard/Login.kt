@@ -2,6 +2,7 @@ package com.example.movicard
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
@@ -35,6 +36,23 @@ class Login : BaseActivity() {
             } else {
                 verificarUsuario(email, password)
             }
+        }
+
+        var isPasswordVisible = false
+
+        binding.eyeIcon.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                // Mostrar contraseña
+                binding.password.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.eyeIcon.setImageResource(R.drawable.eye_open) // Cambia a ícono de ojo abierto
+            } else {
+                // Ocultar contraseña
+                binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.eyeIcon.setImageResource(R.drawable.eye_closed) // Cambia a ícono de ojo cerrado
+            }
+            // Mueve el cursor al final
+            binding.password.setSelection(binding.password.text.length)
         }
     }
 

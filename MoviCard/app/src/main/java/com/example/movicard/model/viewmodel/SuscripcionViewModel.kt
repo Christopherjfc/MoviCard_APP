@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class SuscripcionViewModel(
     private val api: ClienteApiService,         // Tu interfaz de Retrofit
-    private val sessionManager: SessionManager  // Para obtener el ID del cliente actual
+    private val sessionManager: SessionManager,  // Para obtener el ID del cliente actual
 ) : ViewModel() {
 
     private val _suscripcion = MutableLiveData<Suscripcion>()
@@ -45,11 +45,17 @@ class SuscripcionViewModel(
                     val suscripcionExistente = api.getSuscripcion(clienteSession.id)
 
                     // Si ya existe, no la creamos de nuevo
-                    Log.d("SUSCRIPCION", "Ya existe una suscripción: ${suscripcionExistente.suscripcion}")
+                    Log.d(
+                        "SUSCRIPCION",
+                        "Ya existe una suscripción: ${suscripcionExistente.suscripcion}"
+                    )
                     _suscripcion.value = suscripcionExistente
 
                 } catch (e: Exception) {
-                    Log.w("SUSCRIPCION", "No se encontró suscripción, se intentará crear una nueva...")
+                    Log.w(
+                        "SUSCRIPCION",
+                        "No se encontró suscripción, se intentará crear una nueva..."
+                    )
 
                     try {
                         // Si no existe, la creamos
@@ -68,7 +74,6 @@ class SuscripcionViewModel(
     }
 
 
-
     // Cambiar el plan del cliente a PREMIUM
     fun actualizarASuscripcionPremium() {
         val clienteSession = sessionManager.getCliente()
@@ -76,12 +81,48 @@ class SuscripcionViewModel(
         if (clienteSession != null) {
             viewModelScope.launch {
                 try {
-                    val nuevaSuscripcion = api.actualizarSuscripcion(clienteSession.id)
+                    val nuevaSuscripcion = api.actualizarSuscripcionPremium(clienteSession.id)
                     _suscripcion.value = nuevaSuscripcion
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
+        }
+    }
+
+    // Cambiar el plan del cliente a PREMIUM
+    fun actualizarASuscripcionGratuita() {
+        val clienteSession = sessionManager.getCliente()
+
+        if (clienteSession != null) {
+            viewModelScope.launch {
+                try {
+                    val nuevaSuscripcion = api.actualizarSuscripcionGratuita(clienteSession.id)
+                    _suscripcion.value = nuevaSuscripcion
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    fun verificaSuscripcionGratuita(onResult: (Boolean) -> Unit) {
+        val clienteSession = sessionManager.getCliente()
+
+        if (clienteSession != null) {
+            viewModelScope.launch {
+                val suscripcion = api.getSuscripcion(clienteSession.id)
+                try {
+                    Log.w("SUSCRIPCIÓN", "La suscripción actual es: ${suscripcion.suscripcion}")
+                    onResult(suscripcion.suscripcion == "GRATUITA")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.w("SUSCRIPCIÓN", "La suscripción es premium: ${suscripcion.suscripcion}")
+                    onResult(false)
+                }
+            }
+        } else {
+            onResult(false)
         }
     }
 }

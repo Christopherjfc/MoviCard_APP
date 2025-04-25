@@ -77,14 +77,12 @@ class Help : BaseActivity() {
         binding.btnEnviarMensaje.setOnClickListener {
             if (mensajeValido()) {
                 val nombre = binding.nombreUsuario.text.toString().trim()
-                val correo = binding.correoUsuario.text.toString().trim()
                 val mensaje = binding.mensajeUsuario.text.toString().trim()
                 val tipoConsulta = binding.tipoConsulta.selectedItem.toString()
 
                 val asunto = "Consulta: $tipoConsulta"
                 val cuerpo = """
                     Nombre: $nombre
-                    Correo: $correo
                     
                     Mensaje:
                     $mensaje
@@ -144,7 +142,6 @@ class Help : BaseActivity() {
         viewModel.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
             binding.nombreUsuario.setText(cliente.nombre + " " + cliente.apellido)
-            binding.correoUsuario.setText(cliente.correo)
         }
 
         // Llamamos a la función para iniciar la carga de datos del cliente
@@ -154,10 +151,9 @@ class Help : BaseActivity() {
     // valida que no haya ningún campo vacío para que sea válido el mensaje
     private fun mensajeValido(): Boolean {
         val nombre = binding.nombreUsuario.text.toString().trim()
-        val correo = binding.correoUsuario.text.toString().trim()
         val mensaje = binding.mensajeUsuario.text.toString().trim()
 
-        return (nombre.isNotEmpty() && correo.isNotEmpty() && mensaje.isNotEmpty())
+        return (nombre.isNotEmpty() && mensaje.isNotEmpty())
     }
 
     private fun configurarSpinner(spinner: Spinner, opciones: List<String>) {

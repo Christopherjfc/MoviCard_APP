@@ -2,6 +2,7 @@ package com.example.movicard.network
 
 import com.example.movicard.model.Cliente
 import com.example.movicard.model.Suscripcion
+import com.example.movicard.model.TarjetaMoviCard
 import com.example.movicard.model.Ticket
 import retrofit2.Response
 import retrofit2.http.Body
@@ -12,6 +13,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ClienteApiService {
+
+    // CLIENTE
+
     @GET("/get/clientes/")
     suspend fun getAllClientes(): List<Cliente>
 
@@ -43,6 +47,9 @@ interface ClienteApiService {
         @Query("nueva") nuevaPassword: String
     ): Response<Unit>
 
+
+    // SUSCRIPCIÓN
+
     // GET suscripción de un cliente
     @GET("/get/suscripcion/{id_cliente}")
     suspend fun getSuscripcion(@Path("id_cliente") idCliente: Int): Suscripcion
@@ -52,8 +59,15 @@ interface ClienteApiService {
     suspend fun createSuscripcion(@Query("id_cliente") idCliente: Int): Suscripcion
 
     // PUT actualizar suscripción a PREMIUM
-    @PUT("/put/suscripcion/{id_cliente}")
-    suspend fun actualizarSuscripcion(@Path("id_cliente") idCliente: Int): Suscripcion
+    @PUT("/put/suscripcion/premium/{id_cliente}")
+    suspend fun actualizarSuscripcionPremium(@Path("id_cliente") idCliente: Int): Suscripcion
+
+    // PUT actualizar suscripción a GRATUITA
+    @PUT("/put/suscripcion/gratuita/{id_cliente}")
+    suspend fun actualizarSuscripcionGratuita(@Path("id_cliente") idCliente: Int): Suscripcion
+
+
+    // TICKET
 
     @GET("/get/tickets/{id}")
     suspend fun getTicketByClienteId(@Path("id") clienteId: Int): Ticket
@@ -64,4 +78,31 @@ interface ClienteApiService {
     @PUT("/put/tickets/{id}")
     suspend fun updateTicket(@Path("id") id: Int, @Body tipo: String): Response<Unit>
 
+
+    // TARJETA
+
+    // Obtener tarjeta por ID del cliente
+    @GET("/get/tarjeta/{id_cliente}")
+    suspend fun getTarjetaByClienteId(@Path("id_cliente") idCliente: Int): TarjetaMoviCard
+
+    // Crea una tareta MoviCard
+    @POST("/post/tarjeta/")
+    suspend fun crearTarjeta(
+        @Query("id_cliente") idCliente: Int,
+        @Query("id_suscripcion") idSuscripcion: Int,
+        @Query("id_ticket") idTicket: Int? = null
+    ): Response<Unit>
+
+    // Cambiar el estado de la tarjeta (ACTIVA / BLOQUEADA)
+    @PUT("/put/tarjeta/estado/{id_cliente}")
+    suspend fun actualizarEstadoTarjeta(
+        @Path("id_cliente") idCliente: Int,
+        @Body estado: String
+    ): Response<Unit>
+
+    @PUT("/put/tarjeta/ticket/{id_cliente}")
+    suspend fun actualizarIdTicket(
+        @Path("id_cliente") idCliente: Int,
+        @Query("nuevo_id_ticket") nuevoIdTicket: Int
+    ): Response<Unit>
 }

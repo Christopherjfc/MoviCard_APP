@@ -13,6 +13,7 @@ import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.os.Environment
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -20,13 +21,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityPurchaseSummaryBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.TicketViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -98,7 +103,7 @@ class PurchaseSummary : BaseActivity() {
 
 
         /*
-         *   API + Título de compra
+         *   API + Título de compra +  actualizar id de tarjetaMovicard
          */
 
 
@@ -107,13 +112,15 @@ class PurchaseSummary : BaseActivity() {
 
         // creo el ViewModel usando el Factory personalizado
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+        val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
 
-        // Si el título != null, actualizo el TextView
+        // Si el título no es nulo
         if (!titulo.isNullOrEmpty()) {
             binding.productTitle.text = titulo
-            println(titulo)
             val idCliente = sessionManager.getCliente()?.id ?: -1
-            val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
+
             viewModelTicket.existeTicket { existe ->
                 if (existe) {
                     viewModelTicket.actualizarTicket(titulo, idCliente)
@@ -122,8 +129,45 @@ class PurchaseSummary : BaseActivity() {
                     viewModelTicket.crearTicket(titulo)
                     viewModelTicket.cargarTicket()
                 }
-            }
 
+                // IMPORTANTE: cuando el ticket esté listo, actualizamos la tarjeta
+                lifecycleScope.launch {
+                    delay(300) // da un pequeño tiempo a cargarTicket
+                    val ticket = viewModelTicket.ticket.value
+                    val ticketId = ticket?.id
+
+                    if (ticketId != null) {
+                        viewModelTarjeta.existeTarjeta { existeTarjeta ->
+                            if (existeTarjeta) {
+                                val tarjeta = viewModelTarjeta.tarjeta.value
+
+                                // Si ya tiene ese ID de ticket, no hacemos nada
+                                if (tarjeta?.id_ticket == ticketId) {
+                                    Log.d("TarjetaViewModel", "La tarjeta ya tiene este ticket asignado.")
+                                    return@existeTarjeta
+                                }
+
+                                // Si tiene un ticket distinto o null, lo actualizamos
+                                viewModelTarjeta.actualizarIdTicket(ticketId)
+
+                            } else {
+                                // Si no hay tarjeta, creamos una nueva con el ticket
+                                val suscripcionId = viewModelTarjeta.tarjeta.value?.id_suscripcion
+                                    ?: viewModelSuscripcion.suscripcion.value?.id
+
+                                if (suscripcionId != null) {
+                                    viewModelTarjeta.crearTarjeta(
+                                        idSuscripcion = suscripcionId,
+                                        idTicket = ticketId
+                                    )
+                                } else {
+                                    Log.e("TarjetaViewModel", "No se pudo obtener el ID de suscripción.")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             binding.productTitle.text = premium
             val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)

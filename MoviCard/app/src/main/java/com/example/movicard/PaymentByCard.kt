@@ -70,7 +70,7 @@ class PaymentByCard : AppCompatActivity() {
         }.toString().toRequestBody("application/json".toMediaType())
 
         val request = Request.Builder()
-            .url("http://192.168.165.244:3000/create-payment-intent") // Backend local para pruebas
+            .url("http://192.168.165.3:3000/create-payment-intent") // Backend local para pruebas
             .post(requestBody)
             .build()
 
@@ -221,7 +221,7 @@ class PaymentByCard : AppCompatActivity() {
     private fun obtenerUrlFactura(paymentIntentId: String, callback: (String) -> Unit) {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://192.168.165.244:3000/get-receipt-url/$paymentIntentId") // 🔹 Reemplaza con la IP de tu backend si pruebas en un móvil
+            .url("http://192.168.165.3:3000/get-receipt-url/$paymentIntentId") // 🔹 Reemplaza con la IP de tu backend si pruebas en un móvil
             .get()
             .build()
 
