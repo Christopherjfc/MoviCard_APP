@@ -14,3 +14,5 @@ def connect_to_db():
 
 def get_cursor(connection):
     return connection.cursor()
+
+# Arrancar api: uvicorn main:app --host 0.0.0.0 --port 8000 --reload

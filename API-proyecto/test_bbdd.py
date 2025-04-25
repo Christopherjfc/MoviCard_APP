@@ -1,14 +1,13 @@
-import mariadb
+import mysql.connector
 
 try:
-    connection = mariadb.connect(
-        host="localhost",
-        user="root",
-        password="12345",
-        database="movicard",
-        port=3306
+    connection = mysql.connector.connect(
+        host="10.0.82.1",
+        user="christopher",
+        password="christopher",
+        database="movicard"
     )
     print("Conexión exitosa!")
     connection.close()
-except mariadb.Error as err:
+except mysql.connector.Error as err:
     print(f"Error al conectar con la base de datos: {err}")

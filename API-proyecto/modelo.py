@@ -8,8 +8,8 @@ class PlanEnum(str, Enum):
     GRATUITA = "GRATUITA"
     PREMIUM = "PREMIUM"
 
-class EstadoEnum(str, Enum):
-    ACTIVA = "ACTIVA"
+class EstadoTarjeta(str, Enum):
+    ACTIVADA = "ACTIVADA"
     BLOQUEADA = "BLOQUEADA"
 
 class TipoTransporteEnum(str, Enum):
@@ -20,6 +20,10 @@ class TicketTipo(str, Enum):
     TENMOVI = "TENMOVI"
     MOVIMES = "MOVIMES"
     TRIMOVI = "TRIMOVI"
+    
+class LoginData(BaseModel):
+    correo : str 
+    password : str
 
 class Cliente(BaseModel):
     id: int
@@ -51,10 +55,11 @@ class Ticket(BaseModel):
 
 class TarjetaMoviCard(BaseModel):
     id: int
-    UUID: Optional[str] = None 
+    UUID: Optional[str] = None
+    id_cliente: int
     id_suscripcion: int
-    id_ticket: int
-    estadotarjeta: EstadoEnum
+    id_ticket: Optional[int] = None
+    estadotarjeta: EstadoTarjeta = EstadoTarjeta.ACTIVADA
 
 class Destino(BaseModel):
     id: int

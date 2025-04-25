@@ -1,11 +1,58 @@
+from typing import Optional
 from fastapi import APIRouter, Body, HTTPException
 from baseDeDatos import connect_to_db, get_cursor
 import uuid
 
-from modelo import EstadoEnum, PlanEnum
+from modelo import EstadoTarjeta, LoginData, PlanEnum
 from datetime import date
 
 router = APIRouter()
+
+# --- LOGIN ---
+
+
+@router.post("/api/login/")
+async def login(data: LoginData):
+    correo = data.correo
+    password = data.password
+
+
+    connection = connect_to_db()
+    if not connection:
+        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
+   
+    try:
+        cursor = get_cursor(connection)
+        cursor.execute("SELECT * FROM cliente WHERE correo = %s AND password = %s", (correo, password))
+        cliente = cursor.fetchone()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al consultar la base de datos: {str(e)}")
+    finally:
+        cursor.close()
+        connection.close()
+   
+    if not cliente:
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+   
+    return {
+        "message": "Login exitoso",
+        "cliente": {
+            "id": cliente[0],
+            "nombre": cliente[1],
+            "apellido": cliente[2],
+            "dni": cliente[3],
+            "correo": cliente[4],
+            "telefono": cliente[5],
+            "direccion": cliente[6],
+            "numero_bloque": cliente[7],
+            "numero_piso": cliente[8],
+            "codigopostal": cliente[9],
+            "ciudad": cliente[10],
+            "password": "oculto"  # Por seguridad
+        }
+    }
+
+
 
 # --- CLIENTES ---
 
@@ -177,15 +224,15 @@ async def get_all_tarjetas():
     
     return tarjetas
 
-@router.get("/get/tarjetas/{id}")
-async def get_tarjeta(id: int):
+@router.get("/get/tarjeta/{id_cliente}")
+async def getTarjetaByClienteId(id_cliente: int):
     connection = connect_to_db()
     if not connection:
         raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
     
     try:
         cursor = get_cursor(connection)
-        cursor.execute("SELECT * FROM tarjetamovicard WHERE id = %s", (id,))
+        cursor.execute("SELECT * FROM tarjetamovicard WHERE id_cliente = %s", (id_cliente,))
         tarjeta = cursor.fetchone()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al consultar la base de datos: {str(e)}")
@@ -205,75 +252,85 @@ async def get_tarjeta(id: int):
         "estadotarjeta": tarjeta[5]
     }
 
-@router.post("/post/tarjetas/")
-async def create_tarjeta(id_cliente: int, id_suscripcion: int, id_ticket: int, estadotarjeta: str, UUID: str = None):
+@router.post("/post/tarjeta/")
+async def crear_tarjeta(id_cliente: int, id_suscripcion: int, id_ticket: Optional[int] = None):
     connection = connect_to_db()
-    if not connection:
-        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
-
-    if UUID is None:
-        UUID = str(uuid.uuid4()) 
-
     try:
         cursor = get_cursor(connection)
-        cursor.execute(
-            "INSERT INTO tarjetamovicard (UUID, id_cliente, id_suscripcion, id_ticket, estadotarjeta) VALUES (%s, %s, %s, %s, %s)",
-            (UUID, id_cliente, id_suscripcion, id_ticket, estadotarjeta)
-        )
+
+        # Verificar si ya existe una tarjeta para este cliente
+        cursor.execute("SELECT * FROM tarjetamovicard WHERE id_cliente = %s", (id_cliente,))
+        existente = cursor.fetchone()
+        if existente:
+            raise HTTPException(status_code=409, detail="Ya existe una tarjeta para este cliente.")
+
+        uuid_generado = str(uuid.uuid4())
+        cursor.execute("""
+            INSERT INTO tarjetamovicard (UUID, id_cliente, id_suscripcion, id_ticket, estadotarjeta)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (uuid_generado, id_cliente, id_suscripcion, id_ticket, "ACTIVADA"))
         connection.commit()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al insertar tarjeta: {str(e)}")
+
+        return {"message": "Tarjeta creada exitosamente", "UUID": uuid_generado}
     finally:
         cursor.close()
         connection.close()
 
-    return {"message": "Tarjeta creada exitosamente", "UUID": UUID}
 
-@router.put("/put/tarjetas/{id}")
-async def update_tarjeta(id: int, id_cliente: int, id_suscripcion: int, id_ticket: int, estadotarjeta: str):
+
+@router.put("/put/tarjeta/estado/{id_cliente}")
+async def actualizarEstadoTarjeta(id_cliente: int, nuevo_estado: str = Body(..., media_type="text/plain")):
+    if nuevo_estado not in ["ACTIVADA", "BLOQUEADA"]:
+        raise HTTPException(status_code=400, detail="Estado no válido. Debe ser 'ACTIVADA' o 'BLOQUEADA'.")
+
     connection = connect_to_db()
-    if not connection:
-        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
-
     try:
         cursor = get_cursor(connection)
-
-        cursor.execute("SELECT UUID FROM tarjetamovicard WHERE id = %s", (id,))
+        cursor.execute("SELECT id FROM tarjetamovicard WHERE id_cliente = %s", (id_cliente,))
         tarjeta = cursor.fetchone()
-
         if not tarjeta:
-            raise HTTPException(status_code=404, detail="Tarjeta no encontrada.")
+            raise HTTPException(status_code=404, detail="Tarjeta no encontrada")
 
-        UUID = tarjeta[0]  
-
-        cursor.execute(
-            "UPDATE tarjetamovicard SET id_cliente = %s, id_suscripcion = %s, id_ticket = %s, estadotarjeta = %s WHERE id = %s",
-            (id_cliente, id_suscripcion, id_ticket, estadotarjeta, id)
-        )
-        connection.commit()
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al actualizar tarjeta: {str(e)}")
-    finally:
-        cursor.close()
-        connection.close()
-
-    return {"message": "Tarjeta actualizada exitosamente", "UUID": UUID}
-
-@router.put("/put/tarjetas/estado/{id}")
-async def cambiar_estado_tarjeta(id: int, nuevo_estado: EstadoEnum):
-    connection = connect_to_db()
-    try:
-        cursor = get_cursor(connection)
+        id_tarjeta = tarjeta[0]  # Esto es el ID real de la tarjeta, no el cliente
+        
         cursor.execute(
             "UPDATE tarjetamovicard SET estadotarjeta = %s WHERE id = %s",
-            (nuevo_estado.value, id)
+            (nuevo_estado, id_tarjeta)
         )
         connection.commit()
         return {"message": f"Estado de la tarjeta actualizado a {nuevo_estado}"}
     finally:
         cursor.close()
         connection.close()
+
+
+@router.put("/put/tarjeta/ticket/{id_cliente}")
+async def actualizar_id_ticket(id_cliente: int, nuevo_id_ticket: int):
+    connection = connect_to_db()
+    if not connection:
+        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
+
+    try:
+        cursor = get_cursor(connection)
+
+        cursor.execute("SELECT id FROM tarjetamovicard WHERE id_cliente = %s", (id_cliente,))
+        tarjeta = cursor.fetchone()
+        if not tarjeta:
+            raise HTTPException(status_code=404, detail="Tarjeta no encontrada")
+
+        cursor.execute(
+            "UPDATE tarjetamovicard SET id_ticket = %s WHERE id_cliente = %s",
+            (nuevo_id_ticket, id_cliente)
+        )
+        connection.commit()
+
+        return {"message": f"id_ticket actualizado correctamente a {nuevo_id_ticket}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    finally:
+        cursor.close()
+        connection.close()
+
 
 
 @router.delete("/delete/tarjetas/{id}")
@@ -293,6 +350,10 @@ async def delete_tarjeta(id: int):
         connection.close()
     
     return {"message": "Tarjeta eliminada exitosamente"}
+
+
+
+
 
 
 # --- SUSCRIPCIÓN ---
@@ -343,7 +404,7 @@ async def crear_suscripcion(id_cliente: int, suscripcion: PlanEnum = PlanEnum.GR
 
     return {"message": "Suscripción creada correctamente", "suscripcion": suscripcion}
 
-@router.put("/put/suscripcion/{id_cliente}")
+@router.put("/put/suscripcion/premium/{id_cliente}")
 async def actualizar_suscripcion_a_premium(id_cliente: int):
     connection = connect_to_db()
     if not connection:
@@ -363,6 +424,30 @@ async def actualizar_suscripcion_a_premium(id_cliente: int):
         connection.close()
 
     return {"message": "Suscripción actualizada a PREMIUM"}
+
+
+@router.put("/put/suscripcion/gratuita/{id_cliente}")
+async def actualizar_suscripcion_a_premium(id_cliente: int):
+    connection = connect_to_db()
+    if not connection:
+        raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
+    
+    try:
+        cursor = get_cursor(connection)
+        cursor.execute(
+            "UPDATE suscripcion SET suscripcion = %s WHERE id_cliente = %s",
+            (PlanEnum.GRATUITA.value, id_cliente)
+        )
+        connection.commit()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al actualizar la suscripción: {str(e)}")
+    finally:
+        cursor.close()
+        connection.close()
+
+    return {"message": "Suscripción actualizada a GRATUITA"}
+
+
 
 
 # --- TICKETS ---
