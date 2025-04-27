@@ -116,8 +116,8 @@ async def get_cliente(id: int):
 
 @router.post("/post/cliente/")
 async def create_cliente(nombre: str, apellido: str, dni: str, correo: str, telefono: str,
-                         direccion: str, numero_bloque: str, numero_piso: str, codigopostal: str,
-                         ciudad: str, password: str):
+                         direccion: str, numero_bloque: str, codigopostal: str,
+                         ciudad: str, password: str,  numero_piso: Optional[str] = None):
     connection = connect_to_db()
     if not connection:
         raise HTTPException(status_code=500, detail="Error al conectar con la base de datos.")
