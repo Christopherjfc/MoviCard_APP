@@ -1,22 +1,11 @@
 package com.example.movicard
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
-import android.graphics.drawable.Drawable
-import android.graphics.pdf.PdfDocument
 import android.os.Bundle
-import android.os.Environment
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -32,13 +21,9 @@ import com.example.movicard.network.RetrofitInstance
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 
 class PurchaseSummary : BaseActivity() {
     private lateinit var binding: ActivityPurchaseSummaryBinding

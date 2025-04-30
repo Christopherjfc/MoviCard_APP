@@ -113,6 +113,10 @@ class Principal : BaseActivity() {
             }
         }
 
+        binding.btnRuta.setOnClickListener {
+            startActivity(Intent(this, Routes::class.java))
+        }
+
         binding.btnLogout.setOnClickListener {
             logout()
         }

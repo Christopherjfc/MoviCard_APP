@@ -2,11 +2,11 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_consulta"
+    android:id="@+id/drawer_layout_routes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_app"
-    tools:context=".ConsultaSaldo">
+    tools:context=".Routes">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,126 +38,80 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rowdies"
-            android:text="@string/consulta_saldo"
+            android:text="Rutas"
             android:textColor="@color/text_info"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@id/cardSaldo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardSaldo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="35dp"
-            android:backgroundTint="@color/background_card_view"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4"
-            app:strokeColor="@color/text_primary">
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_bias="0.05" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/picadas_restantes"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cantidad_saldo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="-"
-                    android:textColor="@color/text_primary"
-                    android:textSize="80sp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto"
-                        android:text="@string/fecha_de_inicio"
-                        android:textColor="@color/text_primary" />
-
-                    <TextView
-                        android:id="@+id/fechaCompra"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/text_primary" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto"
-                        android:text="@string/d_as_restantes"
-                        android:textColor="@color/text_primary" />
-
-                    <TextView
-                        android:id="@+id/dias_restantes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/text_primary" />
-
-                </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="15dp"
-                    android:max="100"
-                    android:progressDrawable="@drawable/custom_progressbar" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <Button
-            android:id="@+id/btn_tipo_tarjeta"
+        <TableLayout
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="100dp"
-            android:backgroundTint="@color/button_guardar"
-            android:text="@string/recargar_saldo"
-            android:textColor="@color/button_primary_text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardSaldo"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintTop_toBottomOf="@+id/textInfo">
 
+            <TableRow>
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Origen: "
+                    android:textColor="@color/text_primary" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteOrigen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Selecciona estación de origen"
+                    android:textColor="@color/text_primary" />
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Destino: "
+                    android:textColor="@color/text_primary" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteDestino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Selecciona estación de destino"
+                    android:textColor="@color/text_primary" />
+            </TableRow>
+
+            <Button
+                android:id="@+id/btnMostrarRuta"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="100dp"
+                android:backgroundTint="@color/button_guardar"
+                android:text="Mostrar Ruta"
+                android:textColor="@color/button_primary_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerRuta"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="visible" />
+        </TableLayout>
+
+        <!-- Menu bottom navagation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
@@ -193,6 +147,7 @@
 
             <!-- Espacio para los ítems del menú -->
             <FrameLayout
+                android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
