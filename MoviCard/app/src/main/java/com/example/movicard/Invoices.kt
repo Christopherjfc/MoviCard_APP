@@ -154,22 +154,6 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
         webView.loadUrl(invoiceUrl)
     }
 
-
-
-    private fun downloadPdfFromUrl(url: String, fileName: String) {
-        val request = DownloadManager.Request(Uri.parse(url))
-            .setTitle("Descargando factura")
-            .setDescription("Guardando $fileName")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-
-        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        downloadManager.enqueue(request)
-
-        Toast.makeText(this, "Descarga iniciada: $fileName", Toast.LENGTH_SHORT).show()
-    }
-
-
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
