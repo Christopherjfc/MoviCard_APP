@@ -163,4 +163,27 @@
     <string name="gracias_por_valorar_con">Gràcies per valorar amb %1$s ⭐</string>
     <string name="activada">ACTIVADA</string>
     <string name="bloqueada">BLOQUEJADA</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="est_totalmente_seguro_de_que_quiere_cancelar_la_suscripci_n">\nEsteu totalment segur que voleu cancel·lar la Subscripció?</string>
+    <string name="cancelar_plan_premium">Cancel·lar pla PREMIUM</string>
+    <string name="cancelar_suscripci_n_premium">Cancel·lar subscripció premium</string>
+    <string name="a_n_no_dispone_de_una_suscripci_n">Encara no teniu una subscripció</string>
+    <string name="cambio_de_plan_actualizado_con_xito">Canvi de pla actualitzat amb èxit.</string>
+    <string name="todos_los_campos_son_obligatorios_completos_excepto_el_piso">Tots els camps són obligatoris (excepte el pis)</string>
+    <string name="dni_inv_lido_debe_tener_8_n_meros_y_1_letra">DNI invàlid. Ha de tenir 8 números i 1 lletra.</string>
+    <string name="c_digo_postal_inv_lido_debe_tener_5_d_gitos">Codi postal invàlid (ha de tenir 5 dígits)</string>
+    <string name="datos_actualizados_correctamente">Dades actualitzades correctament</string>
+    <string name="la_contrase_a_no_coincide">La contrasenya no coincideix</string>
+    <string name="la_contrase_a_de_confirmaci_n_no_coincide_con_la_nueva">La contrasenya de confirmació no coincideix amb la nova</string>
+    <string name="contrase_a_actualizada_con_xito">Contrasenya actualitzada amb èxit</string>
+    <string name="error_al_cambiar_la_contrase_a">Error en canviar la contrasenya: %1$s</string>
+    <string name="gastos_por_d_a">Despeses per dia (€)</string>
+    <string name="datos_de_prueba_insertados">Dades de prova inserides</string>
+    <string name="tarjetas_vendidas">Targetes Venudes</string>
+    <string name="llena_gr_fica_de_barras">Omple gràfica de barres</string>
+    <string name="n_mero_telef_nico_inv_lido_debe_tener_9_d_gitos_y_empezar_con_6_7_8_9">Número telefónic invàlid, ha de tenir 9 dígits y començar amb 6/7/8/9</string>
+    <string name="activar_uuid_para_funciones_principales">🔒 Per a ingressar a les funcions principals, primer activa la teva targeta Movicard introduint la UUID que es troba al revers de la targeta, en la tercera icona del menú inferior o fent clic al botó ’ACTIVAR UUID’.</string>
+    <string name="activa_uuid">Activar UUID</string>
+    <string name="uuid_incorrecto">UUID INCORRECTE ❌</string>
+    <string name="tarjeta_activada">TARGETA ACTIVADA ✅</string>
 </resources>

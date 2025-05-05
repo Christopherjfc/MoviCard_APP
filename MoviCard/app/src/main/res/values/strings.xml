@@ -166,4 +166,24 @@
     <string name="confirmar">Confirmar</string>
     <string name="est_totalmente_seguro_de_que_quiere_cancelar_la_suscripci_n">\n¿Está totalmente seguro de que quiere cancelar la Suscripción?</string>
     <string name="cancelar_plan_premium">Cancelar plan PREMIUM</string>
+    <string name="cancelar_suscripci_n_premium">Cancelar suscripción premium</string>
+    <string name="a_n_no_dispone_de_una_suscripci_n">Aún no dispone de una suscripción</string>
+    <string name="cambio_de_plan_actualizado_con_xito">Cambio de plan actualizado con éxito.</string>
+    <string name="todos_los_campos_son_obligatorios_completos_excepto_el_piso">Todos los campos son obligatorios completos (excepto el piso)</string>
+    <string name="dni_inv_lido_debe_tener_8_n_meros_y_1_letra">DNI inválido. Debe tener 8 números y 1 letra.</string>
+    <string name="c_digo_postal_inv_lido_debe_tener_5_d_gitos">Código postal inválido (debe tener 5 dígitos)</string>
+    <string name="datos_actualizados_correctamente">Datos actualizados correctamente</string>
+    <string name="la_contrase_a_no_coincide">La contraseña no coincide</string>
+    <string name="la_contrase_a_de_confirmaci_n_no_coincide_con_la_nueva">La contraseña de confirmación no coincide con la nueva</string>
+    <string name="contrase_a_actualizada_con_xito">Contraseña actualizada con éxito</string>
+    <string name="error_al_cambiar_la_contrase_a">Error al cambiar la contraseña: %1$s</string>
+    <string name="gastos_por_d_a">Gastos por día (€)</string>
+    <string name="datos_de_prueba_insertados">Datos de prueba insertados</string>
+    <string name="tarjetas_vendidas">Tarjetas Vendidas</string>
+    <string name="llena_gr_fica_de_barras">Llena gráfica de barras</string>
+    <string name="n_mero_telef_nico_inv_lido_debe_tener_9_d_gitos_y_empezar_con_6_7_8_9">Número telefónico inválido, debe tener 9 dígitos y empezar con 6/7/8/9</string>
+    <string name="activar_uuid_para_funciones_principales">🔒 Para ingresar a las funciones principales, primero activa tu Tarjeta Movicard ingresando la UUID que se encuentra en el reverso de la tarjeta, en el tercer ícono del menú inferior o dando click al botón ’ACTIVAR UUID’.</string>
+    <string name="activa_uuid">Activar UUID</string>
+    <string name="uuid_incorrecto">UUID INCORRECTO ❌</string>
+    <string name="tarjeta_activada">TARJETA ACTIVADA ✅</string>
 </resources>

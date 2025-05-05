@@ -67,7 +67,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/uuid"
+                android:id="@+id/editTextUuid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

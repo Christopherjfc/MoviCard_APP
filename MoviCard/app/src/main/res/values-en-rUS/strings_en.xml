@@ -162,4 +162,27 @@
     <string name="gracias_por_valorar_con">Thank you for valuing with %1$s ⭐</string>
     <string name="activada">ACTIVATED</string>
     <string name="bloqueada">BLOCKED</string>
+    <string name="confirmar">Confirm</string>
+    <string name="est_totalmente_seguro_de_que_quiere_cancelar_la_suscripci_n">\nAre you absolutely sure you want to cancel the Subscription?</string>
+    <string name="cancelar_plan_premium">Cancel PREMIUM plan</string>
+    <string name="cancelar_suscripci_n_premium">Cancel premium subscription</string>
+    <string name="a_n_no_dispone_de_una_suscripci_n">You do not have a subscription yet</string>
+    <string name="cambio_de_plan_actualizado_con_xito">Plan changed successfully.</string>
+    <string name="todos_los_campos_son_obligatorios_completos_excepto_el_piso">All fields are mandatory (except floor number)</string>
+    <string name="dni_inv_lido_debe_tener_8_n_meros_y_1_letra">Invalid ID. Must contain 8 numbers and 1 letter.</string>
+    <string name="c_digo_postal_inv_lido_debe_tener_5_d_gitos">Invalid postal code (must be 5 digits)</string>
+    <string name="datos_actualizados_correctamente">Data updated successfully</string>
+    <string name="la_contrase_a_no_coincide">Password does not match</string>
+    <string name="la_contrase_a_de_confirmaci_n_no_coincide_con_la_nueva">Confirmation password does not match the new one</string>
+    <string name="contrase_a_actualizada_con_xito">Password updated successfully</string>
+    <string name="error_al_cambiar_la_contrase_a">Error changing password: %1$s</string>
+    <string name="gastos_por_d_a">Daily expenses (€)</string>
+    <string name="datos_de_prueba_insertados">Test data inserted</string>
+    <string name="tarjetas_vendidas">Cards Sold</string>
+    <string name="llena_gr_fica_de_barras">Fill bar chart</string>
+    <string name="n_mero_telef_nico_inv_lido_debe_tener_9_d_gitos_y_empezar_con_6_7_8_9">Invalid phone number, must have 9 digits and start with 6/7/8/9</string>
+    <string name="activar_uuid_para_funciones_principales">🔒 To access the main functions, first activate your Movicard by entering the UUID found on the back of the card, in the third icon of the bottom menu or by clicking the ’ACTIVATE UUID’ button.</string>
+    <string name="activa_uuid">Activate UUID</string>
+    <string name="uuid_incorrecto">INVALID UUID ❌</string>
+    <string name="tarjeta_activada">CARD ACTIVATED ✅</string>
 </resources>

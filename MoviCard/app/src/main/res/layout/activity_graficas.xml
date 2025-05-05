@@ -99,7 +99,7 @@
                 android:onClick="insertarDatosDePrueba"
                 android:textColor="@color/button_primary_text"
                 android:layout_marginEnd="25dp"
-                android:text="Llena gráfica de barras" />
+                android:text="@string/llena_gr_fica_de_barras" />
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/graficaPie"
