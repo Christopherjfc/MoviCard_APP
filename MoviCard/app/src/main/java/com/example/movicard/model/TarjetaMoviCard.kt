@@ -6,6 +6,7 @@ data class TarjetaMoviCard(
     val id_cliente: Int,
     val id_suscripcion: Int,
     val id_ticket: Int?,
-    val estadotarjeta: String // ENUM -> "ACTIVA" o "BLOQUEADA"
+    val estadotarjeta: String, // ENUM -> "ACTIVA" o "BLOQUEADA"
+    val estadoactivaciontarjeta: String // ENUM -> "ACTIVA" o "DESACTIVADA"
 )
 

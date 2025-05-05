@@ -17,7 +17,7 @@ import com.example.movicard.model.viewmodel.SuscripcionViewModel
 import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.TicketViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -96,7 +96,7 @@ class PurchaseSummary : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
@@ -188,8 +188,6 @@ class PurchaseSummary : BaseActivity() {
 
     }
 
-
-
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
@@ -262,8 +260,8 @@ class PurchaseSummary : BaseActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a la activity BlockCard ya que la tarjeta está activada
+                startActivity(Intent(this, BlockCard::class.java))
                 return true
             }
         }

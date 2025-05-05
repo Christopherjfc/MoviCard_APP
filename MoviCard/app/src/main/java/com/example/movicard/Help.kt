@@ -1,5 +1,6 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -13,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -20,8 +22,9 @@ import com.example.movicard.databinding.ActivityHelpBinding
 import com.example.movicard.email.GmailSender
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.ClienteViewModel
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.*
 
@@ -135,7 +138,7 @@ class Help : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
@@ -206,6 +209,34 @@ class Help : BaseActivity() {
         }
     }
 
+    private fun mostrarDialogoTarjetaDesactivada() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.acceso_restringido))
+            .setMessage(getString(R.string.activar_uuid_para_funciones_principales))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.activa_uuid)) { _, _ ->
+                startActivity(Intent(this, TarjetaUUID::class.java))
+            }
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+        }
+        return estaActivada
+    }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -232,8 +263,12 @@ class Help : BaseActivity() {
             }
 
             R.id.nav_suscription -> {
-                // Abrir suscripciones (Princin cards)
-                startActivity(Intent(this, PricingCards::class.java))
+                // Abrir suscripciones (Princin cards) si la tarjeta está activada, si no a tarjetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, PricingCards::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
             }
 
             R.id.nav_config -> {
@@ -269,7 +304,12 @@ class Help : BaseActivity() {
             }
 
             R.id.tarjeta -> {
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a CardSettings si la tarjeta está activada, si no a TarejetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, CardSettings::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
                 return true
             }
         }

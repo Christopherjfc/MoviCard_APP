@@ -1,5 +1,6 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -8,16 +9,25 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movicard.data.RutaAdapter
 import com.example.movicard.databinding.ActivityRoutesBinding
+import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.Estacion
 import com.example.movicard.model.Linea
 import com.example.movicard.model.PasoEstaciones
 import com.example.movicard.model.PasoTransbordo
+import com.example.movicard.model.Trayecto
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
+import java.util.LinkedList
+import java.util.Queue
 
 class Routes : AppCompatActivity() {
     private lateinit var binding: ActivityRoutesBinding
@@ -75,14 +85,11 @@ class Routes : AppCompatActivity() {
         binding.btnMostrarRuta.setOnClickListener {
             val origen = binding.autoCompleteOrigen.text.toString()
             val destino = binding.autoCompleteDestino.text.toString()
-
-            val rutaCalculada = calcularRuta(origen, destino)
-
+            val rutaCalculada = calcularRutaMultipleTransbordos(origen, destino)
             val adapter = RutaAdapter(rutaCalculada)
             binding.recyclerRuta.layoutManager = LinearLayoutManager(this)
             binding.recyclerRuta.adapter = adapter
         }
-
     }
 
     private fun inicializoElAutoComplete() {
@@ -309,108 +316,76 @@ class Routes : AppCompatActivity() {
         )
     }
 
-    private fun calcularRuta(origenInput: String, destinoInput: String): List<Any> {
-        val pasos = mutableListOf<Any>()
+    private fun calcularRutaMultipleTransbordos(origenNombre: String, destinoNombre: String): List<Any> {
+        val origenes = estaciones.filter { it.nombre.equals(origenNombre, ignoreCase = true) }
+        val destinos = estaciones.filter { it.nombre.equals(destinoNombre, ignoreCase = true) }
 
-        val origen = estaciones.find { it.nombre.equals(origenInput, ignoreCase = true) }
-        val destino = estaciones.find { it.nombre.equals(destinoInput, ignoreCase = true) }
-
-        if (origen == null || destino == null) {
+        if (origenes.isEmpty() || destinos.isEmpty()) {
             showToast("Estación no encontrada.")
             return emptyList()
         }
 
-        if (origen.linea.nombre == destino.linea.nombre) {
-            val estacionesMismaLinea = estaciones.filter { it.linea.nombre == origen.linea.nombre }
-            val indexOrigen = estacionesMismaLinea.indexOfFirst { it.nombre == origen.nombre }
-            val indexDestino = estacionesMismaLinea.indexOfFirst { it.nombre == destino.nombre }
-
-            if (indexOrigen != -1 && indexDestino != -1) {
-                val subRuta = if (indexOrigen < indexDestino)
-                    estacionesMismaLinea.subList(indexOrigen, indexDestino + 1)
-                else
-                    estacionesMismaLinea.subList(indexDestino, indexOrigen + 1).reversed()
-
-                subRuta.forEachIndexed { index, estacion ->
-                    val tiempo = if (index < subRuta.size - 1) (1..2).random() else 0
-                    pasos.add(PasoEstaciones(estacion, tiempo))
-                }
-            }
-        } else {
-            // Paso 2: transbordo entre líneas (abajo)
-            pasos.addAll(calcularRutaConTransbordo(origen, destino))
+        val queue: Queue<Trayecto> = LinkedList()
+        for (origen in origenes) {
+            queue.add(Trayecto(origen, origen.linea, mutableListOf(origen), mutableListOf()))
         }
 
-        return pasos
+        val visitados = mutableSetOf<Pair<String, String>>()
+
+        while (queue.isNotEmpty()) {
+            val actual = queue.poll()
+
+            if (destinos.any { it.nombre == actual.estacion.nombre }) {
+                return construirPasosDesdeTrayecto(actual)
+            }
+
+            if (!visitados.add(Pair(actual.estacion.nombre, actual.linea.nombre))) continue
+
+            val vecinas = obtenerEstacionesVecinas(actual.estacion, actual.linea)
+            for (vecina in vecinas) {
+                val nuevaRuta = actual.ruta.toMutableList().apply { add(vecina) }
+                queue.add(Trayecto(vecina, actual.linea, nuevaRuta, actual.transbordos.toMutableList()))
+            }
+
+            val posiblesCambios = estaciones.filter {
+                it.nombre == actual.estacion.nombre && it.linea.nombre != actual.linea.nombre
+            }
+
+            for (cambio in posiblesCambios) {
+                val nuevaRuta = actual.ruta.toMutableList()
+                val nuevosTransbordos = actual.transbordos.toMutableList()
+                nuevosTransbordos.add(PasoTransbordo(actual.estacion, cambio.linea, (2..3).random()))
+                queue.add(Trayecto(cambio, cambio.linea, nuevaRuta, nuevosTransbordos))
+            }
+        }
+
+        showToast("No se encontró una ruta posible.")
+        return emptyList()
     }
 
-    private fun calcularRutaConTransbordo(origen: Estacion, destino: Estacion): List<Any> {
-        val pasos = mutableListOf<Any>()
+    private fun obtenerEstacionesVecinas(estacion: Estacion, linea: Linea): List<Estacion> {
+        val mismaLinea = estaciones.filter { it.linea == linea }
+        val index = mismaLinea.indexOfFirst { it.nombre == estacion.nombre }
+        val vecinas = mutableListOf<Estacion>()
+        if (index > 0) vecinas.add(mismaLinea[index - 1])
+        if (index < mismaLinea.size - 1) vecinas.add(mismaLinea[index + 1])
+        return vecinas
+    }
 
-        // 1. Obtener todas las estaciones de cada línea
-        val estacionesOrigen = estaciones.filter { it.linea.nombre == origen.linea.nombre }
-        val estacionesDestino = estaciones.filter { it.linea.nombre == destino.linea.nombre }
+    private fun construirPasosDesdeTrayecto(trayecto: Trayecto): List<Any> {
+        val resultado = mutableListOf<Any>()
+        val estacionesRuta = trayecto.ruta
+        val transbordos = trayecto.transbordos
 
-        // 2. Buscar nombres de estaciones comunes entre ambas líneas (puntos de transbordo)
-        val nombresComunes = estacionesOrigen.map { it.nombre }
-            .intersect(estacionesDestino.map { it.nombre })
-
-        // 3. Si no hay transbordo común, no se puede continuar
-        if (nombresComunes.isEmpty()) {
-            showToast("No se encontró una estación de transbordo entre las líneas.")
-            return emptyList()
+        for (i in estacionesRuta.indices) {
+            resultado.add(
+                PasoEstaciones(estacionesRuta[i], if (i < estacionesRuta.size - 1) (1..2).random() else 0)
+            )
+            val transb = transbordos.find { it.estacionTransbordo.nombre == estacionesRuta[i].nombre }
+            if (transb != null) resultado.add(transb)
         }
 
-        // 4. Inicializar variables para guardar el mejor resultado
-        var mejorRuta: List<Any> = emptyList()
-        var menorCantidadDePasos = Int.MAX_VALUE
-
-        // 5. Probar cada transbordo y ver cuál da la ruta más corta
-        for (nombreTransbordo in nombresComunes) {
-            val indexOrigen = estacionesOrigen.indexOfFirst { it.nombre == origen.nombre }
-            val indexTransO = estacionesOrigen.indexOfFirst { it.nombre == nombreTransbordo }
-
-            val indexDestino = estacionesDestino.indexOfFirst { it.nombre == destino.nombre }
-            val indexTransD = estacionesDestino.indexOfFirst { it.nombre == nombreTransbordo }
-
-            val tramo1 = if (indexOrigen < indexTransO)
-                estacionesOrigen.subList(indexOrigen, indexTransO + 1)
-            else
-                estacionesOrigen.subList(indexTransO, indexOrigen + 1).reversed()
-
-            val tramo2 = if (indexTransD < indexDestino)
-                estacionesDestino.subList(indexTransD + 1, indexDestino + 1)
-            else
-                estacionesDestino.subList(indexDestino, indexTransD).reversed()
-
-            val totalEstaciones = tramo1.size + tramo2.size
-
-            if (totalEstaciones < menorCantidadDePasos) {
-                val ruta = mutableListOf<Any>()
-
-                // Añadir primer tramo
-                tramo1.forEachIndexed { i, est ->
-                    val tiempo = if (i < tramo1.size - 1) (1..2).random() else 0
-                    ruta.add(PasoEstaciones(est, tiempo))
-                }
-
-                // Añadir transbordo
-                val estacionTransbordo = estacionesOrigen.find { it.nombre == nombreTransbordo }!!
-                ruta.add(PasoTransbordo(estacionTransbordo, destino.linea, (2..3).random()))
-
-                // Añadir segundo tramo
-                tramo2.forEachIndexed { i, est ->
-                    val tiempo = if (i < tramo2.size - 1) (1..2).random() else 0
-                    ruta.add(PasoEstaciones(est, tiempo))
-                }
-
-                // Actualizar si esta ruta es mejor
-                mejorRuta = ruta
-                menorCantidadDePasos = totalEstaciones
-            }
-        }
-
-        return mejorRuta
+        return resultado
     }
 
 
@@ -419,6 +394,34 @@ class Routes : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun mostrarDialogoTarjetaDesactivada() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.acceso_restringido))
+            .setMessage(getString(R.string.activar_uuid_para_funciones_principales))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.activa_uuid)) { _, _ ->
+                startActivity(Intent(this, TarjetaUUID::class.java))
+            }
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+        }
+        return estaActivada
+    }
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -444,8 +447,12 @@ class Routes : AppCompatActivity() {
                 startActivity(Intent(this, PerfilUsuario::class.java))
             }
             R.id.nav_suscription -> {
-                // Abrir suscripciones (Princin cards)
-                startActivity(Intent(this, PricingCards::class.java))
+                // Abrir suscripciones (Princin cards) si la tarjeta está activada, si no a tarjetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, PricingCards::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
             }
             R.id.nav_config -> {
                 // Abrir configuración
@@ -484,8 +491,12 @@ class Routes : AppCompatActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a CardSettings si la tarjeta está activada, si no a TarejetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, CardSettings::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
                 return true
             }
         }

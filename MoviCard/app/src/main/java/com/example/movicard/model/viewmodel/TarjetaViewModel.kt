@@ -90,6 +90,26 @@ class TarjetaViewModel(
         }
     }
 
+    fun cambiarEstadoActivacionTarjeta(nuevoEstadoActivacion: String) {
+        val cliente = sessionManager.getCliente()
+        if (cliente != null) {
+            viewModelScope.launch {
+                try {
+                    Log.d(
+                        "TarjetaViewModel",
+                        "Cambiando estado de activación de la tarjeta a $nuevoEstadoActivacion para cliente ${cliente.id}"
+                    )
+                    api.actualizarEstadoActivacionTarjeta(cliente.id, nuevoEstadoActivacion)
+                    Log.d("TarjetaViewModel", "Estado de activación de la tarjeta actualizado a $nuevoEstadoActivacion")
+                } catch (e: Exception) {
+                    Log.e("TarjetaViewModel", "Error al activar la tarjeta: ${e.message}")
+                }
+            }
+        } else {
+            Log.e("TarjetaViewModel", "Cliente no encontrado en sesión al cambiar estado de activación")
+        }
+    }
+
     fun existeTarjeta(onResult: (Boolean) -> Unit) {
         val cliente = sessionManager.getCliente()
         if (cliente != null) {

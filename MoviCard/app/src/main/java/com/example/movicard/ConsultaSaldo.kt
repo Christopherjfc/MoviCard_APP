@@ -6,20 +6,15 @@ import android.util.DisplayMetrics
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityConsultaSaldoBinding
-import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.TicketViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -85,7 +80,7 @@ class ConsultaSaldo : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
 
@@ -107,10 +102,10 @@ class ConsultaSaldo : BaseActivity() {
     private fun mostrarDialogoTarjetaBloqueada() {
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Tarjeta Bloqueada")
-            .setMessage("🔒 Tu tarjeta está bloqueada. No puedes consultar el saldo.\n\nVuelve a activarla desde tu perfil.")
+            .setMessage("🔒 Tu tarjeta está bloqueada. No puedes consultar el saldo.\n\nVuelve a activarla desde la pantalla de configuración de tarjeta.")
             .setCancelable(false)
-            .setPositiveButton("Volver al inicio") { _, _ ->
-                startActivity(Intent(this, Principal::class.java))
+            .setPositiveButton("Configuración") { _, _ ->
+                startActivity(Intent(this, CardSettings::class.java))
                 finish()
             }
             .show()
@@ -244,8 +239,8 @@ class ConsultaSaldo : BaseActivity() {
             }
 
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a la activity BlockCard ya que la tarjeta está activada
+                startActivity(Intent(this, BlockCard::class.java))
                 return true
             }
         }

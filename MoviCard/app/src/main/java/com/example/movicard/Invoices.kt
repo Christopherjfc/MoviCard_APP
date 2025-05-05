@@ -27,7 +27,11 @@ import android.print.PrintManager
 import android.print.PrintAttributes
 import android.webkit.WebView
 import android.webkit.WebViewClient
-
+import androidx.lifecycle.ViewModelProvider
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceAPI
 
 
 class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
@@ -154,6 +158,21 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
         webView.loadUrl(invoiceUrl)
     }
 
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
+        }
+        return estaActivada
+    }
+
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
@@ -219,7 +238,7 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
             }
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                startActivity(Intent(this, BlockCard::class.java))
                 return true
             }
         }

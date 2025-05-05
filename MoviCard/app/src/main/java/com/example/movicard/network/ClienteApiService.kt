@@ -100,6 +100,13 @@ interface ClienteApiService {
         @Body estado: String
     ): Response<Unit>
 
+    // Cambiar el estado de activacion de la tarjeta (ACTIVA / DESACTIVADA)
+    @PUT("/put/tarjeta/activacion/{id_cliente}")
+    suspend fun actualizarEstadoActivacionTarjeta(
+        @Path("id_cliente") idCliente: Int,
+        @Body estadoActivacion: String
+    ): Response<Unit>
+
     @PUT("/put/tarjeta/ticket/{id_cliente}")
     suspend fun actualizarIdTicket(
         @Path("id_cliente") idCliente: Int,

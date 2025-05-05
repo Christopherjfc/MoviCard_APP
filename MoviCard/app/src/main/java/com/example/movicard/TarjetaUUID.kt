@@ -1,18 +1,22 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.movicard.databinding.ActivityPrincipalBinding
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityTarjetaUuidBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 
 class TarjetaUUID : BaseActivity() {
@@ -29,6 +33,7 @@ class TarjetaUUID : BaseActivity() {
         // Configurar la Toolbar primero
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Muestra el ícono de la hamburguesa
+
         // Quitar el título por defecto de la ActionBar
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -44,27 +49,112 @@ class TarjetaUUID : BaseActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+
         val iconColor = resources.getColor(R.color.white, theme)
         toggle.drawerArrowDrawable.color = iconColor
 
+
         // Manejar la navegación en el menú lateral
         binding.navView.setNavigationItemSelectedListener(navMenuListener)
+
 
         // Manejar el clic en los botones de la parte inferior
         binding.bottomNavigationView.selectedItemId = R.id.tarjeta
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
 
+
         binding.btnLogout.setOnClickListener {
             logout()
         }
 
-        binding.btnEntrar.setOnClickListener {
-            startActivity(Intent(this, CardSettings::class.java))
+        /*
+         * COMPRUEBO Y ACTIVO LA TARJETA SI LA UUID ES CORRECTA
+         */
+
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        var tarjetaUUID: String? = null
+
+        // extraigo la UUID de la tarjeta del cliente y la asigno al atributo tarjetaUUID
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            tarjetaUUID = tarjeta?.UUID
         }
+        viewModelTarjeta.cargarTarjeta()
+
+        binding.btnEntrar.setOnClickListener {
+            if (binding.editTextUuid.text.toString() == tarjetaUUID) {
+                showToast(getString(R.string.tarjeta_activada))
+                viewModelTarjeta.cambiarEstadoTarjeta("ACTIVADA")
+                viewModelTarjeta.cambiarEstadoActivacionTarjeta("ACTIVADA")
+                viewModelTarjeta.cargarTarjeta()
+                startActivity(Intent(this, CardSettings::class.java))
+            } else {
+                showToast(getString(R.string.uuid_incorrecto))
+            }
+        }
+
+        //TODO: modificar la api y añadir un campo mas de validación de tarjeta (ACTIVADA / DESACTIVADA), si está desactivada tiene que poner la UUID de la tarjeta,
+        // si la tarjeta ya se activó, la Activity TarjetaUUI ya no estará disponible e irá directamente a BlockCard.java
+        //
+
+        /*
+         * TODO: modificar la api y añadir un campo mas de validación de tarjeta (ACTIVADA / DESACTIVADA), si está desactivada tiene que poner la UUID de la tarjeta,
+         *       si la tarjeta ya se activó, la Activity TarjetaUUI ya no estará disponible e irá directamente a CardBlock.java.
+         *       En el menu menu navegation Que le siguen a ConsultaSaldo.java, y PurchaseSummary el tercer item del menu inferior lo llevará a BlockCard.java y no a TarjetaUUID.java
+         *       En el resto hay que comprobar en el metodo (bottomNavListener) en la parte de la tarejta (tercer item) verificar si el usuario su tarjeta está activa o no.
+         *       Si es que no está activa, que la lleve a la pantalla TarjetaUUID.java, si está activa, que lo lleve a BlockCard.java
+         */
+
+
+
+
+
+
+
+
+
+
 
 
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
+    }
+
+    private fun mostrarDialogoTarjetaDesactivada() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.acceso_restringido))
+            .setMessage(getString(R.string.activar_uuid_para_funciones_principales))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.activa_uuid)) { _, _ ->
+                startActivity(Intent(this, TarjetaUUID::class.java))
+            }
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+        }
+        return estaActivada
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 
@@ -91,10 +181,16 @@ class TarjetaUUID : BaseActivity() {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
             }
+
             R.id.nav_suscription -> {
-                // Abrir suscripciones (Princin cards)
-                startActivity(Intent(this, PricingCards::class.java))
+                // Abrir suscripciones (Princin cards) si la tarjeta está activada, si no a tarjetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, PricingCards::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
             }
+
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
@@ -120,13 +216,14 @@ class TarjetaUUID : BaseActivity() {
         }
     }
 
-    private val bottomNavListener = fun(item: MenuItem): Boolean{
+    private val bottomNavListener = fun(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.help -> {
                 // Cambia a ayuda
                 startActivity(Intent(this, Help::class.java))
                 return true
             }
+
             R.id.home -> {
                 // Cambia a pantalla principal
                 startActivity(Intent(this, Principal::class.java))

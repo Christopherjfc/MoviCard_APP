@@ -12,8 +12,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPaymentDetailsBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.ClienteViewModel
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 
 class PaymentDetails : BaseActivity() {
@@ -114,7 +115,7 @@ class PaymentDetails : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
@@ -151,6 +152,21 @@ class PaymentDetails : BaseActivity() {
             intent.putExtras(bundle)
             startActivity(intent)
         }
+    }
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
+        }
+        return estaActivada
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
@@ -220,8 +236,8 @@ class PaymentDetails : BaseActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a la activity BlockCard ya que la tarjeta está activada
+                startActivity(Intent(this, BlockCard::class.java))
                 return true
             }
         }

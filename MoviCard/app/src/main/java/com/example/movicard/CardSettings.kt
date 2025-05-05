@@ -6,22 +6,18 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityCardSettingsBinding
-import com.example.movicard.databinding.ActivityGraficasBinding
 import com.example.movicard.helper.SessionManager
-import com.example.movicard.model.Suscripcion
 import com.example.movicard.model.viewmodel.SuscripcionViewModel
+import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 
 class CardSettings : AppCompatActivity() {
@@ -83,18 +79,34 @@ class CardSettings : AppCompatActivity() {
 
         val sessionManager = SessionManager(this)
 
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
         viewModelSuscripcion.creaSuscripcion()
         binding.cancelarSuscripion.setOnClickListener {
             viewModelSuscripcion.verificaSuscripcionGratuita { esGratuita ->
                 if (esGratuita) {
-                    showToast("Aún no dispone de una suscripción")
+                    showToast(getString(R.string.a_n_no_dispone_de_una_suscripci_n))
                 } else {
                     alertDialogCancelarSuscipcion(viewModelSuscripcion)
                 }
             }
         }
+    }
+
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
+        }
+        return estaActivada
     }
 
     private fun alertDialogCancelarSuscipcion(viewModelSuscripcion : SuscripcionViewModel){
@@ -104,7 +116,7 @@ class CardSettings : AppCompatActivity() {
             .setPositiveButton(getString(R.string.confirmar)) { _, _ ->
                 viewModelSuscripcion.actualizarASuscripcionGratuita()
                 viewModelSuscripcion.cargarSuscripcion()
-                showToast("Cambio de plan actualizado con éxito.")
+                showToast(getString(R.string.cambio_de_plan_actualizado_con_xito))
             }
             .setNegativeButton(getString(R.string.cancelar), null)
             .show()
@@ -178,11 +190,6 @@ class CardSettings : AppCompatActivity() {
             R.id.home -> {
                 // Cambia a pantalla principal
                 startActivity(Intent(this, Principal::class.java))
-                return true
-            }
-            R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
                 return true
             }
         }

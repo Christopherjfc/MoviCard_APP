@@ -19,8 +19,13 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivitySelectedTitleInfoBinding
 import com.example.movicard.databinding.ActivityTicketTypesBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 
 class SelectedTitleInfo : AppCompatActivity() {
@@ -88,6 +93,7 @@ class SelectedTitleInfo : AppCompatActivity() {
         }
     }
 
+
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
         val displayMetrics = DisplayMetrics()
@@ -152,8 +158,8 @@ class SelectedTitleInfo : AppCompatActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a la activity BlockCard ya que la tarjeta está activada
+                startActivity(Intent(this, BlockCard::class.java))
                 return true
             }
         }

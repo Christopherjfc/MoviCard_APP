@@ -3,18 +3,12 @@ package com.example.movicard
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.view.View
-import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityLoginBinding
-import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.example.movicard.helper.SessionManager
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import kotlinx.coroutines.launch
 
 class Login : BaseActivity() {
@@ -60,7 +54,7 @@ class Login : BaseActivity() {
         lifecycleScope.launch {
             try {
                 // obtengo todos los clientes
-                val clientes = RetrofitInstance.api.getAllClientes()
+                val clientes = RetrofitInstanceAPI.api.getAllClientes()
 
                 // verifico si el correo que introduje coincide con algún correo de un cliente
                 val cliente = clientes.find { it.correo == email }

@@ -1,5 +1,6 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.transition.AutoTransition
@@ -10,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +20,7 @@ import com.example.movicard.helper.SessionManager
 import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.SuscripcionViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
-import com.example.movicard.network.RetrofitInstance
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 import androidx.core.view.isGone
 import com.example.movicard.model.viewmodel.TarjetaViewModel
@@ -97,7 +99,7 @@ class PerfilUsuario : BaseActivity() {
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstance.api, sessionManager)
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelCliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
@@ -120,12 +122,19 @@ class PerfilUsuario : BaseActivity() {
         }
 
         viewModelSuscripcion.suscripcion.observe(this) { suscripcion ->
-            binding.textSuscripcion.setText(suscripcion.suscripcion)
-            viewModelTarjeta.crearTarjeta(suscripcion.id)
+            if (suscripcion.suscripcion == "GRATUITA"){
+                binding.textSuscripcion.setText(getString(R.string.freemium))
+            } else {
+                binding.textSuscripcion.setText(getString(R.string.premium))
+            }
         }
 
         viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            binding.textUUIDTarjeta.setText(tarjeta?.estadotarjeta)
+            if (tarjeta?.estadotarjeta == "ACTIVADA") {
+                binding.textUUIDTarjeta.text = getString(R.string.activada)
+            } else {
+                binding.textUUIDTarjeta.text = getString(R.string.bloqueada)
+            }
         }
 
         // Llamamos a la función para iniciar la carga de datos del cliente
@@ -158,19 +167,25 @@ class PerfilUsuario : BaseActivity() {
                 telefono.isEmpty() || direccion.isEmpty() || numeroBloque.isEmpty() ||
                 codigoPostal.isEmpty() || ciudad.isEmpty()
             ) {
-                showToast("Todos los campos deben estar completos (excepto el piso)")
+                showToast(getString(R.string.todos_los_campos_son_obligatorios_completos_excepto_el_piso))
                 return@setOnClickListener
             }
 
             // 2. Validación de formato del DNI español
             if (!dni.matches(Regex("^[XYZ]?[0-9]{7,8}[A-Za-z]$"))) {
-                binding.nuevoDNI.error = "DNI inválido. Debe tener 8 números y 1 letra."
+                binding.nuevoDNI.error = getString(R.string.dni_inv_lido_debe_tener_8_n_meros_y_1_letra)
                 return@setOnClickListener
             }
 
-            // 3. Validación del código postal: 5 dígitos numéricos
+            // 3. Validación del número de teléfono: 9 dígitos y que comience con 6, 7, 8 o 9
+            if (!telefono.matches(Regex("^[6789]\\d{8}\$"))) {
+                binding.nuevoTelefono.error = getString(R.string.n_mero_telef_nico_inv_lido_debe_tener_9_d_gitos_y_empezar_con_6_7_8_9)
+                return@setOnClickListener
+            }
+
+            // 4. Validación del código postal: 5 dígitos numéricos
             if (!codigoPostal.matches(Regex("^\\d{5}$"))) {
-                binding.nuevoCodigoPostal.error = "Código postal inválido (debe tener 5 dígitos)"
+                binding.nuevoCodigoPostal.error = getString(R.string.c_digo_postal_inv_lido_debe_tener_5_d_gitos)
                 return@setOnClickListener
             }
 
@@ -193,7 +208,7 @@ class PerfilUsuario : BaseActivity() {
                 viewModelCliente.actualizarDatosCliente(clienteActualizado)
                 viewModelCliente.cargarCliente()
 
-                showToast("Datos actualizados correctamente")
+                showToast(getString(R.string.datos_actualizados_correctamente))
                 toggleVisibilityCambiarDatos()
             }
         }
@@ -209,25 +224,25 @@ class PerfilUsuario : BaseActivity() {
             val actual = binding.contraActual.text.toString()
 
             if (clienteActual != null && clienteActual.password.toString() != actual) {
-                binding.contraActual.error = "La contraseña no coincide"
+                binding.contraActual.error = getString(R.string.la_contrase_a_no_coincide)
             }
 
             val nueva = binding.nuevaContra.text.toString()
             val repetir = binding.repiteNuevaContra.text.toString()
 
             if (repetir != nueva) {
-                binding.repiteNuevaContra.error = "La contraseña de confirmación no coincide con la nueva"
+                binding.repiteNuevaContra.error = getString(R.string.la_contrase_a_de_confirmaci_n_no_coincide_con_la_nueva)
                 return@setOnClickListener
             }
 
             viewModelCliente.cambiarPassword(actual, nueva,
                 onSuccess = {
                     toggleVisibilityCambiarContra()
-                    showToast("Contraseña actualizada con éxito")
+                    showToast(getString(R.string.contrase_a_actualizada_con_xito))
                     limpiaCamposCambiarContra()
                 },
                 onError = {
-                    print("Error al cambiar la contraseña: $it")
+                    print(getString(R.string.error_al_cambiar_la_contrase_a, it))
                 }
             )
             viewModelCliente.cargarCliente()
@@ -292,6 +307,34 @@ class PerfilUsuario : BaseActivity() {
         }
     }
 
+    private fun mostrarDialogoTarjetaDesactivada() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.acceso_restringido))
+            .setMessage(getString(R.string.activar_uuid_para_funciones_principales))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.activa_uuid)) { _, _ ->
+                startActivity(Intent(this, TarjetaUUID::class.java))
+            }
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+        }
+        return estaActivada
+    }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -313,8 +356,12 @@ class PerfilUsuario : BaseActivity() {
     private val navMenuListener = NavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_suscription -> {
-                // Abrir suscripciones (Princin cards)
-                startActivity(Intent(this, PricingCards::class.java))
+                // Abrir suscripciones (Princin cards) si la tarjeta está activada, si no a tarjetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, PricingCards::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
             }
             R.id.nav_config -> {
                 // Abrir configuración
@@ -355,8 +402,12 @@ class PerfilUsuario : BaseActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a CardSettings si la tarjeta está activada, si no a TarejetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, CardSettings::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
                 return true
             }
         }

@@ -1,11 +1,11 @@
 package com.example.movicard
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +15,16 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivitySettingsBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
 import java.util.Locale
 
@@ -95,7 +100,7 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
         // Leer estado del tema guardado
         val isDarkMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO) == AppCompatDelegate.MODE_NIGHT_YES
 
-// Deshabilitar temporalmente el listener para evitar activación no deseada
+        // Deshabilitar temporalmente el listener para evitar activación no deseada
         binding.switchTemas.setOnCheckedChangeListener(null)
         binding.switchTemas.isChecked = isDarkMode
         binding.switchTemas.setOnCheckedChangeListener { _, isChecked ->
@@ -202,6 +207,34 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
         startActivity(intent)
     }
 
+    private fun mostrarDialogoTarjetaDesactivada() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.acceso_restringido))
+            .setMessage(getString(R.string.activar_uuid_para_funciones_principales))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.activa_uuid)) { _, _ ->
+                startActivity(Intent(this, TarjetaUUID::class.java))
+            }
+            .show()
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+    }
+
+    private fun isTargetActivated() : Boolean{
+        var estaActivada : Boolean = false
+        val sessionManager = SessionManager(this)
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+
+        viewModelTarjeta.cargarTarjeta()
+
+        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
+            estaActivada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+        }
+        return estaActivada
+    }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -226,8 +259,12 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
                 startActivity(Intent(this, PerfilUsuario::class.java))
             }
             R.id.nav_suscription -> {
-                // Abrir suscripciones (Princin cards)
-                startActivity(Intent(this, PricingCards::class.java))
+                // Abrir suscripciones (Princin cards) si la tarjeta está activada, si no a tarjetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, PricingCards::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -260,8 +297,12 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                // Cambia a CardSettings si la tarjeta está activada, si no a TarejetaUUID
+                if (isTargetActivated()) {
+                    startActivity(Intent(this, CardSettings::class.java))
+                }else {
+                    mostrarDialogoTarjetaDesactivada()
+                }
                 return true
             }
         }

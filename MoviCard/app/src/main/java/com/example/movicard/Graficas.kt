@@ -13,7 +13,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityGraficasBinding
+import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceAPI
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.BarData
@@ -109,7 +114,7 @@ class Graficas : BaseActivity() {
         valores.add(PieEntry(conteo["MOVI_TRIMESTRAL"] ?: 0f, "TRIMOVI"))
         valores.add(PieEntry(conteo["SUSCRIPCIÓN PREMIUM"] ?: 0f, "SUSCRIPCIÓN PREMIUM"))
 
-        val conjuntoDeDatos = PieDataSet(valores, "Tarjetas Vendidas")
+        val conjuntoDeDatos = PieDataSet(valores, getString(R.string.tarjetas_vendidas))
         conjuntoDeDatos.colors = listOf(
             Color.rgb(88, 214, 141), // verde (10)
             Color.rgb(93, 173, 226), // azul (mes)
@@ -165,7 +170,7 @@ class Graficas : BaseActivity() {
             labels.add(dia.toString())
         }
 
-        val dataSet = BarDataSet(entries, "Gastos por día (€)")
+        val dataSet = BarDataSet(entries, getString(R.string.gastos_por_d_a))
         dataSet.color = Color.rgb(0, 123, 255)
         dataSet.valueTextSize = 12f
         dataSet.valueTextColor = ContextCompat.getColor(this, R.color.text_primary)
@@ -201,7 +206,7 @@ class Graficas : BaseActivity() {
 
         prefs.edit().putString("gastos_por_dia", Gson().toJson(gastos)).apply()
 
-        Toast.makeText(this, "Datos de prueba insertados", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.datos_de_prueba_insertados), Toast.LENGTH_SHORT).show()
 
         // Opcional: actualizar la gráfica automáticamente
         llenarGraficaBarra(binding.graficaBarra)
@@ -273,7 +278,7 @@ class Graficas : BaseActivity() {
             }
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
-                startActivity(Intent(this, TarjetaUUID::class.java))
+                startActivity(Intent(this, BlockCard::class.java))
                 return true
             }
         }
