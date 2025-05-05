@@ -249,7 +249,8 @@ async def getTarjetaByClienteId(id_cliente: int):
         "id_cliente": tarjeta[2],
         "id_suscripcion": tarjeta[3],
         "id_ticket": tarjeta[4],
-        "estadotarjeta": tarjeta[5]
+        "estadotarjeta": tarjeta[5],
+        "estadoactivaciontarjeta": tarjeta[6]
     }
 
 @router.post("/post/tarjeta/")
@@ -266,9 +267,9 @@ async def crear_tarjeta(id_cliente: int, id_suscripcion: int, id_ticket: Optiona
 
         uuid_generado = str(uuid.uuid4())
         cursor.execute("""
-            INSERT INTO tarjetamovicard (UUID, id_cliente, id_suscripcion, id_ticket, estadotarjeta)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (uuid_generado, id_cliente, id_suscripcion, id_ticket, "ACTIVADA"))
+            INSERT INTO tarjetamovicard (UUID, id_cliente, id_suscripcion, id_ticket, estadotarjeta, estadoactivaciontarjeta)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (uuid_generado, id_cliente, id_suscripcion, id_ticket, "BLOQUEADA", "DESACTIVADA"))
         connection.commit()
 
         return {"message": "Tarjeta creada exitosamente", "UUID": uuid_generado}
@@ -303,6 +304,30 @@ async def actualizarEstadoTarjeta(id_cliente: int, nuevo_estado: str = Body(...,
         cursor.close()
         connection.close()
 
+@router.put("/put/tarjeta/activacion/{id_cliente}")
+async def actualizarEstadoTarjeta(id_cliente: int, nuevo_estado_activacion: str = Body(..., media_type="text/plain")):
+    if nuevo_estado_activacion not in ["ACTIVADA", "DESACTIVADA"]:
+        raise HTTPException(status_code=400, detail="Estado no válido. Debe ser 'ACTIVADA' o 'DESACTIVADA'.")
+
+    connection = connect_to_db()
+    try:
+        cursor = get_cursor(connection)
+        cursor.execute("SELECT id FROM tarjetamovicard WHERE id_cliente = %s", (id_cliente,))
+        tarjeta = cursor.fetchone()
+        if not tarjeta:
+            raise HTTPException(status_code=404, detail="Tarjeta no encontrada")
+
+        id_tarjeta = tarjeta[0]  # Esto es el ID real de la tarjeta, no el cliente
+        
+        cursor.execute(
+            "UPDATE tarjetamovicard SET estadoactivaciontarjeta = %s WHERE id = %s",
+            (nuevo_estado_activacion, id_tarjeta)
+        )
+        connection.commit()
+        return {"message": f"Estado de activación de la tarjeta actualizado a {nuevo_estado_activacion}"}
+    finally:
+        cursor.close()
+        connection.close()
 
 @router.put("/put/tarjeta/ticket/{id_cliente}")
 async def actualizar_id_ticket(id_cliente: int, nuevo_id_ticket: int):
@@ -452,12 +477,12 @@ async def actualizar_suscripcion_a_premium(id_cliente: int):
 
 # --- TICKETS ---
 
-@router.get("/get/tickets/{id}")
-async def getTicketByClienteId(id: int):
+@router.get("/get/tickets/{id_cliente}")
+async def getTicketByClienteId(id_cliente: int):
     connection = connect_to_db()
     try:
         cursor = get_cursor(connection)
-        cursor.execute("SELECT * FROM ticket WHERE id_cliente = %s", (id,))
+        cursor.execute("SELECT * FROM ticket WHERE id_cliente = %s", (id_cliente,))
         ticket = cursor.fetchone()
 
         if not ticket:

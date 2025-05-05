@@ -11,6 +11,10 @@ class PlanEnum(str, Enum):
 class EstadoTarjeta(str, Enum):
     ACTIVADA = "ACTIVADA"
     BLOQUEADA = "BLOQUEADA"
+    
+class EstadoActivacionTarjeta(str, Enum):
+    ACTIVADA = "ACTIVADA"
+    BLOQUEADA = "DESACTIVADA"
 
 class TipoTransporteEnum(str, Enum):
     METRO = "METRO"
@@ -59,7 +63,8 @@ class TarjetaMoviCard(BaseModel):
     id_cliente: int
     id_suscripcion: int
     id_ticket: Optional[int] = None
-    estadotarjeta: EstadoTarjeta = EstadoTarjeta.ACTIVADA
+    estadotarjeta: EstadoTarjeta = EstadoTarjeta.BLOQUEADA
+    estadoactivaciontarjeta: EstadoActivacionTarjeta = EstadoActivacionTarjeta.BLOQUEADA
 
 class Destino(BaseModel):
     id: int
