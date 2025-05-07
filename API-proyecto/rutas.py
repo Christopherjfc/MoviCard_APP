@@ -541,8 +541,6 @@ async def create_ticket(tipo: str, id_cliente: int):
         cursor.close()
         connection.close()
 
-
-
 @router.put("/put/tickets/{id_cliente}")
 async def update_ticket(id_cliente: int, tipo: str = Body(..., media_type="text/plain")):
     connection = connect_to_db()
@@ -589,4 +587,33 @@ async def update_ticket(id_cliente: int, tipo: str = Body(..., media_type="text/
         connection.close()
 
 
+@router.put("/put/tickets/cantidad/{id_cliente}")
+async def actualizar_cantidad_ticket(id_cliente: int, nueva_cantidad: int = Body(...)):
+    connection = connect_to_db()
+    try:
+        cursor = get_cursor(connection)
 
+        # Verificar que el ticket existe y que es TENMOVI
+        cursor.execute("SELECT id, tipo FROM ticket WHERE id_cliente = %s", (id_cliente,))
+        ticket = cursor.fetchone()
+
+        if not ticket:
+            raise HTTPException(status_code=404, detail="No se encontró ticket para este cliente")
+
+        ticket_id, tipo = ticket
+
+        if tipo != "TENMOVI":
+            raise HTTPException(status_code=400, detail="Solo se puede actualizar cantidad si el tipo es TENMOVI")
+
+        # Actualizar la cantidad
+        cursor.execute(
+            "UPDATE ticket SET cantidad = %s WHERE id = %s",
+            (nueva_cantidad, ticket_id)
+        )
+        connection.commit()
+
+        return {"message": "Cantidad de ticket actualizada correctamente", "nueva_cantidad": nueva_cantidad}
+
+    finally:
+        cursor.close()
+        connection.close()
