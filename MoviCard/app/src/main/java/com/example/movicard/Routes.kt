@@ -408,19 +408,17 @@ class Routes : AppCompatActivity() {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
     }
 
-    private fun isTargetActivated() : Boolean{
-        var estaActivada : Boolean = false
+    private fun isTargetActivated(callback: (Boolean) -> Unit) {
         val sessionManager = SessionManager(this)
-        // creo el ViewModel usando el Factory personalizado
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
 
         viewModelTarjeta.cargarTarjeta()
 
         viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            estaActivada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+            val activada = tarjeta?.estadoactivaciontarjeta != "DESACTIVADA"
+            callback(activada)
         }
-        return estaActivada
     }
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
@@ -448,10 +446,12 @@ class Routes : AppCompatActivity() {
             }
             R.id.nav_suscription -> {
                 // Abrir suscripciones (Princin cards) si la tarjeta está activada, si no a tarjetaUUID
-                if (isTargetActivated()) {
-                    startActivity(Intent(this, PricingCards::class.java))
-                }else {
-                    mostrarDialogoTarjetaDesactivada()
+                isTargetActivated { activada ->
+                    if (activada) {
+                        startActivity(Intent(this, PricingCards::class.java))
+                    } else {
+                        mostrarDialogoTarjetaDesactivada()
+                    }
                 }
             }
             R.id.nav_config -> {
@@ -492,10 +492,12 @@ class Routes : AppCompatActivity() {
             }
             R.id.tarjeta -> {
                 // Cambia a CardSettings si la tarjeta está activada, si no a TarejetaUUID
-                if (isTargetActivated()) {
-                    startActivity(Intent(this, CardSettings::class.java))
-                }else {
-                    mostrarDialogoTarjetaDesactivada()
+                isTargetActivated { activada ->
+                    if (activada) {
+                        startActivity(Intent(this, CardSettings::class.java))
+                    } else {
+                        mostrarDialogoTarjetaDesactivada()
+                    }
                 }
                 return true
             }
