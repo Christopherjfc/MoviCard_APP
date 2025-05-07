@@ -10,6 +10,7 @@ import com.example.movicard.databinding.ActivityLoginBinding
 import com.example.movicard.helper.SessionManager
 import com.example.movicard.network.RetrofitInstanceAPI
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
 
 class Login : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -23,12 +24,12 @@ class Login : BaseActivity() {
         binding.btnLogin.setOnClickListener {
             val email = binding.email.text.toString().trim()
             val password = binding.password.text.toString().trim()
-
             if (email.isEmpty() || password.isEmpty()) {
                 binding.email.error = "Campo requerido"
                 binding.password.error = "Campo requerido"
             } else {
-                verificarUsuario(email, password)
+                var psswdHashed = hasheaPassword(password)
+                verificarUsuario(email, psswdHashed)
             }
         }
 
@@ -48,6 +49,14 @@ class Login : BaseActivity() {
             // Mueve el cursor al final
             binding.password.setSelection(binding.password.text.length)
         }
+    }
+
+    fun hasheaPassword(password: String): String {
+        val salt = "M0v¡ç@rD!6%"
+        val message = salt + password
+        val digest = MessageDigest.getInstance("SHA-512")
+        val hashBytes = digest.digest(message.toByteArray(Charsets.UTF_8))
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 
     private fun verificarUsuario(email: String, password: String) {
