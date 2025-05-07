@@ -160,8 +160,8 @@ class TicketTypes : BaseActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a la activity BlockCard ya que la tarjeta está activada
-                startActivity(Intent(this, BlockCard::class.java))
+                // Cambia a la activity CardSettings ya que la tarjeta está activada
+                startActivity(Intent(this, CardSettings::class.java))
                 return true
             }
         }
