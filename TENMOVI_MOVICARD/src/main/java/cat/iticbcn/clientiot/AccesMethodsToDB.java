@@ -1,26 +1,19 @@
 package cat.iticbcn.clientiot;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HexFormat;
-
 import org.json.JSONObject;
-
 import com.amazonaws.services.iot.client.AWSIotMessage;
+import cat.iticbcn.clientiot.api.ApiClient;
+import cat.iticbcn.clientiot.modelo.Ticket;
+import cat.iticbcn.clientiot.service.TicketService;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class AccesMethodsToDB {
 
-    public String creaHashPsswd(String password) throws Exception{
-        MessageDigest md = MessageDigest.getInstance("SHA-512");
-        byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
-        HexFormat hex = HexFormat.of();
-        String hash = hex.formatHex(bytes); 
-        return hash; 
+    private final TicketService ticketService;
+
+    public AccesMethodsToDB() {
+        this.ticketService = ApiClient.getService();
     }
 
     public String getNUIDHex(AWSIotMessage message) {
@@ -45,59 +38,42 @@ public class AccesMethodsToDB {
         }
     }
 
-    public void selectAlumnes (Connection con) {
-        String sql = "SELECT * FROM alumne"; // Consulta SQL
-        try (Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-        
-            while (rs.next()) {
-                int id = rs.getInt("IdAlumne");
-                String nombre = rs.getString("NomAlumne");
-                System.out.println("ID: " + id + ", Nom: " + nombre);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al ejecutar la consulta: " + e.getMessage());
-        }
-    }
-
-    public void verificarYActualizarTicket(Connection con, int idCliente) {
-        String selectTicket = "SELECT tipo, cantidad FROM ticket WHERE id_cliente = ?";
-        String updateTicket = "UPDATE ticket SET cantidad = cantidad - 1 WHERE id_cliente = ?";
-        
-        try (PreparedStatement stmt = con.prepareStatement(selectTicket)) {
-            stmt.setInt(1, idCliente);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String tipo = rs.getString("tipo");
-                int cantidad = rs.getInt("cantidad");
-
-                if ("TENMOVI".equals(tipo)) {
-                    if (cantidad > 0) {
-                        try (PreparedStatement updateStmt = con.prepareStatement(updateTicket)) {
-                            updateStmt.setInt(1, idCliente);
-                            updateStmt.executeUpdate();
-                            System.out.println("Nuevo saldo TENMOVI para cliente " + idCliente + ": " + (cantidad - 1));
-                            new DispositiuIot().enviarMensajeToAws("Saldo TENMOVI actualizado. Nueva cantidad: " + (cantidad - 1));
-                        }
-                    } else {
-                        System.out.println("El saldo TENMOVI está agotado. No se puede descontar más.");
-                        new DispositiuIot().enviarMensajeToAws("Saldo agotado. No se realizó ningún cambio.");
-                    }
-                } else if ("MOVIMES".equals(tipo) || "TRIMOVI".equals(tipo)) {
-                    System.out.println("Lectura de ticket ilimitado (" + tipo + ") para cliente " + idCliente);
-                    new DispositiuIot().enviarMensajeToAws("Lectura válida para ticket ilimitado: " + tipo);
-                } else {
-                    System.out.println("Tipo de ticket desconocido.");
-                    new DispositiuIot().enviarMensajeToAws("Tipo de ticket desconocido.");
-                }
-
-            } else {
-                System.out.println("El cliente " + idCliente + " no tiene un ticket asignado.");
+    public void verificarYActualizarTicket(int idCliente) {
+        try {
+            Call<Ticket> call = ticketService.getTicket(idCliente);
+            Response<Ticket> response = call.execute();
+    
+            if (!response.isSuccessful() || response.body() == null) {
                 new DispositiuIot().enviarMensajeToAws("El cliente no tiene ticket asignado.");
+                return;
             }
-        } catch (SQLException e) {
-            System.err.println("Error al verificar o actualizar el ticket: " + e.getMessage());
+    
+            Ticket ticket = response.body();
+            String tipo = ticket.getTipo();
+            int cantidad = ticket.getCantidad();
+    
+            if ("TENMOVI".equals(tipo)) {
+                if (cantidad > 0) {
+                    ticket.setCantidad(cantidad - 1);
+                    Call<Void> updateCall = ticketService.updateTicket(idCliente, ticket);
+                    Response<Void> updateResponse = updateCall.execute();
+    
+                    if (updateResponse.isSuccessful()) {
+                        new DispositiuIot().enviarMensajeToAws("Saldo TENMOVI actualizado: " + (cantidad - 1));
+                    } else {
+                        new DispositiuIot().enviarMensajeToAws("Error al actualizar ticket TENMOVI.");
+                    }
+                } else {
+                    new DispositiuIot().enviarMensajeToAws("Saldo agotado. No se realizó ningún cambio.");
+                }
+            } else if ("MOVIMES".equals(tipo) || "TRIMOVI".equals(tipo)) {
+                new DispositiuIot().enviarMensajeToAws("Lectura válida para ticket ilimitado: " + tipo);
+            } else {
+                new DispositiuIot().enviarMensajeToAws("Tipo de ticket desconocido.");
+            }
+    
+        } catch (Exception e) {
+            System.err.println("Error HTTP/API: " + e.getMessage());
         }
-    }
+    }    
 }
