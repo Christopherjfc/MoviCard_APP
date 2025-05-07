@@ -2,6 +2,7 @@ package com.example.movicard
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,10 @@ class ConsultaSaldo : BaseActivity() {
     private lateinit var binding: ActivityConsultaSaldoBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
+    private val pollingInterval = 3000L // 3 segundos
+    private var pollingHandler: Handler? = null
+    private var isPolling = false
+    private var ultimoTipoTicket: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +60,12 @@ class ConsultaSaldo : BaseActivity() {
         // Manejar la navegación en el menú lateral
         binding.navView.setNavigationItemSelectedListener(navMenuListener)
 
+        binding.bottomNavigationView.menu.setGroupCheckable(0, true, false)
+        for (i in 0 until binding.bottomNavigationView.menu.size()) {
+            binding.bottomNavigationView.menu.getItem(i).isChecked = false
+        }
+
+        binding.bottomNavigationView.menu.setGroupCheckable(0, true, true)
 
         // Manejar el clic en los botones de la parte inferior
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
@@ -115,6 +126,29 @@ class ConsultaSaldo : BaseActivity() {
         )
     }
 
+    private fun empezarObservacionCantidadTENMOVI(viewModelTicket: TicketViewModel) {
+        if (isPolling) return // ya está corriendo
+
+        pollingHandler = Handler(mainLooper)
+        isPolling = true
+
+        val runnable = object : Runnable {
+            override fun run() {
+                viewModelTicket.cargarTicket()
+                if (isPolling) {
+                    pollingHandler?.postDelayed(this, pollingInterval)
+                }
+            }
+        }
+
+        pollingHandler?.post(runnable)
+    }
+
+
+    private fun detenerObservacionCantidadTENMOVI() {
+        isPolling = false
+        pollingHandler?.removeCallbacksAndMessages(null)
+    }
 
     // Me formatea la fecha Date a yyyy--mm-dd
     fun formatFecha(fecha: Date?): String {
@@ -187,6 +221,14 @@ class ConsultaSaldo : BaseActivity() {
                                 binding.diasRestantes.text = "∞"
                                 val progreso = (cantidad?.coerceAtMost(10)?.times(10)) ?: 0
                                 binding.progressBar.progress = progreso
+                                ultimoTipoTicket = tipo
+
+                                // Cada 3s cargo el ticket para ver si hay actualizaciones en la cantidad
+                                if (!isPolling) {
+                                    // Solo empieza el polling si no ha empezado ya
+                                    empezarObservacionCantidadTENMOVI(viewModelTicket)
+                                }
+
                             }
 
                             "MOVIMES", "TRIMOVI" -> {
@@ -215,6 +257,22 @@ class ConsultaSaldo : BaseActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Solo reanuda el polling si el tipo sigue siendo TENMOVI
+        if (ultimoTipoTicket == "TENMOVI") {
+            val sessionManager = SessionManager(this)
+            val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+            val viewModelTicket = ViewModelProvider(this, viewModelFactory).get(TicketViewModel::class.java)
+            empezarObservacionCantidadTENMOVI(viewModelTicket)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        detenerObservacionCantidadTENMOVI()
+    }
+
     override fun onBackPressed() {
         // Si el drawer está abierto, cerrarlo al presionar la tecla de retroceso
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -239,8 +297,8 @@ class ConsultaSaldo : BaseActivity() {
             }
 
             R.id.tarjeta -> {
-                // Cambia a la activity BlockCard ya que la tarjeta está activada
-                startActivity(Intent(this, BlockCard::class.java))
+                // Cambia a la activity CardSettings ya que la tarjeta está activada
+                startActivity(Intent(this, CardSettings::class.java))
                 return true
             }
         }
