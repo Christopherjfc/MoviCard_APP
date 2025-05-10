@@ -3,7 +3,7 @@ from fastapi import APIRouter, Body, HTTPException
 from baseDeDatos import connect_to_db, get_cursor
 import uuid
 
-from modelo import EstadoTarjeta, LoginData, PlanEnum
+from modelo import EstadoTarjeta, LoginData, PlanEnum, TicketUpdate
 from datetime import date
 
 router = APIRouter()
@@ -588,12 +588,10 @@ async def update_ticket(id_cliente: int, tipo: str = Body(..., media_type="text/
 
 
 @router.put("/put/tickets/cantidad/{id_cliente}")
-async def actualizar_cantidad_ticket(id_cliente: int, nueva_cantidad: int = Body(...)):
+async def actualizar_cantidad_ticket(id_cliente: int, data: TicketUpdate):
     connection = connect_to_db()
     try:
         cursor = get_cursor(connection)
-
-        # Verificar que el ticket existe y que es TENMOVI
         cursor.execute("SELECT id, tipo FROM ticket WHERE id_cliente = %s", (id_cliente,))
         ticket = cursor.fetchone()
 
@@ -605,14 +603,10 @@ async def actualizar_cantidad_ticket(id_cliente: int, nueva_cantidad: int = Body
         if tipo != "TENMOVI":
             raise HTTPException(status_code=400, detail="Solo se puede actualizar cantidad si el tipo es TENMOVI")
 
-        # Actualizar la cantidad
-        cursor.execute(
-            "UPDATE ticket SET cantidad = %s WHERE id = %s",
-            (nueva_cantidad, ticket_id)
-        )
+        cursor.execute("UPDATE ticket SET cantidad = %s WHERE id = %s", (data.cantidad, ticket_id))
         connection.commit()
 
-        return {"message": "Cantidad de ticket actualizada correctamente", "nueva_cantidad": nueva_cantidad}
+        return {"message": "Cantidad actualizada correctamente", "nueva_cantidad": data.cantidad}
 
     finally:
         cursor.close()

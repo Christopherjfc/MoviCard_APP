@@ -25,6 +25,9 @@ class TicketTipo(str, Enum):
     MOVIMES = "MOVIMES"
     TRIMOVI = "TRIMOVI"
     
+class TicketUpdate(BaseModel):
+    cantidad: int
+    
 class LoginData(BaseModel):
     correo : str 
     password : str
