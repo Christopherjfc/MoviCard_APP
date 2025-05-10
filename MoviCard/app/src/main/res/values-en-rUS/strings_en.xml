@@ -8,8 +8,7 @@
     <string name="iniciar_sesi_n">Log in</string>
     <string name="contraseña">*************</string>
     <string name="bienvenido_de_nuevo">Welcome back!</string>
-    <string name="inicia_sesi_n_o">Log in or</string>
-    <string name="registrate_para_crea_una_cuenta">Sign up to create an account</string>
+    <string name="inicia_sesi_n_para_ningresar_a_movicard">Sign in to \n access MoviCard!</string>
     <string name="introduzca_la_uuid_de_la_tarjeta">Enter the <u>UUID</u> of the card:</string>
     <string name="entrar">Enter</string>
     <string name="uuid">UUID:</string>

@@ -78,8 +78,8 @@
                 android:id="@+id/btn_saldo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="25dp"
                 android:backgroundTint="@color/white"
-                android:scaleType="fitEnd"
                 android:src="@drawable/img_saldo" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -115,11 +115,12 @@
 
                 <ImageButton
                     android:id="@+id/btn_ruta"
-                    android:layout_width="wrap_content"
+                    android:padding="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:scaleType="centerInside"
-                    android:src="@drawable/img_rutas" />
+                    android:src="@drawable/rutas" />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>

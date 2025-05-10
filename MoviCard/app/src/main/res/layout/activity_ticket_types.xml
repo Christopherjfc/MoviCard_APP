@@ -84,8 +84,9 @@
 
                 <ImageView
                     android:layout_width="120dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/movicard_foto_comprimida" />
+                    android:src="@drawable/tenmovi" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -145,8 +146,9 @@
 
                 <ImageView
                     android:layout_width="120dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/movicard_foto_comprimida" />
+                    android:src="@drawable/movimes" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -205,8 +207,9 @@
 
                 <ImageView
                     android:layout_width="120dp"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/movicard_foto_comprimida" />
+                    android:src="@drawable/tenmovi" />
 
                 <LinearLayout
                     android:layout_width="0dp"

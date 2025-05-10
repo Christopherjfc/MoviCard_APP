@@ -56,7 +56,7 @@ class RutaAdapter(private val pasos: List<Any>) : RecyclerView.Adapter<RecyclerV
         fun bind(paso: PasoEstaciones) {
             val estacion = paso.estacion
             tvNombreEstacion.text = "→ ${estacion.nombre} (${estacion.linea.nombre})"
-            tvTiempoSiguiente.text = "🕒 Tiempo hasta siguiente: ${paso.tiempoHastaSiguiente} min"
+            tvTiempoSiguiente.text = "🕒 Tiempo hasta la siguiente estación: ${paso.tiempoHastaSiguiente} min"
         }
     }
 
@@ -69,7 +69,7 @@ class RutaAdapter(private val pasos: List<Any>) : RecyclerView.Adapter<RecyclerV
             val estacion = paso.estacionTransbordo
             val nuevaLinea = paso.nuevaLinea
             tvMensajeTransbordo.text = "🔄 Transbordo en ${estacion.nombre}: cambia a ${nuevaLinea.nombre}"
-            tvTiempoEsperaTransbordo.text = "⏳ Espera de ${paso.tiempoDeEspera} min"
+            tvTiempoEsperaTransbordo.text = "⏳ Esperado de ${paso.tiempoDeEspera} min"
         }
     }
 }

@@ -8,8 +8,7 @@
     <string name="iniciar_sesi_n">Inicia sessió</string>
     <string name="contraseña">*************</string>
     <string name="bienvenido_de_nuevo">Benvingut de nou!</string>
-    <string name="inicia_sesi_n_o">Inicia sessió o</string>
-    <string name="registrate_para_crea_una_cuenta">Registra’t per crear un compte</string>
+    <string name="inicia_sesi_n_para_ningresar_a_movicard">Inicia sessió per a ingresar a MoviCard!</string>
     <string name="introduzca_la_uuid_de_la_tarjeta">Introdueix la <u>UUID</u> de la targeta:</string>
     <string name="entrar">Entrar</string>
     <string name="uuid">UUID:</string>

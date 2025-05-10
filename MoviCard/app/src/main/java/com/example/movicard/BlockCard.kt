@@ -199,7 +199,7 @@ class BlockCard : BaseActivity() {
             }
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
-                startActivity(Intent(this, BlockCard::class.java))
+                startActivity(Intent(this, CardSettings::class.java))
                 return true
             }
         }

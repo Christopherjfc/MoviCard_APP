@@ -11,6 +11,7 @@ import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -80,6 +81,18 @@ class SelectedTitleInfo : AppCompatActivity() {
         val titulo2 = intent.getStringExtra("titulo")
         val viajes2 = intent.getStringExtra("viajes")
         val duracion2 = intent.getStringExtra("duracion")
+
+        when (titulo2) {
+            "TENMOVI" -> {
+                binding.imgTicket.setImageResource(R.drawable.tenmovi)
+            }
+            "MOVIMES" -> {
+                binding.imgTicket.setImageResource(R.drawable.movimes)
+            }
+            "TRIMOVI" -> {
+                binding.imgTicket.setImageResource(R.drawable.trimovi)
+            }
+        }
 
         binding.titulo.text = titulo2;
         binding.viajes.text = viajes2;

@@ -31,15 +31,9 @@
             android:textColor="@color/text_primary"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="@string/inicia_sesi_n_o"
+            android:text="@string/inicia_sesi_n_para_ningresar_a_movicard"
             android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/registrate_para_crea_una_cuenta"
-            android:textColor="#666666"
-            android:textSize="16sp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

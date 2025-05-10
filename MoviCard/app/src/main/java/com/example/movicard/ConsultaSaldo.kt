@@ -205,10 +205,15 @@ class ConsultaSaldo : BaseActivity() {
     private fun inicializaUITicket(viewModelTicket: TicketViewModel) {
         // Cargar y observar el ticket
         viewModelTicket.cargarTicket()
+
+        // verifica si exite el ticket
         viewModelTicket.existeTicket { existe ->
             if (existe) {
+                // si existe lo observa
                 viewModelTicket.ticket.observe(this) { ticket ->
+                    // si no es null entra
                     if (ticket != null) {
+                        // aplico los atributos del ticket a unos nuevos para mejor visualización
                         val tipo = ticket.tipo
                         val cantidad = ticket.cantidad
                         val fechaCompra = formatFecha(ticket.fecha_inicio)

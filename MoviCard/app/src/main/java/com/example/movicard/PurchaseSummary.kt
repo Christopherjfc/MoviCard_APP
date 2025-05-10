@@ -83,6 +83,18 @@ class PurchaseSummary : BaseActivity() {
         // Obtener el título (nombre del título de tarjeta)  desde el Intent
         val titulo = intent.getStringExtra("titulo")
 
+        when (titulo) {
+            "TENMOVI" -> {
+                binding.imgTicket.setImageResource(R.drawable.tenmovi)
+            }
+            "MOVIMES" -> {
+                binding.imgTicket.setImageResource(R.drawable.movimes)
+            }
+            "TRIMOVI" -> {
+                binding.imgTicket.setImageResource(R.drawable.trimovi)
+            }
+        }
+
         // Obtener el título de la suscripción premium desde el Intent
         val premium = intent.getStringExtra("premium")
 
