@@ -11,8 +11,8 @@ import com.amazonaws.services.iot.client.sample.sampleUtil.SampleUtil.KeyStorePa
 
 public class DispositiuIot{
 
-    private static final String FICH_CLAU_PRIVADA = "C:\\Users\\Christopher\\Documents\\Proyecto_MoviCard\\MoviCard_APP\\TENMOVI_MOVICARD\\client1certs\\private.pem.key";
-    private static final String FICH_CERT_DISP_IOT = "C:\\Users\\Christopher\\Documents\\Proyecto_MoviCard\\MoviCard_APP\\TENMOVI_MOVICARD\\client1certs\\certidicado.pem.crt";
+    private static final String FICH_CLAU_PRIVADA = "C:\\Users\\chris\\Documents\\Proyecto_ITICBCN\\Proyecto_MoviCard\\MoviCard_APP\\TENMOVI_MOVICARD\\client1certs\\private.pem.key";
+    private static final String FICH_CERT_DISP_IOT = "C:\\Users\\chris\\Documents\\Proyecto_ITICBCN\\Proyecto_MoviCard\\MoviCard_APP\\TENMOVI_MOVICARD\\client1certs\\certidicado.pem.crt";
     private static final String ENDPOINT = "a36fz4jf3lbj4d-ats.iot.us-east-1.amazonaws.com";
     public static final String TOPIC = "ESP32";
     public static final String CLIENT_ID = "ESP32_RFID";

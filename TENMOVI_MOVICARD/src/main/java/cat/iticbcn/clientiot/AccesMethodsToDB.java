@@ -50,13 +50,18 @@ public class AccesMethodsToDB {
     
             Ticket ticket = response.body();
             String tipo = ticket.getTipo();
+            System.out.println(tipo);
             int cantidad = ticket.getCantidad();
-    
+            
             if ("TENMOVI".equals(tipo)) {
+                System.out.println("Entró a la condición de TENMOVI " + tipo);
                 if (cantidad > 0) {
+                    System.out.println("Entró a la condición de TENMOVI cantidad mayor que " + cantidad);
                     ticket.setCantidad(cantidad - 1);
+                    System.out.println("Entró a la condición de TENMOVI cambio de cantidad " + cantidad);
                     Call<Void> updateCall = ticketService.updateTicket(idCliente, ticket);
                     Response<Void> updateResponse = updateCall.execute();
+                    System.out.println("Entró a la condición de TENMOVI" + cantidad);
     
                     if (updateResponse.isSuccessful()) {
                         new DispositiuIot().enviarMensajeToAws("Saldo TENMOVI actualizado: " + (cantidad - 1));
