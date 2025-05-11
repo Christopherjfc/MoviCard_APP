@@ -5,6 +5,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
+    // URL de la API (ip temporal por temas de costo del AWS)
     private static final String BASE_URL = "http://54.221.105.50:8000/";
     private static Retrofit retrofit = null;
 

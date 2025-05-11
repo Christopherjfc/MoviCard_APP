@@ -37,7 +37,7 @@ public class DispositiuIot{
         }
 
         if (awsIotClient == null) {
-            throw new IllegalArgumentException("Error als construir client amb el certificat o les credencials.");
+            throw new IllegalArgumentException("Error al construir el cliente con el certificado o las credenciales.");
         }
     }
 
@@ -45,7 +45,7 @@ public class DispositiuIot{
         initClient();
         awsIotClient.connect();
         try {    
-            System.out.println("Cliente Conetado!!!");
+            System.out.println("Cliente Conectado!!!");
         } catch (Exception e) {
             System.err.println("ERROR AL CONCECTARSE!!!");
         }
