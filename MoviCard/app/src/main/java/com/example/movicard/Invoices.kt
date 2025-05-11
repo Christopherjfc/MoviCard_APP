@@ -1,10 +1,8 @@
 package com.example.movicard
 
-import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.widget.Toast
@@ -18,7 +16,7 @@ import com.example.movicard.data.InvoiceAdapter
 import com.example.movicard.databinding.ActivityInvoicesBinding
 import com.google.android.material.navigation.NavigationView
 import android.net.Uri
-import com.example.movicard.data.ReceiptResponse
+import com.example.movicard.model.ReceiptResponse
 import retrofit2.Call
 import retrofit2.Response
 

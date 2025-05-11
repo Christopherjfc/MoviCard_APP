@@ -6,6 +6,8 @@ import com.example.movicard.model.Cliente
 class SessionManager(context: Context) {
     private val prefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE)
 
+    // se guarda el usuario de quien inició sesión
+    // para así poder usar su ID en un futuro para las peticiones a la API
     fun saveCliente(cliente: Cliente) {
         prefs.edit().apply {
             putInt("id", cliente.id)
@@ -24,6 +26,7 @@ class SessionManager(context: Context) {
         }
     }
 
+    // obtengo la ID del usaurio para futuras peticiones a la API
     fun getCliente(): Cliente? {
         val id = prefs.getInt("id", -1)
         if (id == -1) return null

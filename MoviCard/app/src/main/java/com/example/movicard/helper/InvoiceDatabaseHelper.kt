@@ -23,6 +23,11 @@ private const val COLUMN_URL = "url"
 private const val COLUMN_FILE_PATH = "file_path"
 private const val COLUMN_PAYMENT_INTENT_ID = "payment_intent_id"
 
+
+/*
+ * Se usará para guardar las facturas creadas de Stripe, con el monto, URL, nombre, fecha de compra, etc.
+ * Con todos los registros, llenaré el recyclerView que tengo en mi activity Invoices
+ */
 class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
 
@@ -45,20 +50,6 @@ class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         if (oldVersion < 2) { // Suponiendo que la versión inicial es 1 y esta es la 2
             db.execSQL("ALTER TABLE $TABLE_INVOICES ADD COLUMN $COLUMN_PAYMENT_INTENT_ID TEXT")
         }
-    }
-
-    // Insertar una nueva factura
-    fun addInvoice(name: String, date: String, amount: Double, url: String, filePath: String?) {
-        val db = writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_NAME, name)
-            put(COLUMN_DATE, date)
-            put(COLUMN_AMOUNT, amount)
-            put(COLUMN_URL, url)
-            put(COLUMN_FILE_PATH, filePath)
-        }
-        db.insert(TABLE_INVOICES, null, values)
-        db.close()
     }
 
     // Obtener todas las facturas
