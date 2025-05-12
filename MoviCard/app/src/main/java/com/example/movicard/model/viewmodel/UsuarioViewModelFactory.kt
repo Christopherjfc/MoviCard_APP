@@ -35,7 +35,7 @@ class UsuarioViewModelFactory(
                 TarjetaViewModel(api, sessionManager) as T
             }
             // Agregá más ViewModels aquí si es necesario
-            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            else -> throw IllegalArgumentException("ViewModel desconocido: ${modelClass.name}")
         }
     }
 }

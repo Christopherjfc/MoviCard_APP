@@ -34,46 +34,6 @@ class SuscripcionViewModel(
         }
     }
 
-    // Crea el plan de suscripción en GRATUITO
-    fun creaSuscripcion() {
-        val clienteSession = sessionManager.getCliente()
-
-        if (clienteSession != null) {
-            viewModelScope.launch {
-                try {
-                    // Intentamos obtener la suscripción actual
-                    val suscripcionExistente = api.getSuscripcion(clienteSession.id)
-
-                    // Si ya existe, no la creamos de nuevo
-                    Log.d(
-                        "SUSCRIPCION",
-                        "Ya existe una suscripción: ${suscripcionExistente.suscripcion}"
-                    )
-                    _suscripcion.value = suscripcionExistente
-
-                } catch (e: Exception) {
-                    Log.w(
-                        "SUSCRIPCION",
-                        "No se encontró suscripción, se intentará crear una nueva..."
-                    )
-
-                    try {
-                        // Si no existe, la creamos
-                        val nuevaSuscripcion = api.createSuscripcion(clienteSession.id)
-                        _suscripcion.value = nuevaSuscripcion
-                        Log.d("SUSCRIPCION", "Suscripción creada: ${nuevaSuscripcion.suscripcion}")
-                    } catch (creationError: Exception) {
-                        creationError.printStackTrace()
-                        Log.e("SUSCRIPCION", "Error al crear suscripción: ${creationError.message}")
-                    }
-                }
-            }
-        } else {
-            Log.w("SUSCRIPCION", "Cliente no encontrado en sesión")
-        }
-    }
-
-
     // Cambiar el plan del cliente a PREMIUM
     fun actualizarASuscripcionPremium() {
         val clienteSession = sessionManager.getCliente()

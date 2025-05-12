@@ -81,7 +81,6 @@ class CardSettings : AppCompatActivity() {
 
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
-        viewModelSuscripcion.creaSuscripcion()
         binding.cancelarSuscripion.setOnClickListener {
             viewModelSuscripcion.verificaSuscripcionGratuita { esGratuita ->
                 if (esGratuita) {
@@ -91,22 +90,6 @@ class CardSettings : AppCompatActivity() {
                 }
             }
         }
-    }
-
-
-    private fun isTargetActivated() : Boolean{
-        var estaActivada : Boolean = false
-        val sessionManager = SessionManager(this)
-        // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
-        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
-
-        viewModelTarjeta.cargarTarjeta()
-
-        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
-        }
-        return estaActivada
     }
 
     private fun alertDialogCancelarSuscipcion(viewModelSuscripcion : SuscripcionViewModel){

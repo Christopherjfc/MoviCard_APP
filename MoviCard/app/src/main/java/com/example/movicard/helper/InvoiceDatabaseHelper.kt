@@ -20,7 +20,6 @@ private const val COLUMN_NAME = "name"
 private const val COLUMN_DATE = "date"
 private const val COLUMN_AMOUNT = "amount"
 private const val COLUMN_URL = "url"
-private const val COLUMN_FILE_PATH = "file_path"
 private const val COLUMN_PAYMENT_INTENT_ID = "payment_intent_id"
 
 
@@ -30,7 +29,6 @@ private const val COLUMN_PAYMENT_INTENT_ID = "payment_intent_id"
  */
 class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-
     override fun onCreate(db: SQLiteDatabase) {
         val createTableQuery = """
         CREATE TABLE $TABLE_INVOICES (
@@ -39,7 +37,6 @@ class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
             $COLUMN_DATE TEXT,
             $COLUMN_AMOUNT REAL,
             $COLUMN_URL TEXT,
-            $COLUMN_FILE_PATH TEXT,
             $COLUMN_PAYMENT_INTENT_ID TEXT
         )
     """.trimIndent()
@@ -72,7 +69,6 @@ class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
                     date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE)) ?: "Fecha desconocida",
                     amount = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_AMOUNT)),
                     url = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_URL)) ?: "Sin URL",
-                    filePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FILE_PATH)) ?: "Sin archivo",
                     paymentIntentId = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PAYMENT_INTENT_ID)) ?: "Sin ID"
                 )
                 invoiceList.add(invoice)
@@ -83,7 +79,6 @@ class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         db.close()
         return invoiceList
     }
-
 
     fun insertInvoice(name: String, amount: String, paymentIntentId: String, url: String?): Boolean {
         val db = writableDatabase
@@ -100,14 +95,10 @@ class InvoiceDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         return result != -1L
     }
 
-
-
-
     fun deleteAllInvoices(): Boolean {
         val db = writableDatabase
         val result = db.delete(TABLE_INVOICES, null, null)
         db.close()
         return result > 0
     }
-
 }

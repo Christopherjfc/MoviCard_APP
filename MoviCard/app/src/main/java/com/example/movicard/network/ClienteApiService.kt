@@ -54,10 +54,6 @@ interface ClienteApiService {
     @GET("/get/suscripcion/{id_cliente}")
     suspend fun getSuscripcion(@Path("id_cliente") idCliente: Int): Suscripcion
 
-    // POST suscripción (por si necesitas crearla manualmente)
-    @POST("/post/suscripcion/")
-    suspend fun createSuscripcion(@Query("id_cliente") idCliente: Int): Suscripcion
-
     // PUT actualizar suscripción a PREMIUM
     @PUT("/put/suscripcion/premium/{id_cliente}")
     suspend fun actualizarSuscripcionPremium(@Path("id_cliente") idCliente: Int): Suscripcion
