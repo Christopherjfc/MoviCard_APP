@@ -1,5 +1,4 @@
 plugins {
-    id("com.google.gms.google-services")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
@@ -62,17 +61,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.activity.ktx)
+    implementation(libs.fragment.ktx)
 
     // JavaMail (enviar correos por gmail)
     implementation(libs.android.mail)
     implementation(libs.android.activation)
-
-    // FireBase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.firestore)
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.core)
 
     // Graphics
     implementation(libs.mpandroidchart)
@@ -84,10 +78,10 @@ dependencies {
     // Para las solicitudes HTTP
     implementation(libs.okhttp)
 
-    // Payment simulation with STRIPE
+    // Simulaciones de pago con STRIPE
     implementation(libs.stripe.android)
 
-    // Dependency for images
+    // Para imágenes circulares
     implementation (libs.circleimageview)
 
     // Jetpack Compose
@@ -100,8 +94,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
-    // Dependencies to choose profile picture
-    implementation(libs.activity.ktx)
-    implementation(libs.fragment.ktx)
 }
