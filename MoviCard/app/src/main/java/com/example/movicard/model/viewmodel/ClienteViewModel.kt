@@ -26,20 +26,17 @@ class ClienteViewModel(
         // Obtenemos el cliente almacenado en sesión (SharedPreferences)
         val clienteSession = sessionManager.getCliente()
 
-        // Si existe cliente en sesión, lanzamos una corrutina para obtener sus datos desde el backend
+        // Si existe cliente en sesión, lanzo una corrutina para obtener sus datos desde el backend
         if (clienteSession != null) {
             viewModelScope.launch {
                 try {
-                    // Llamada a la API usando la ID del cliente
                     val clienteApi = api.getClienteById(clienteSession.id)
 
-                    // Actualizamos el LiveData con la respuesta
+                    // Actualizo el LiveData con la respuesta
                     _cliente.value = clienteApi
 
                 } catch (e: Exception) {
-                    // Si hay error, lo mostramos en consola por ahora
                     e.printStackTrace()
-                    // Aquí podrías tener otro LiveData para errores si quieres mostrar mensajes al usuario
                 }
             }
         }

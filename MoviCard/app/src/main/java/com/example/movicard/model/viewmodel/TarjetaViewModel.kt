@@ -42,11 +42,10 @@ class TarjetaViewModel(
         if (clienteSession != null) {
             viewModelScope.launch {
                 try {
-                    // Intentamos obtener la suscripción actual
+                    // Intento obtener la suscripción actual
                     val tarjetaExistente = api.getTarjetaByClienteId(clienteSession.id)
 
-
-                    // Si ya existe, no la creamos de nuevo.
+                    // Si ya existe, no la creo de nuevo.
                     Log.d("TarjetaMovicard", "Ya existe una Tarjeta!")
                     _tarjeta.value = tarjetaExistente
 

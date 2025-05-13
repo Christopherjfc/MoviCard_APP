@@ -7,7 +7,7 @@ object RetrofitInstanceAPI {
     // URL de la api de la aplicación
     val api: ClienteApiService by lazy {
         Retrofit.Builder()
-            .baseUrl("http://52.90.60.9:8000")
+            .baseUrl("http://192.168.56.3:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ClienteApiService::class.java)

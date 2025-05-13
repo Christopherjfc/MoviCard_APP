@@ -45,13 +45,16 @@ class TicketViewModel(
         }
     }
 
-    fun actualizarTicket(tipo: String, ticketId: Int) {
-        viewModelScope.launch {
-            try {
-                api.updateTicket(ticketId, tipo)
-                cargarTicket()
-            } catch (e: Exception) {
-                e.printStackTrace()
+    fun actualizarTicket(tipo: String) {
+        val cliente = sessionManager.getCliente()
+        if (cliente != null) {
+            viewModelScope.launch {
+                try {
+                    api.updateTicket(cliente.id, tipo)
+                    cargarTicket()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }

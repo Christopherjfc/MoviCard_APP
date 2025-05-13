@@ -116,11 +116,10 @@ class PurchaseSummary : BaseActivity() {
         // Si el título no es nulo
         if (!titulo.isNullOrEmpty()) {
             binding.productTitle.text = titulo
-            val idCliente = sessionManager.getCliente()?.id ?: -1
 
             viewModelTicket.existeTicket { existe ->
                 if (existe) {
-                    viewModelTicket.actualizarTicket(titulo, idCliente)
+                    viewModelTicket.actualizarTicket(titulo)
                     viewModelTicket.cargarTicket()
                 } else {
                     viewModelTicket.crearTicket(titulo)

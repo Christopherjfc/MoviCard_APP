@@ -18,7 +18,7 @@ class SuscripcionViewModel(
     private val _suscripcion = MutableLiveData<Suscripcion>()
     val suscripcion: LiveData<Suscripcion> get() = _suscripcion
 
-    // Obtener la suscripción actual del cliente desde la API
+    // Obtener la suscripción actual del cliente desde la API para actualizar el observe
     fun cargarSuscripcion() {
         val clienteSession = sessionManager.getCliente()
 
