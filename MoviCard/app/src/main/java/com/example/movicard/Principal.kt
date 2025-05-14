@@ -76,14 +76,6 @@ class Principal : BaseActivity() {
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
 
-        binding.btnSaldo.setOnClickListener {
-            startActivity(Intent(this, ConsultaSaldo::class.java))
-        }
-
-        /*
-         * LE CREO UNA TARJETA MOVICARD AL USUARIO
-         */
-
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
@@ -92,7 +84,7 @@ class Principal : BaseActivity() {
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
         val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
-        // obtengo el menu drawe y busco su textView para sustituirlo
+        // obtengo el menu drawer y busco su textView para sustituirlo
         val headerView = binding.navView.getHeaderView(0)
         val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
 
