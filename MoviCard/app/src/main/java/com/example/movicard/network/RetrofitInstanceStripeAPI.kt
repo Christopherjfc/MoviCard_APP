@@ -1,10 +1,9 @@
-package com.example.movicard
+package com.example.movicard.network
 
-import com.example.movicard.network.InoviceURLService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitClient {
+object RetrofitInstanceStripeAPI {
     private const val BASE_URL = "http://192.168.56.3:3000/"
 
     val instance: InoviceURLService by lazy {

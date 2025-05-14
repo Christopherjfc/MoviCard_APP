@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityLoginBinding
 import com.example.movicard.helper.SessionManager

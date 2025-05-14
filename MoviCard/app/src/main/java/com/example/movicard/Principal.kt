@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityPrincipalBinding
 import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.SuscripcionViewModel
 import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
@@ -29,21 +31,19 @@ class Principal : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Pone la bottom navegation real del celular del color que se le ponga,
-        // en mi caso, el mismo color del bottom navegation de mi app
-
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.azul_main)
-
-
         // Configuración de la vista
         binding = ActivityPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
-        // Configurar la Toolbar primero
+        // Pone la bottom navegation real del celular del color que se le ponga,
+        // en mi caso, el mismo color del bottom navegation de mi app
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.azul_main)
+
+        // Configura primero el Toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Muestra el ícono de la hamburguesa
-        // Quitar el título por defecto de la ActionBar
+        // Quita el título por defecto del ActionBar
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
 
@@ -90,6 +90,20 @@ class Principal : BaseActivity() {
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+        // observo el LiveData del cliente
+        viewModelcliente.cliente.observe(this) { cliente ->
+            // actualizo el nombre del menu drawer con el usuario actual
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+        }
+
+        // actualizamos el observe con los nuevos datos
+        viewModelcliente.cargarCliente()
 
         viewModelSuscripcion.cargarSuscripcion()
 

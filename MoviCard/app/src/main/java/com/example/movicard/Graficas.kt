@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -16,7 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivityGraficasBinding
 import com.example.movicard.helper.SessionManager
-import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstanceAPI
 import com.github.mikephil.charting.charts.BarChart
@@ -82,6 +82,24 @@ class Graficas : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+        // observo el LiveData del cliente
+        viewModelcliente.cliente.observe(this) { cliente ->
+            // actualizo el nombre del menu drawer con el usuario actual
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+        }
+
+        // actualizamos el observe con los nuevos datos
+        viewModelcliente.cargarCliente()
 
         // Le paso la ID de la grafica Pie al method que la llenará
         llenarGraficaPie(binding.graficaPie)

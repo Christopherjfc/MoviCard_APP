@@ -25,8 +25,3 @@ data class PasoTransbordo(
     val tiempoDeEspera: Int
 )
 
-// Representa el resumen final
-data class TiempoTotal(
-    val tiempoTotal: Int // en minutos
-)
-

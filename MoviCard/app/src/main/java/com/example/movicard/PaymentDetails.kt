@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -117,10 +118,16 @@ class PaymentDetails : BaseActivity() {
         // creo el ViewModel usando el Factory personalizado
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModel.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
             binding.nombreEnvio.setText(cliente.nombre)
             binding.apellidoEnvio.setText(cliente.apellido)
             binding.correoEnvio.setText(cliente.correo)

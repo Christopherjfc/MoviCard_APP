@@ -64,7 +64,7 @@ dependencies {
     implementation(libs.activity.ktx)
     implementation(libs.fragment.ktx)
 
-    // JavaMail (enviar correos por gmail)
+    // JavaMail (enviar correos por Gmail)
     implementation(libs.android.mail)
     implementation(libs.android.activation)
 

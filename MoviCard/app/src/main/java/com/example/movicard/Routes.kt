@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,6 +22,7 @@ import com.example.movicard.model.Linea
 import com.example.movicard.model.PasoEstaciones
 import com.example.movicard.model.PasoTransbordo
 import com.example.movicard.model.Trayecto
+import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstanceAPI
@@ -29,7 +30,7 @@ import com.google.android.material.navigation.NavigationView
 import java.util.LinkedList
 import java.util.Queue
 
-class Routes : AppCompatActivity() {
+class Routes : BaseActivity() {
     private lateinit var binding: ActivityRoutesBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
@@ -75,6 +76,25 @@ class Routes : AppCompatActivity() {
         setDrawerWidth(binding.navView, 0.55)
 
         binding.btnLogout.setOnClickListener { logout() }
+
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+        // observo el LiveData del cliente
+        viewModelcliente.cliente.observe(this) { cliente ->
+            // actualizo el nombre del menu drawer con el usuario actual
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+        }
+
+        // actualizamos el observe con los nuevos datos
+        viewModelcliente.cargarCliente()
 
         // cargo la lsita con todas las estacones de METRO de Barcelona
         estaciones = cargarEstaciones()

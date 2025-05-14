@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import com.example.movicard.databinding.ActivityGraficasBinding
 import com.example.movicard.databinding.ActivityPricingCardsBinding
 import com.example.movicard.helper.SessionManager
-import com.example.movicard.model.viewmodel.TarjetaViewModel
+import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstanceAPI
 import com.google.android.material.navigation.NavigationView
@@ -71,8 +66,6 @@ class PricingCards : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
-
-
         // Animación de entrada para las tarjetas
         binding.precioFremium.alpha = 0f
         binding.precioPremium.alpha = 0f
@@ -82,26 +75,31 @@ class PricingCards : BaseActivity() {
         binding.precioPremium.animate().alpha(1f).setDuration(1200)
             .setInterpolator(AccelerateDecelerateInterpolator()).start()
 
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+        // observo el LiveData del cliente
+        viewModelcliente.cliente.observe(this) { cliente ->
+            // actualizo el nombre del menu drawer con el usuario actual
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+        }
+
+        // actualizamos el observe con los nuevos datos
+        viewModelcliente.cargarCliente()
+
         // Click en botón de suscripción
         binding.btnSuscripcion.setOnClickListener {
             startActivity(Intent(this, PaymentDetails::class.java))
         }
     }
 
-    private fun isTargetActivated() : Boolean{
-        var estaActivada : Boolean = false
-        val sessionManager = SessionManager(this)
-        // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
-        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
-
-        viewModelTarjeta.cargarTarjeta()
-
-        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
-        }
-        return estaActivada
-    }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
     private fun setDrawerWidth(navView: NavigationView, percentage: Double) {
@@ -163,8 +161,8 @@ class PricingCards : BaseActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a la activity BlockCard ya que la tarjeta está activada
-                startActivity(Intent(this, BlockCard::class.java))
+                // Cambia a la activity CardSettings ya que la tarjeta está activada
+                startActivity(Intent(this, CardSettings::class.java))
                 return true
             }
         }

@@ -141,10 +141,17 @@ class Help : BaseActivity() {
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModel.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
             binding.nombreUsuario.setText(cliente.nombre + " " + cliente.apellido)
+            // actualizo el nombre del menu drawer
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+
         }
 
         // Llamamos a la función para iniciar la carga de datos del cliente

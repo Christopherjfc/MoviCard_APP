@@ -25,10 +25,13 @@ import android.print.PrintManager
 import android.print.PrintAttributes
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
+import com.example.movicard.network.RetrofitInstanceStripeAPI
 import com.example.movicard.network.RetrofitInstanceAPI
 
 
@@ -86,6 +89,24 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
 
         binding.btnLogout.setOnClickListener { logout() }
 
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+        // observo el LiveData del cliente
+        viewModelcliente.cliente.observe(this) { cliente ->
+            // actualizo el nombre del menu drawer con el usuario actual
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+        }
+
+        // actualizamos el observe con los nuevos datos
+        viewModelcliente.cargarCliente()
 
         databaseHelper = InvoiceDatabaseHelper(this)
         loadInvoices();
@@ -103,7 +124,7 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
     override fun onViewInvoice(invoice: Invoice) {
         val paymentIntentId = invoice.paymentIntentId // Debes almacenar el PaymentIntent ID en tu BD local
         println(paymentIntentId)
-        val call = RetrofitClient.instance.getReceiptUrl(paymentIntentId)
+        val call = RetrofitInstanceStripeAPI.instance.getReceiptUrl(paymentIntentId)
 
         call.enqueue(object : retrofit2.Callback<ReceiptResponse> {
             override fun onResponse(call: Call<ReceiptResponse>, response: Response<ReceiptResponse>) {
@@ -236,7 +257,7 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
             }
             R.id.tarjeta -> {
                 // Cambia a Tarjeta
-                startActivity(Intent(this, BlockCard::class.java))
+                startActivity(Intent(this, CardSettings::class.java))
                 return true
             }
         }

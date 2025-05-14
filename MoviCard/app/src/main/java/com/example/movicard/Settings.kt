@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.movicard.databinding.ActivitySettingsBinding
 import com.example.movicard.helper.SessionManager
+import com.example.movicard.model.viewmodel.ClienteViewModel
 import com.example.movicard.model.viewmodel.TarjetaViewModel
 import com.example.movicard.model.viewmodel.UsuarioViewModelFactory
 import com.example.movicard.network.RetrofitInstanceAPI
@@ -72,6 +73,25 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
         binding.bottomNavigationView.setOnItemSelectedListener(bottomNavListener)
 
         binding.btnLogout.setOnClickListener { logout() }
+
+        val sessionManager = SessionManager(this)
+
+        // creo el ViewModel usando el Factory personalizado
+        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
+        val viewModelcliente = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
+
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+        // observo el LiveData del cliente
+        viewModelcliente.cliente.observe(this) { cliente ->
+            // actualizo el nombre del menu drawer con el usuario actual
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
+        }
+
+        // actualizamos el observe con los nuevos datos
+        viewModelcliente.cargarCliente()
 
         val languages = listOf(getString(R.string.idioma), "ES", "EN", "CA")
         configureLanguageSpinner(binding.spinnerLanguage, languages)

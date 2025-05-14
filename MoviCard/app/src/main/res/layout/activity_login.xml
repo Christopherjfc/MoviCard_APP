@@ -43,8 +43,8 @@
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:background="@android:color/transparent"
@@ -71,7 +71,6 @@
                     android:backgroundTint="@android:color/transparent"
                     android:hint="@string/contraseña"
                     android:inputType="textPassword"
-                    android:paddingEnd="50dp"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
