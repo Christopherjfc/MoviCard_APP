@@ -88,18 +88,21 @@ class PaymentDetails : BaseActivity() {
                 binding.subtotal.text =  "12.55 €"
                 binding.productPrice2.text = "13.80 €"
                 binding.gastosGestion.text = "1.25 €"
+                binding.ticketOsuscripcion.setImageResource(R.drawable.tenmovi)
             }
             "MOVIMES" -> {
                 binding.productPrice.text = "22 €"
                 binding.subtotal.text =  "22 €"
                 binding.productPrice2.text = "24.20 €"
                 binding.gastosGestion.text = "2.2 €"
+                binding.ticketOsuscripcion.setImageResource(R.drawable.movimes)
             }
             "TRIMOVI" -> {
                 binding.productPrice.text = "44 €"
                 binding.subtotal.text =  "44 €"
                 binding.productPrice2.text = "48.40 €"
                 binding.gastosGestion.text = "4.4 €"
+                binding.ticketOsuscripcion.setImageResource(R.drawable.trimovi)
             } else -> {
                 binding.linearGestion.visibility = View.GONE
             }
@@ -159,21 +162,6 @@ class PaymentDetails : BaseActivity() {
             intent.putExtras(bundle)
             startActivity(intent)
         }
-    }
-
-    private fun isTargetActivated() : Boolean{
-        var estaActivada : Boolean = false
-        val sessionManager = SessionManager(this)
-        // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
-        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
-
-        viewModelTarjeta.cargarTarjeta()
-
-        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
-        }
-        return estaActivada
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla
@@ -243,8 +231,8 @@ class PaymentDetails : BaseActivity() {
                 return true
             }
             R.id.tarjeta -> {
-                // Cambia a la activity BlockCard ya que la tarjeta está activada
-                startActivity(Intent(this, BlockCard::class.java))
+                // Cambia a la activity CardSettings ya que la tarjeta está activada
+                startActivity(Intent(this, CardSettings::class.java))
                 return true
             }
         }
