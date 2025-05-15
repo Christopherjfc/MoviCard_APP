@@ -53,7 +53,7 @@ class Login : BaseActivity() {
     }
 
     fun hasheaPassword(password: String): String {
-        val salt = "M0v¡ç@rD!6%"
+        val salt = "M0v¡ç@rD!6%KJABSUIUHGd%$%$·;:ka46851615^`"
         val message = salt + password
         val digest = MessageDigest.getInstance("SHA-512")
         val hashBytes = digest.digest(message.toByteArray(Charsets.UTF_8))
