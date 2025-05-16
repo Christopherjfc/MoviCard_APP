@@ -127,10 +127,10 @@ class ConsultaSaldo : BaseActivity() {
 
     private fun mostrarDialogoTarjetaBloqueada() {
         val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Tarjeta Bloqueada")
-            .setMessage("🔒 Tu tarjeta está bloqueada. No puedes consultar el saldo.\n\nVuelve a activarla desde la pantalla de configuración de tarjeta.")
+            .setTitle(getString(R.string.tarjeta_bloqueada))
+            .setMessage(getString(R.string.tu_tarjeta_est_bloqueada_no_puedes_consultar_el_saldo_vuelve_a_activarla_desde_la_pantalla_de_configuraci_n_de_tarjeta))
             .setCancelable(false)
-            .setPositiveButton("Configuración") { _, _ ->
+            .setPositiveButton(getString(R.string.configuraci_n)) { _, _ ->
                 startActivity(Intent(this, CardSettings::class.java))
                 finish()
             }

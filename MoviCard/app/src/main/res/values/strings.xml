@@ -185,4 +185,6 @@
     <string name="activa_uuid">Activar UUID</string>
     <string name="uuid_incorrecto">UUID INCORRECTO ❌</string>
     <string name="tarjeta_activada">TARJETA ACTIVADA ✅</string>
+    <string name="tarjeta_bloqueada">Tarjeta Bloqueada</string>
+    <string name="tu_tarjeta_est_bloqueada_no_puedes_consultar_el_saldo_vuelve_a_activarla_desde_la_pantalla_de_configuraci_n_de_tarjeta">🔒 Tu tarjeta está bloqueada. No puedes consultar el saldo.\n\nVuelve a activarla desde la pantalla de configuración de tarjeta.</string>
 </resources>

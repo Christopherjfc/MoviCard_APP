@@ -67,6 +67,7 @@ class Help : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
+        // Bloque 1
         // selecciona el tipo de consulta
         val consultas = listOf(
             getString(R.string.consulta_general),
@@ -76,13 +77,13 @@ class Help : BaseActivity() {
         )
         configurarSpinner(binding.tipoConsulta, consultas)
 
+        // bloque 2
         // botón que comprueba y envía el mensaje
         binding.btnEnviarMensaje.setOnClickListener {
             if (mensajeValido()) {
                 val nombre = binding.nombreUsuario.text.toString().trim()
                 val mensaje = binding.mensajeUsuario.text.toString().trim()
                 val tipoConsulta = binding.tipoConsulta.selectedItem.toString()
-
                 val asunto = "Consulta: $tipoConsulta"
                 val cuerpo = """
                     Nombre: $nombre
@@ -90,7 +91,6 @@ class Help : BaseActivity() {
                     Mensaje:
                     $mensaje
                 """.trimIndent()
-
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
                         val sender = GmailSender(
@@ -134,6 +134,7 @@ class Help : BaseActivity() {
         *
         */
 
+        // bloque 3
         // creo el SessionManager para poder acceder a los datos guardados del usuario
         val sessionManager = SessionManager(this)
 
@@ -141,23 +142,17 @@ class Help : BaseActivity() {
         val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(ClienteViewModel::class.java)
 
-        // obtengo el menu drawe y busco su textView para sustituirlo
-        val headerView = binding.navView.getHeaderView(0)
-        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
-
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModel.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
             binding.nombreUsuario.setText(cliente.nombre + " " + cliente.apellido)
-            // actualizo el nombre del menu drawer
-            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
-
         }
 
         // Llamamos a la función para iniciar la carga de datos del cliente
         viewModel.cargarCliente()
     }
 
+    // bloque 4
     // valida que no haya ningún campo vacío para que sea válido el mensaje
     private fun mensajeValido(): Boolean {
         val nombre = binding.nombreUsuario.text.toString().trim()
@@ -166,6 +161,7 @@ class Help : BaseActivity() {
         return (nombre.isNotEmpty() && mensaje.isNotEmpty())
     }
 
+    // bloque 5
     private fun configurarSpinner(spinner: Spinner, opciones: List<String>) {
         val adapter =
             object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, opciones) {
@@ -176,7 +172,7 @@ class Help : BaseActivity() {
                             R.color.text_cambiar_contra,
                             theme
                         )
-                    ) // Establecer color aquí
+                    )
                     return view
                 }
 
@@ -191,14 +187,13 @@ class Help : BaseActivity() {
                             R.color.text_cambiar_contra,
                             theme
                         )
-                    ) // Establecer color aquí también
+                    )
                     return view
                 }
             }
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -206,12 +201,7 @@ class Help : BaseActivity() {
                 position: Int,
                 id: Long
             ) {
-                // Aquí puedes obtener el texto seleccionado si lo necesitas
-                if (position > 0) {
-                    val seleccionado = parent.getItemAtPosition(position).toString()
-                }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }

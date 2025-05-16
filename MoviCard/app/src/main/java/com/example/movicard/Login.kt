@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.movicard.databinding.ActivityLoginBinding
 import com.example.movicard.helper.SessionManager
@@ -29,7 +28,7 @@ class Login : BaseActivity() {
                 binding.email.error = "Campo requerido"
                 binding.password.error = "Campo requerido"
             } else {
-                var psswdHashed = hasheaPassword(password)
+                var psswdHashed = hashPassword(password)
                 verificarUsuario(email, psswdHashed)
             }
         }
@@ -52,11 +51,11 @@ class Login : BaseActivity() {
         }
     }
 
-    fun hasheaPassword(password: String): String {
-        val salt = "M0v¡ç@rD!6%KJABSUIUHGd%$%$·;:ka46851615^`"
-        val message = salt + password
+    fun hashPassword(password: String): String {
+        val fixedSalt = "M0v¡ç@rD!6%KJABSUIUHGd%$%$·;:ka46851615^`"
+        val input = password + fixedSalt
         val digest = MessageDigest.getInstance("SHA-512")
-        val hashBytes = digest.digest(message.toByteArray(Charsets.UTF_8))
+        val hashBytes = digest.digest(input.toByteArray(Charsets.UTF_8))
         return hashBytes.joinToString("") { "%02x".format(it) }
     }
 

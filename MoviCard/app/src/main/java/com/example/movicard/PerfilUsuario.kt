@@ -8,6 +8,7 @@ import android.transition.TransitionManager
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -104,10 +105,16 @@ class PerfilUsuario : BaseActivity() {
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
 
+        // obtengo el menu drawe y busco su textView para sustituirlo
+        val headerView = binding.navView.getHeaderView(0)
+        val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
+
+
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModelCliente.cliente.observe(this) { cliente ->
             // actualizo los campos de la interfaz con los datos del cliente
             binding.nombrePerfil.setText(cliente.nombre + " " + cliente.apellido)
+            nombreMenuDrawer.text = cliente.nombre + " " + cliente.apellido
             binding.correo.setText(cliente.correo)
             binding.nuevoNombre.setText(cliente.nombre)
             binding.nuevoApellido.setText(cliente.apellido)

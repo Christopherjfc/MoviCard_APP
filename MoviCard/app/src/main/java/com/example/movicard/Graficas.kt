@@ -101,6 +101,8 @@ class Graficas : BaseActivity() {
         // actualizamos el observe con los nuevos datos
         viewModelcliente.cargarCliente()
 
+        // bloque 1
+
         // Le paso la ID de la grafica Pie al method que la llenará
         llenarGraficaPie(binding.graficaPie)
 
@@ -116,6 +118,7 @@ class Graficas : BaseActivity() {
     }
 
 
+    // bloque 2
     fun llenarGraficaPie(graficaPie: PieChart) {
         val tarjetas = TarjetaStorage.cargarTarjetas(this)
 
@@ -157,6 +160,7 @@ class Graficas : BaseActivity() {
     }
 
 
+    // bloque 3
     fun llenarGraficaBarra(graficaBarra: BarChart) {
         val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
         val gastoPorDiaJson = prefs.getString("gastos_por_dia", "{}") ?: "{}"
@@ -210,6 +214,8 @@ class Graficas : BaseActivity() {
     }
 
 
+    // bloque 4
+    // inserta datos de prueba en la grafica de barras para ahorrar tiempo
     fun insertarDatosDePrueba(view: View) {
         val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
