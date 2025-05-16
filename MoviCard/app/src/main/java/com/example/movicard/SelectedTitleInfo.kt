@@ -89,16 +89,11 @@ class SelectedTitleInfo : BaseActivity() {
         val duracion2 = intent.getStringExtra("duracion")
 
         when (titulo2) {
-            "TENMOVI" -> {
-                binding.imgTicket.setImageResource(R.drawable.tenmovi)
-            }
-            "MOVIMES" -> {
-                binding.imgTicket.setImageResource(R.drawable.movimes)
-            }
-            "TRIMOVI" -> {
-                binding.imgTicket.setImageResource(R.drawable.trimovi)
-            }
+            "TENMOVI" -> binding.imgTicket.setImageResource(R.drawable.tenmovi)
+            "MOVIMES" -> binding.imgTicket.setImageResource(R.drawable.movimes)
+            "TRIMOVI" -> binding.imgTicket.setImageResource(R.drawable.trimovi)
         }
+
 
         binding.titulo.text = titulo2;
         binding.viajes.text = viajes2;

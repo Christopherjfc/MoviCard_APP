@@ -105,13 +105,6 @@ class TicketTypes : BaseActivity() {
             intent.putExtra("duracion", getString(R.string.duraci_n_hasta_que_concluyan_los_90_d_as_despu_s_del_primer_registro))
             startActivity(intent)
         }
-
-        /*
-         * La tarjeta:
-         *  10 viajes = 10€
-         *  mensual = 20€
-         *  Trimestral = 50€
-         */
     }
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

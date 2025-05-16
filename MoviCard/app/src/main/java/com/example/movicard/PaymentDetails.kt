@@ -70,15 +70,14 @@ class PaymentDetails : BaseActivity() {
         // Obtener el título desde el Intent con el que se abrió PaymentDetails
         val titulo = intent.getStringExtra("titulo")
 
-        // Validar y modificar el TextView si es necesario
+        // obtiene el título del producto a comprar
         val nuevoTitulo = when (titulo) {
             "TENMOVI" -> "TENMOVI"
             "MOVIMES" -> "MOVIMES"
             "TRIMOVI" -> "TRIMOVI"
-            else -> "Suscripción premium" // Si no coincide, usa el original
+            else -> "Suscripción premium"
         }
 
-        // Actualizar el TextView solo si el nuevo título no es nulo o vacío
         binding.productTitle.text = nuevoTitulo ?: ""
 
         // cambios de precio según el título de la tarjeta o suscripción
