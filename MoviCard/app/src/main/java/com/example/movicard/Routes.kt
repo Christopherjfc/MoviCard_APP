@@ -114,7 +114,7 @@ class Routes : BaseActivity() {
 
     private fun inicializoElAutoComplete() {
         // Obtener sólo los nombres de las estaciones
-        val nombresEstaciones = estaciones.map { it.nombre }
+        val nombresEstaciones = estaciones.map { it.nombre }.distinct()
 
         // Crear un adaptador de sugerencias
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, nombresEstaciones)
@@ -341,7 +341,7 @@ class Routes : BaseActivity() {
         val destinos = estaciones.filter { it.nombre.equals(destinoNombre, ignoreCase = true) }
 
         if (origenes.isEmpty() || destinos.isEmpty()) {
-            showToast("Estación no encontrada.")
+            showToast(getString(R.string.estaci_n_no_encontrada))
             return emptyList()
         }
 
@@ -379,7 +379,7 @@ class Routes : BaseActivity() {
             }
         }
 
-        showToast("No se encontró una ruta posible.")
+        showToast(getString(R.string.no_se_encontr_una_ruta_posible))
         return emptyList()
     }
 

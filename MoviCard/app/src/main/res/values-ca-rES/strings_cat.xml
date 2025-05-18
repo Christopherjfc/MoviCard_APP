@@ -185,4 +185,19 @@
     <string name="activa_uuid">Activar UUID</string>
     <string name="uuid_incorrecto">UUID INCORRECTE ❌</string>
     <string name="tarjeta_activada">TARGETA ACTIVADA ✅</string>
+    <string name="tarjeta_bloqueada">Targeta bloquejada</string>
+    <string name="tu_tarjeta_est_bloqueada_no_puedes_consultar_el_saldo_vuelve_a_activarla_desde_la_pantalla_de_configuraci_n_de_tarjeta">🔒 La teva targeta està bloquejada. No pots consultar el saldo.\n\nTorna a activar-la des de la pantalla de configuració de la targeta.</string>
+    <string name="no_se_encontr_una_ruta_posible">No s’ha trobat cap ruta possible.</string>
+    <string name="estaci_n_no_encontrada">Estació no trobada.</string>
+    <string name="rutas">Rutes</string>
+    <string name="origen">Origen:</string>
+    <string name="selecciona_estaci_n_de_origen">Selecciona l’estació d’origen</string>
+    <string name="destino">Destí:</string>
+    <string name="selecciona_estaci_n_de_destino">Selecciona l’estació de destí</string>
+    <string name="mostrar_ruta">Mostrar ruta</string>
+    <string name="mensaje_enviado_correctamente">Missatge enviat correctament.</string>
+    <string name="error_al_enviar_el_mensaje">Error en enviar el missatge: %1$s</string>
+    <string name="por_favor_completa_todos_los_campos">Si us plau, omple tots els camps.</string>
+    <string name="factura_guardada_correctamente">Factura desada correctament</string>
+    <string name="factura_guardada_como_pdf">Factura desada com a PDF</string>
 </resources>

@@ -187,4 +187,17 @@
     <string name="tarjeta_activada">TARJETA ACTIVADA ✅</string>
     <string name="tarjeta_bloqueada">Tarjeta Bloqueada</string>
     <string name="tu_tarjeta_est_bloqueada_no_puedes_consultar_el_saldo_vuelve_a_activarla_desde_la_pantalla_de_configuraci_n_de_tarjeta">🔒 Tu tarjeta está bloqueada. No puedes consultar el saldo.\n\nVuelve a activarla desde la pantalla de configuración de tarjeta.</string>
+    <string name="no_se_encontr_una_ruta_posible">No se encontró una ruta posible.</string>
+    <string name="estaci_n_no_encontrada">Estación no encontrada.</string>
+    <string name="rutas">Rutas</string>
+    <string name="origen">Origen:</string>
+    <string name="selecciona_estaci_n_de_origen">Selecciona estación de origen</string>
+    <string name="destino">Destino:</string>
+    <string name="selecciona_estaci_n_de_destino">Selecciona estación de destino</string>
+    <string name="mostrar_ruta">Mostrar Ruta</string>
+    <string name="mensaje_enviado_correctamente">Mensaje enviado correctamente.</string>
+    <string name="error_al_enviar_el_mensaje">Error al enviar el mensaje: %1$s</string>
+    <string name="por_favor_completa_todos_los_campos">Por favor, completa todos los campos.</string>
+    <string name="factura_guardada_correctamente">Factura guardada correctamente</string>
+    <string name="factura_guardada_como_pdf">Factura guardada como PDF</string>
 </resources>

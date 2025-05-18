@@ -191,7 +191,9 @@ class PurchaseSummary : BaseActivity() {
         // Obtengo el precio final de la tarjeta comprada desde el Intent
         val precio = intent.getStringExtra("precio") ?: ""
 
-        // Si el precio != null, actualizo el TextView
+        // Si el titulo != null, actualizo el TextView
+        // ya que si el titulo es null, es entonces una suscripción
+        // y el precio se queda tal como está en la interfaz (10 €)
         if (!titulo.isNullOrEmpty()) {
             binding.productPrice.text = precio
         }
@@ -236,14 +238,17 @@ class PurchaseSummary : BaseActivity() {
             R.id.nav_profile -> {
                 // Abrir perfil de usuario
                 startActivity(Intent(this, PerfilUsuario::class.java))
+                finish()
             }
             R.id.nav_suscription -> {
                 // Abrir suscripciones (Princin cards)
                 startActivity(Intent(this, PricingCards::class.java))
+                finish()
             }
             R.id.nav_config -> {
                 // Abrir configuración
                 startActivity(Intent(this, Settings::class.java))
+                finish()
             }
         }
         // Cerrar el menú una vez que se haya seleccionado un item
@@ -279,16 +284,19 @@ class PurchaseSummary : BaseActivity() {
             R.id.help -> {
                 // Cambia a ayuda
                 startActivity(Intent(this, Help::class.java))
+                finish()
                 return true
             }
             R.id.home -> {
                 // Cambia a pantalla principal
                 startActivity(Intent(this, Principal::class.java))
+                finish()
                 return true
             }
             R.id.tarjeta -> {
                 // Cambia a la activity CardSettings ya que la tarjeta está activada
                 startActivity(Intent(this, CardSettings::class.java))
+                finish()
                 return true
             }
         }

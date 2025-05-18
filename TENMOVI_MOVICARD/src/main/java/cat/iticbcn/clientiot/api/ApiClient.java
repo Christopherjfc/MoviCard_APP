@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     // URL de la API (ip temporal por temas de costo del AWS)
-    private static final String BASE_URL = "http://54.221.105.50:8000/";
+    private static final String BASE_URL = "http://34.224.233.49:8000/";
     private static Retrofit retrofit = null;
 
     public static TicketService getService() {

@@ -96,6 +96,8 @@ class PerfilUsuario : BaseActivity() {
         *
         */
 
+        // bloque 1
+
         // creo el SessionManager para poder acceder a los datos guardados del usuario
         val sessionManager = SessionManager(this)
 
@@ -105,10 +107,10 @@ class PerfilUsuario : BaseActivity() {
         val viewModelSuscripcion = ViewModelProvider(this, viewModelFactory).get(SuscripcionViewModel::class.java)
         val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
 
+
         // obtengo el menu drawe y busco su textView para sustituirlo
         val headerView = binding.navView.getHeaderView(0)
         val nombreMenuDrawer = headerView.findViewById<TextView>(R.id.nombre)
-
 
         // observo el LiveData del cliente y actualizo la UI cuando llegue la respuesta
         viewModelCliente.cliente.observe(this) { cliente ->
@@ -128,6 +130,7 @@ class PerfilUsuario : BaseActivity() {
             binding.nuevaCiudad.setText(cliente.ciudad)
         }
 
+        // bloque 2
         viewModelSuscripcion.suscripcion.observe(this) { suscripcion ->
             if (suscripcion.suscripcion == "GRATUITA"){
                 binding.textSuscripcion.setText(getString(R.string.freemium))
@@ -144,6 +147,7 @@ class PerfilUsuario : BaseActivity() {
             }
         }
 
+        // bloque 3
         // Llamamos a la función para iniciar la carga de datos del cliente
         viewModelCliente.cargarCliente()
 
@@ -152,6 +156,7 @@ class PerfilUsuario : BaseActivity() {
         viewModelTarjeta.cargarTarjeta()
 
 
+        // bloque 4
         // Botones para guardar o cancelar el cambio de datos personales
         binding.btnGuardarDatos.setOnClickListener {
             val clienteActual = sessionManager.getCliente()
@@ -167,6 +172,7 @@ class PerfilUsuario : BaseActivity() {
             val codigoPostal = binding.nuevoCodigoPostal.text.toString().trim()
             val ciudad = binding.nuevaCiudad.text.toString().trim()
 
+            // bloque 5
             // Validaciones previas
 
             // 1. Comprobamos campos vacíos obligatorios (excepto número de piso)
@@ -196,6 +202,7 @@ class PerfilUsuario : BaseActivity() {
                 return@setOnClickListener
             }
 
+            // bloque 6
             if (clienteActual != null) {
 
                 // Creo un objeto cliente actualizado
@@ -220,6 +227,7 @@ class PerfilUsuario : BaseActivity() {
             }
         }
 
+        // bloque 7
         binding.btnCancelarDatos.setOnClickListener {
             toggleVisibilityCambiarDatos()
         }
@@ -262,6 +270,7 @@ class PerfilUsuario : BaseActivity() {
 
     }
 
+    // bloque 8
     // limpia los campos al cancelar o guardar el cambio de conraseña
     private fun limpiaCamposCambiarContra() {
         binding.contraActual.text.clear()
@@ -275,6 +284,7 @@ class PerfilUsuario : BaseActivity() {
     }
 
 
+    // bloque 9
     private fun toggleVisibilityCambiarContra() {
         // se despliega cuando se le da clic y no está visible el cardView
         if (binding.cardCambiarContra.isGone) {
@@ -295,6 +305,7 @@ class PerfilUsuario : BaseActivity() {
         }
     }
 
+    // bloque 10
     private fun toggleVisibilityCambiarDatos() {
         // Cambiar datos personales
         if (binding.cardDatosPersonales.visibility == View.GONE) {

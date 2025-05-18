@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rowdies"
-            android:text="Rutas"
+            android:text="@string/rutas"
             android:textColor="@color/text_info"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
@@ -62,14 +62,14 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Origen: "
+                    android:text="@string/origen"
                     android:textColor="@color/text_primary" />
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteOrigen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Selecciona estación de origen"
+                    android:hint="@string/selecciona_estaci_n_de_origen"
                     android:textColor="@color/text_primary" />
             </TableRow>
 
@@ -80,14 +80,14 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Destino: "
+                    android:text="@string/destino"
                     android:textColor="@color/text_primary" />
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteDestino"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Selecciona estación de destino"
+                    android:hint="@string/selecciona_estaci_n_de_destino"
                     android:textColor="@color/text_primary" />
             </TableRow>
 
@@ -98,7 +98,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="100dp"
                 android:backgroundTint="@color/button_guardar"
-                android:text="Mostrar Ruta"
+                android:text="@string/mostrar_ruta"
                 android:textColor="@color/button_primary_text"
                 android:textSize="16sp"
                 android:textStyle="bold" />

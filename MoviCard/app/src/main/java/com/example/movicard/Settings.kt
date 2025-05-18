@@ -93,6 +93,9 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
         // actualizamos el observe con los nuevos datos
         viewModelcliente.cargarCliente()
 
+        // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
+        setDrawerWidth(binding.navView, 0.55)
+
         val languages = listOf(getString(R.string.idioma), "ES", "EN", "CA")
         configureLanguageSpinner(binding.spinnerLanguage, languages)
 
@@ -100,17 +103,11 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
         val sizes = listOf(getString(R.string.tama_o), "+1", "+2", "-1", "-2")
         configureSizeSpinner(binding.spinnerSize, sizes)
 
-
-        // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
-        setDrawerWidth(binding.navView, 0.55)
-
-
         binding.switchTemas.isChecked
-
 
         /*
         *
-        * MODO CLARO / OSCURO de MoviCard
+        * MODO CLARO / OSCURO
         *
         */
 
@@ -206,7 +203,6 @@ class Settings : BaseActivity() { // Cambiar de AppCompatActivity a BaseActivity
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
-
 
 
     private fun changeLanguage(language: String) {

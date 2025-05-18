@@ -68,12 +68,12 @@ class BlockCard : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
+        // activo el botón bloquear y descactivado el botón de desbloquear
         binding.btnBloquear.isEnabled = true
         binding.btnDesbloquear.isEnabled = false
+
         /*
-        * ACTUALIZO LOS TEXTOS DE LA ACTIVITY
-        *                Y
-        * EL ESTADO DE LA TARJETA CON LA API
+        * CAMBIO EL ESTADO DE LA TARJETA CON LA API
         */
 
         // creo el SessionManager para poder acceder a los datos guardados del usuario
@@ -131,22 +131,6 @@ class BlockCard : BaseActivity() {
                 binding.btnDesbloquear.isEnabled = true
             }
         }
-    }
-
-
-    private fun isTargetActivated() : Boolean{
-        var estaActivada : Boolean = false
-        val sessionManager = SessionManager(this)
-        // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
-        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
-
-        viewModelTarjeta.cargarTarjeta()
-
-        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
-        }
-        return estaActivada
     }
 
     // Método para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

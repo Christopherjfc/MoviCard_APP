@@ -74,7 +74,7 @@
                 android:fontFamily="@font/rowdies"
                 android:layout_marginStart="10dp"
                 android:text="@string/activada"
-                android:textColor="#34C759"
+                android:textColor="@color/estado_tarjeta_activa"
                 android:textSize="18sp"/>
         </LinearLayout>
 

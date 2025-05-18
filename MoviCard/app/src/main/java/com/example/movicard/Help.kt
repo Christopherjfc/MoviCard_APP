@@ -102,7 +102,7 @@ class Help : BaseActivity() {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@Help,
-                                "Mensaje enviado correctamente.",
+                                getString(R.string.mensaje_enviado_correctamente),
                                 Toast.LENGTH_SHORT
                             ).show()
                             binding.mensajeUsuario.setText("") // Limpiar campo mensaje si quieres
@@ -111,14 +111,15 @@ class Help : BaseActivity() {
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@Help,
-                                "Error al enviar el mensaje: ${e.message}",
+                                getString(R.string.error_al_enviar_el_mensaje, e.message),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
                     }
                 }
             } else {
-                Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT)
+                Toast.makeText(this,
+                    getString(R.string.por_favor_completa_todos_los_campos), Toast.LENGTH_SHORT)
                     .show()
             }
         }

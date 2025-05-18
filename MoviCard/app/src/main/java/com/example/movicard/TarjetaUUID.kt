@@ -108,30 +108,6 @@ class TarjetaUUID : BaseActivity() {
                 showToast(getString(R.string.uuid_incorrecto))
             }
         }
-
-        //TODO: modificar la api y añadir un campo mas de validación de tarjeta (ACTIVADA / DESACTIVADA), si está desactivada tiene que poner la UUID de la tarjeta,
-        // si la tarjeta ya se activó, la Activity TarjetaUUI ya no estará disponible e irá directamente a BlockCard.java
-        //
-
-        /*
-         * TODO: modificar la api y añadir un campo mas de validación de tarjeta (ACTIVADA / DESACTIVADA), si está desactivada tiene que poner la UUID de la tarjeta,
-         *       si la tarjeta ya se activó, la Activity TarjetaUUI ya no estará disponible e irá directamente a CardBlock.java.
-         *       En el menu menu navegation Que le siguen a ConsultaSaldo.java, y PurchaseSummary el tercer item del menu inferior lo llevará a BlockCard.java y no a TarjetaUUID.java
-         *       En el resto hay que comprobar en el metodo (bottomNavListener) en la parte de la tarejta (tercer item) verificar si el usuario su tarjeta está activa o no.
-         *       Si es que no está activa, que la lleve a la pantalla TarjetaUUID.java, si está activa, que lo lleve a BlockCard.java
-         */
-
-
-
-
-
-
-
-
-
-
-
-
         // Ajustar el Navigation Drawer al 55% del ancho de la pantalla
         setDrawerWidth(binding.navView, 0.55)
     }

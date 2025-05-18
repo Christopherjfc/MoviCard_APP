@@ -20,13 +20,16 @@ import java.io.IOException
 
 class PaymentByCard : AppCompatActivity() {
 
+    // bloque 1
     private lateinit var paymentSheet: PaymentSheet
     private var amount: Int = 0 // Monto en centavos
 
+    // bloque 6
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_by_card)
 
+        // obtiene los extras de PaymentDetails
         val titulo = intent.getStringExtra("titulo") ?: ""
         val premium = intent.getStringExtra("premium") ?: ""
 
@@ -55,6 +58,7 @@ class PaymentByCard : AppCompatActivity() {
         }
     }
 
+    // bloque 2
     // Verificar si hay conexión a Internet
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -62,6 +66,7 @@ class PaymentByCard : AppCompatActivity() {
         return activeNetwork != null && activeNetwork.isConnected
     }
 
+    // bloque 3
     private fun createPaymentIntent() {
         val client = OkHttpClient()
         val requestBody = JSONObject().apply {
@@ -110,11 +115,13 @@ class PaymentByCard : AppCompatActivity() {
         })
     }
 
+    // bloque 4
     private fun onPaymentResult(paymentResult: PaymentSheetResult) {
         when (paymentResult) {
             is PaymentSheetResult.Completed -> {
                 Toast.makeText(this, "Pago exitoso", Toast.LENGTH_SHORT).show()
 
+                // obtengo los extras de PaymentDetails
                 val titulo = intent.getStringExtra("titulo") ?: ""
                 val premium = intent.getStringExtra("premium") ?: ""
                 val precio = intent.getStringExtra("precio") ?: "0"
@@ -134,7 +141,7 @@ class PaymentByCard : AppCompatActivity() {
                     return
                 }
 
-                // 🔹 Llamar a la función para obtener la URL de la factura
+                // Llama a la función para obtener la URL de la factura
                 obtenerUrlFactura(paymentIntentId) { urlFactura ->
                     runOnUiThread {
                         val dbHelper = InvoiceDatabaseHelper(this)
@@ -145,7 +152,8 @@ class PaymentByCard : AppCompatActivity() {
                         }
 
                         if (success) {
-                            Toast.makeText(this, "Factura guardada correctamente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this,
+                                getString(R.string.factura_guardada_correctamente), Toast.LENGTH_SHORT).show()
 
                             // Guardo las tarjetas para luego contarlas y llenar el gráfico Pie.
                             // Así podré saber cuantas tarjetas se han ido comprando al paso del tiempo
@@ -155,22 +163,16 @@ class PaymentByCard : AppCompatActivity() {
 
                             TarjetaStorage.guardarTarjetas(this, tarjetas)
 
-
-                            /*
-                            * LLENO LA LISTA DE TARJETAS PARA LLENAR LA GRÁFICA REDONDA
-                            */
+                            // LLENO LA LISTA DE TARJETAS PARA LLENAR LA GRÁFICA REDONDA
 
                             // Por cada tarjeta que se vaya comprando voy sumando monto al total de gastos
                             val prefs = getSharedPreferences("TarjetasPrefs", Context.MODE_PRIVATE)
                             val totalAnterior = prefs.getInt("gasto_total", 0)
                             prefs.edit().putInt("gasto_total", totalAnterior + amount).apply()
 
+                            // LLENO LA GRÁFICA DE BARRAS
 
-                            /*
-                            * LLENO LA GRÁFICA DE BARRAS
-                            */
-
-                            // ➕ Guardar gasto por fecha
+                            // Guardar gasto por fecha
                             val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                             val fechaHoy = sdf.format(java.util.Date()) // Ej: 2025-04-04
                             val gastoPorDiaJson = prefs.getString("gastos_por_dia", "{}")
@@ -218,6 +220,7 @@ class PaymentByCard : AppCompatActivity() {
     }
 
 
+    // bloque 5
     private fun obtenerUrlFactura(paymentIntentId: String, callback: (String) -> Unit) {
         val client = OkHttpClient()
         val request = Request.Builder()

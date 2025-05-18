@@ -38,4 +38,9 @@
     <!-- Colores para el Item de facturas-->
     <color name="color_precioTotal">#ff99cc00</color>
     <color name="strokeInvoices">#585757</color>
+
+
+    <!-- Colores estado tarjeta (ACTIVADA - BLOQUEADA)-->
+    <color name="estado_tarjeta_activa">#34C759</color>
+    <color name="estado_tarjeta_bloqueada">#D10109</color>
 </resources>

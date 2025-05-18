@@ -40,6 +40,7 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
 
+    // bloque 1
     private lateinit var invoiceAdapter: InvoiceAdapter
     private lateinit var databaseHelper: InvoiceDatabaseHelper
 
@@ -108,6 +109,7 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
         // actualizamos el observe con los nuevos datos
         viewModelcliente.cargarCliente()
 
+        // bloque 2
         databaseHelper = InvoiceDatabaseHelper(this)
         loadInvoices();
 
@@ -115,12 +117,14 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
 //         databaseHelper.deleteAllInvoices()
     }
 
+    // bloque 3
     private fun loadInvoices() {
         val invoices = databaseHelper.getAllInvoices()
         invoiceAdapter = InvoiceAdapter(invoices, this)
         binding.recyclerViewInvoices.adapter = invoiceAdapter
     }
 
+    // bloque 4
     override fun onViewInvoice(invoice: Invoice) {
         val paymentIntentId = invoice.paymentIntentId // Debes almacenar el PaymentIntent ID en tu BD local
         println(paymentIntentId)
@@ -148,12 +152,14 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
     }
 
 
+    // bloque 5
     override fun onDownloadInvoice(invoice: Invoice) {
         val invoiceUrl = invoice.url  // Asegúrate de que este es el enlace de la factura
         System.out.println(invoiceUrl)
         saveWebPageAsPdf(invoiceUrl)
     }
 
+    // bloque 6
     private fun saveWebPageAsPdf(invoiceUrl: String) {
         val webView = WebView(this)
         webView.settings.javaScriptEnabled = true
@@ -167,7 +173,8 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
                 val printJob = printManager.print(jobName, printAdapter, PrintAttributes.Builder().build())
 
                 if (printJob.isCompleted) {
-                    Toast.makeText(this@Invoices, "Factura guardada como PDF", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Invoices,
+                        getString(R.string.factura_guardada_como_pdf), Toast.LENGTH_SHORT).show()
                 } else if (printJob.isFailed) {
                     Toast.makeText(this@Invoices, "Error al guardar la factura", Toast.LENGTH_SHORT).show()
                 }
@@ -175,21 +182,6 @@ class Invoices : BaseActivity(), InvoiceAdapter.InvoiceClickListener {
         }
 
         webView.loadUrl(invoiceUrl)
-    }
-
-    private fun isTargetActivated() : Boolean{
-        var estaActivada : Boolean = false
-        val sessionManager = SessionManager(this)
-        // creo el ViewModel usando el Factory personalizado
-        val viewModelFactory = UsuarioViewModelFactory(RetrofitInstanceAPI.api, sessionManager)
-        val viewModelTarjeta = ViewModelProvider(this, viewModelFactory).get(TarjetaViewModel::class.java)
-
-        viewModelTarjeta.cargarTarjeta()
-
-        viewModelTarjeta.tarjeta.observe(this) { tarjeta ->
-            estaActivada = tarjeta?.estadotarjeta != "DESACTIVADA"
-        }
-        return estaActivada
     }
 
     // Method para ajustar el ancho del Navigation Drawer basado en un porcentaje de la pantalla

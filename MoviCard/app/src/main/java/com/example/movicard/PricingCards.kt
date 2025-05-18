@@ -66,15 +66,6 @@ class PricingCards : BaseActivity() {
 
         binding.btnLogout.setOnClickListener { logout() }
 
-        // Animación de entrada para las tarjetas
-        binding.precioFremium.alpha = 0f
-        binding.precioPremium.alpha = 0f
-
-        binding.precioFremium.animate().alpha(1f).setDuration(1200)
-            .setInterpolator(AccelerateDecelerateInterpolator()).start()
-        binding.precioPremium.animate().alpha(1f).setDuration(1200)
-            .setInterpolator(AccelerateDecelerateInterpolator()).start()
-
         val sessionManager = SessionManager(this)
 
         // creo el ViewModel usando el Factory personalizado
