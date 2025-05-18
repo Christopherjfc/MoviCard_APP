@@ -38,7 +38,7 @@ public class TopicIoT  extends AWSIotTopic {
 
             // Ejecutar lógica
             AccesMethodsToDB access = new AccesMethodsToDB();
-            access.verificarYActualizarTicket(1);
+            access.verificarYActualizarTicket(7);
 
         } catch (Exception e) {
             System.err.println("Error al procesar mensaje MQTT: " + e.getMessage());

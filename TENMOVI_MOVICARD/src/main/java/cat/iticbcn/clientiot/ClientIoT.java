@@ -5,7 +5,7 @@ public class ClientIoT {
         DispositiuIot disp = new DispositiuIot();
         try {
             disp.conecta();
-            disp.subscriu(); 
+            disp.subscriu();  
         }catch(Exception e){
             System.err.println("Error IOT: "+e.getLocalizedMessage());
             System.exit(-1);
