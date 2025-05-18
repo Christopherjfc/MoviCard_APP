@@ -185,7 +185,7 @@
     <string name="uuid_incorrecto">INVALID UUID ❌</string>
     <string name="tarjeta_activada">CARD ACTIVATED ✅</string>
     <string name="tarjeta_bloqueada">Card Blocked</string>
-    <string name="tu_tarjeta_est_bloqueada_no_puedes_consultar_el_saldo_vuelve_a_activarla_desde_la_pantalla_de_configuraci_n_de_tarjeta">🔒 Your card is blocked. You can't check the balance.\n\nReactivate it from the card settings screen.</string>
+    <string name="tu_tarjeta_est_bloqueada_no_puedes_consultar_el_saldo_vuelve_a_activarla_desde_la_pantalla_de_configuraci_n_de_tarjeta">🔒 Your card is blocked. You can’t check the balance.\n\nReactivate it from the card settings screen.</string>
     <string name="no_se_encontr_una_ruta_posible">No possible route found.</string>
     <string name="estaci_n_no_encontrada">Station not found.</string>
     <string name="rutas">Routes</string>
